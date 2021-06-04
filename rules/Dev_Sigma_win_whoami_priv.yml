@@ -1,0 +1,17 @@
+rule  Dev_sigma_run_whoami_showing_privileges {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a whoami.exe executed with the /priv command line flag instructing the tool to show all current user privieleges. This is often used after a privilege escalation attempt. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, discovery, t1033"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\whoami\.exe`) and re.regex($selection.target.process.command_line, `.*/priv.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_abused_debug_privilege_by_arbitrary_parent_processes {
+ meta:
+    author = "Semanur Guneysu @semanurtg, oscd.community"
+    description = "Detection of unusual child processes by different system processes Author: Semanur Guneysu @semanurtg, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/28"
+    product = "windows"
+    category = "process_creation"
+    mitre = "privilege_escalation, t1548"
+
+  events:
+(((re.regex($selection1.src.process.file.full_path, `.*\\winlogon\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\services\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\lsass\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\csrss\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\smss\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\wininit\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\spoolsv\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\searchindexer\.exe`)) and (re.regex($selection1.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\cmd\.exe`)) and $selection1.src.user.user_display_name = "NT AUTHORITY\\SYSTEM") and not (re.regex($selection1.target.process.command_line, `.* route .*`) and re.regex($selection1.target.process.command_line, `.* ADD .*`)))
+
+  condition:
+    $selection1
+}

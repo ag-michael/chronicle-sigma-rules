@@ -1,0 +1,34 @@
+rule  Dev_sigma_windows_powershell_web_request {
+ meta:
+    author = "James Pemberton / @4A616D6573"
+    description = "Detects the use of various web request methods (including aliases) via Windows PowerShell Author: James Pemberton / @4A616D6573."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*Invoke-WebRequest.*`) or re.regex($selection.target.process.command_line, `.*iwr .*`) or re.regex($selection.target.process.command_line, `.*wget .*`) or re.regex($selection.target.process.command_line, `.*curl .*`) or re.regex($selection.target.process.command_line, `.*Net\.WebClient.*`) or re.regex($selection.target.process.command_line, `.*Start-BitsTransfer.*`))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_windows_powershell_web_request_part_1 {
+ meta:
+    author = "James Pemberton / @4A616D6573"
+    description = "Detects the use of various web request methods (including aliases) via Windows PowerShell Author: James Pemberton / @4A616D6573."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "4104" and (re.regex($selection.target.process.command_line, `.*Invoke-WebRequest.*`) or re.regex($selection.target.process.command_line, `.*iwr .*`) or re.regex($selection.target.process.command_line, `.*wget .*`) or re.regex($selection.target.process.command_line, `.*curl .*`) or re.regex($selection.target.process.command_line, `.*Net\.WebClient.*`) or re.regex($selection.target.process.command_line, `.*Start-BitsTransfer.*`)))
+
+  condition:
+    $selection
+}

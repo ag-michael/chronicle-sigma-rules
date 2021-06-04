@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_desktopimgdownldr_command {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious Microsoft desktopimgdownldr execution with parameters used to download files from the Internet Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1105"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.* /lockscreenurl:.*`) and not ((re.regex($selection1.target.process.command_line, `.*\.jpg.*`) or re.regex($selection1.target.process.command_line, `.*\.jpeg.*`) or re.regex($selection1.target.process.command_line, `.*\.png.*`)))) or (re.regex($selection1.target.process.command_line, `.*reg delete.*`) and re.regex($selection1.target.process.command_line, `.*\\PersonalizationCSP.*`)))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_xsl_script_processing {
+ meta:
+    author = "Timur Zinniatullin, oscd.community"
+    description = "Extensible Stylesheet Language (XSL) files are commonly used to describe the processing and rendering of data within XML files, rule  Dev_sigma_detects when adversaries abuse this functionality to execute arbitrary files while potentially bypassing application whitelisting defenses Author: Timur Zinniatullin, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1220, execution"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($selection.target.process.command_line, `.*/format.*`)) or re.regex($selection.target.process.file.full_path, `.*\\msxsl\.exe`))
+
+  condition:
+    $selection
+}

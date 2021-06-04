@@ -1,0 +1,17 @@
+rule  Dev_sigma_non_interactive_powershell {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g (rule), oscd.community (improvements)"
+    description = "Detects non-interactive PowerShell activity by looking at powershell.exe with not explorer.exe as a parent. Author: Roberto Rodriguez @Cyb3rWard0g (rule), oscd.community (improvements)."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1086, t1059.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and not ((re.regex($selection.src.process.file.full_path, `.*\\explorer\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\CompatTelRunner\.exe`))))
+
+  condition:
+    $selection
+}

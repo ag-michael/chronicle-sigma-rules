@@ -1,0 +1,17 @@
+rule  Dev_sigma_cve20200688_exploitation_via_eventlog {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the exploitation of Microsoft Exchange vulnerability as described in CVE-2020-0688 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/29"
+    product = "windows"
+    service = "application"
+    mitre = "initial_access, t1190"
+
+  events:
+(($selection1.metadata.product_event_type = "4" and $selection1.src.application = "MSExchange Control Panel" and $selection1.Level = "Error") and "*&__VIEWSTATE=*")
+
+  condition:
+    $selection1
+}

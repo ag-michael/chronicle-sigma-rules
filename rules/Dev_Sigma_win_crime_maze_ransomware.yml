@@ -1,0 +1,17 @@
+rule  Dev_sigma_maze_ransomware {
+ meta:
+    author = "Florian Roth"
+    description = "Detects specific process characteristics of Maze ransomware word document droppers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1204.002, t1204, t1047, impact, t1490"
+
+  events:
+((re.regex($selection1.src.process.file.full_path, `.*\\WINWORD\.exe`) and re.regex($selection1.target.process.file.full_path, `.*\.tmp`)) or (re.regex($selection1.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($selection1.src.process.file.full_path, `.*\\Temp\\.*`) and re.regex($selection1.target.process.command_line, `.*shadowcopy delete`)) or (re.regex($selection1.target.process.command_line, `.*shadowcopy delete`) and re.regex($selection1.target.process.command_line, `.*\\\.\.\\\.\.\\system32.*`)))
+
+  condition:
+    $selection1
+}

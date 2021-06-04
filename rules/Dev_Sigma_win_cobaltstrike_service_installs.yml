@@ -1,0 +1,17 @@
+rule  Dev_sigma_cobaltstrike_service_installations {
+ meta:
+    author = "Florian Roth"
+    description = "Detects known malicious service installs that appear in cases in which a Cobalt Strike beacon elevates privileges Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/26"
+    product = "windows"
+    service = "system"
+    mitre = "execution, privilege_escalation, t1543.003, t1569.002"
+
+  events:
+($selection.metadata.product_event_type = "7045" and re.regex($selection.target.file.full_path, `.*\\\\127\.0\.0\.1\\ADMIN$.*`) and re.regex($selection.target.file.full_path, `.*\.exe.*`))
+
+  condition:
+    $selection
+}

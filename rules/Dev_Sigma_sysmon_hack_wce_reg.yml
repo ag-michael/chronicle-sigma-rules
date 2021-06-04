@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_credential_editor_registry {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the use of Windows Credential Editor (WCE) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/31"
+    category = "registry_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001, s0005"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*Services\\WCESERVICE\\Start.*`)
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_lsass_access_from_non_system_account {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects potential mimikatz-like tools accessing LSASS from non system account Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/06/20"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+(((($selection.metadata.product_event_type = "4663" or $selection.metadata.product_event_type = "4656") and ($selection.target.process.access_mask = "0x40" or $selection.target.process.access_mask = "0x1400" or $selection.target.process.access_mask = "0x1000" or $selection.target.process.access_mask = "0x100000" or $selection.target.process.access_mask = "0x1410" or $selection.target.process.access_mask = "0x1010" or $selection.target.process.access_mask = "0x1438" or $selection.target.process.access_mask = "0x143a" or $selection.target.process.access_mask = "0x1418" or $selection.target.process.access_mask = "0x1f0fff" or $selection.target.process.access_mask = "0x1f1fff" or $selection.target.process.access_mask = "0x1f2fff" or $selection.target.process.access_mask = "0x1f3fff" or $selection.target.process.access_mask = "40" or $selection.target.process.access_mask = "1400" or $selection.target.process.access_mask = "1000" or $selection.target.process.access_mask = "100000" or $selection.target.process.access_mask = "1410" or $selection.target.process.access_mask = "1010" or $selection.target.process.access_mask = "1438" or $selection.target.process.access_mask = "143a" or $selection.target.process.access_mask = "1418" or $selection.target.process.access_mask = "1f0fff" or $selection.target.process.access_mask = "1f1fff" or $selection.target.process.access_mask = "1f2fff" or $selection.target.process.access_mask = "1f3fff") and $selection.src.user.user_display_name = "Process" and (re.regex($selection.target.file.full_path, `.*\\lsass\.exe`) or re.regex($selection.target.registry.registry_value_data, `.*\\lsass\.exe`))) and not (re.regex($selection.src.user.user_display_name, `.*$`))) and not (re.regex($selection.target.process.file.full_path, `C:\\Program Files.*`)))
+
+  condition:
+    $selection
+}

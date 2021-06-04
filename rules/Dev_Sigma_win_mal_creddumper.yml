@@ -1,0 +1,51 @@
+rule  Dev_sigma_credential_dumping_tools_service_execution {
+ meta:
+    author = "Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects well-known credential dumping tools execution via service execution events Author: Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "system"
+    mitre = "credential_access, execution, t1003, t1003.001, t1003.002, t1003.004, t1003.005, t1003.006, t1035, t1569.002, s0005"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*fgexec.*`) or re.regex($selection.target.process.command_line, `.*wceservice.*`) or re.regex($selection.target.process.command_line, `.*wce service.*`) or re.regex($selection.target.process.command_line, `.*pwdump.*`) or re.regex($selection.target.process.command_line, `.*gsecdump.*`) or re.regex($selection.target.process.command_line, `.*cachedump.*`) or re.regex($selection.target.process.command_line, `.*mimikatz.*`) or re.regex($selection.target.process.command_line, `.*mimidrv.*`)) or (re.regex($selection.target.file.full_path, `.*fgexec.*`) or re.regex($selection.target.file.full_path, `.*dumpsvc.*`) or re.regex($selection.target.file.full_path, `.*cachedump.*`) or re.regex($selection.target.file.full_path, `.*mimidrv.*`) or re.regex($selection.target.file.full_path, `.*gsecdump.*`) or re.regex($selection.target.file.full_path, `.*servpw.*`) or re.regex($selection.target.file.full_path, `.*pwdump.*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_credential_dumping_tools_service_execution_part_1 {
+ meta:
+    author = "Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects well-known credential dumping tools execution via service execution events Author: Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    category = "driver_load"
+    mitre = "credential_access, execution, t1003, t1003.001, t1003.002, t1003.004, t1003.005, t1003.006, t1035, t1569.002, s0005"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*fgexec.*`) or re.regex($selection.target.process.command_line, `.*wceservice.*`) or re.regex($selection.target.process.command_line, `.*wce service.*`) or re.regex($selection.target.process.command_line, `.*pwdump.*`) or re.regex($selection.target.process.command_line, `.*gsecdump.*`) or re.regex($selection.target.process.command_line, `.*cachedump.*`) or re.regex($selection.target.process.command_line, `.*mimikatz.*`) or re.regex($selection.target.process.command_line, `.*mimidrv.*`)) or (re.regex($selection.target.file.full_path, `.*fgexec.*`) or re.regex($selection.target.file.full_path, `.*dumpsvc.*`) or re.regex($selection.target.file.full_path, `.*cachedump.*`) or re.regex($selection.target.file.full_path, `.*mimidrv.*`) or re.regex($selection.target.file.full_path, `.*gsecdump.*`) or re.regex($selection.target.file.full_path, `.*servpw.*`) or re.regex($selection.target.file.full_path, `.*pwdump.*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_credential_dumping_tools_service_execution_part_2 {
+ meta:
+    author = "Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects well-known credential dumping tools execution via service execution events Author: Florian Roth, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, execution, t1003, t1003.001, t1003.002, t1003.004, t1003.005, t1003.006, t1035, t1569.002, s0005"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*fgexec.*`) or re.regex($selection.target.process.command_line, `.*wceservice.*`) or re.regex($selection.target.process.command_line, `.*wce service.*`) or re.regex($selection.target.process.command_line, `.*pwdump.*`) or re.regex($selection.target.process.command_line, `.*gsecdump.*`) or re.regex($selection.target.process.command_line, `.*cachedump.*`) or re.regex($selection.target.process.command_line, `.*mimikatz.*`) or re.regex($selection.target.process.command_line, `.*mimidrv.*`)) or (re.regex($selection.target.file.full_path, `.*fgexec.*`) or re.regex($selection.target.file.full_path, `.*dumpsvc.*`) or re.regex($selection.target.file.full_path, `.*cachedump.*`) or re.regex($selection.target.file.full_path, `.*mimidrv.*`) or re.regex($selection.target.file.full_path, `.*gsecdump.*`) or re.regex($selection.target.file.full_path, `.*servpw.*`) or re.regex($selection.target.file.full_path, `.*pwdump.*`)))
+
+  condition:
+    $selection
+}

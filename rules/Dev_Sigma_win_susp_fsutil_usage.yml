@@ -1,0 +1,17 @@
+rule  Dev_sigma_fsutil_suspicious_invocation {
+ meta:
+    author = "Ecco, E.M. Anhaus, oscd.community"
+    description = "Detects suspicious parameters of fsutil (deleting USN journal, configuring it with small size..). Might be used by ransomwares during the attack (seen by NotPetya and others) Author: Ecco, E.M. Anhaus, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1070"
+
+  events:
+((re.regex($binary_1.target.process.file.full_path, `.*\\fsutil\.exe`) or $binary_1.target.file.full_path = "fsutil.exe") and (re.regex($binary_1.target.process.command_line, `.*deletejournal.*`) or re.regex($binary_1.target.process.command_line, `.*createjournal.*`)))
+
+  condition:
+    $binary_1
+}

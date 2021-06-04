@@ -1,0 +1,17 @@
+rule  Dev_sigma_new_dll_added_to_appinit_dlls_registry_key {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "DLLs that are specified in the AppInit_DLLs value in the Registry key HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows are loaded by user32.dll into every process that loads user32.dll Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1103, t1546.010"
+
+  events:
+((re.regex($selection.target.registry.registry_key, `.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_Dlls`) or re.regex($selection.target.registry.registry_key, `.*\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_Dlls`)) or (re.regex($selection.NewName, `.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_Dlls`) or re.regex($selection.NewName, `.*\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_Dlls`)))
+
+  condition:
+    $selection
+}

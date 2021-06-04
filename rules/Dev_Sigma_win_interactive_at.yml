@@ -1,0 +1,17 @@
+rule  Dev_sigma_interactive_at_job {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community"
+    description = "Detect an interactive AT job, which may be used as a form of privilege escalation Author: E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1053.002, t1053"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\at\.exe`) and re.regex($selection.target.process.command_line, `.*interactive.*`))
+
+  condition:
+    $selection
+}

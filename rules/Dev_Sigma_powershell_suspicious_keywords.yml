@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_keywords {
+ meta:
+    author = "Florian Roth, Perez Diego (@darkquassar)"
+    description = "Detects keywords that could indicate the use of some PowerShell exploitation framework Author: Florian Roth, Perez Diego (@darkquassar)."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/11"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($event.Message, `.*System\.Reflection\.Assembly\.Load.*`) or re.regex($event.Message, `.*[System\.Reflection\.Assembly]::Load.*`) or re.regex($event.Message, `.*[Reflection\.Assembly]::Load.*`) or re.regex($event.Message, `.*System\.Reflection\.AssemblyName.*`) or re.regex($event.Message, `.*Reflection\.Emit\.AssemblyBuilderAccess.*`) or re.regex($event.Message, `.*Runtime\.InteropServices\.DllImportAttribute.*`) or re.regex($event.Message, `.*SuspendThread.*`))
+
+  condition:
+    $event
+}

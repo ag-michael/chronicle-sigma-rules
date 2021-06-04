@@ -1,0 +1,17 @@
+rule  Dev_sigma_emissary_panda_malware_sllauncher {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the execution of DLL side-loading malware used by threat group Emissary Panda aka APT27 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/09/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1073, t1574.002"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\sllauncher\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\svchost\.exe`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_renamed_sysinternals_debug_view {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious renamed SysInternals DebugView execution Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/28"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(($selection.metadata.product_name = "Sysinternals DebugView" or $selection.metadata.product_name = "Sysinternals Debugview") and not ($selection.target.file.full_path = "Dbgview.exe" and re.regex($selection.target.process.file.full_path, `.*\\Dbgview\.exe`)))
+
+  condition:
+    $selection
+}

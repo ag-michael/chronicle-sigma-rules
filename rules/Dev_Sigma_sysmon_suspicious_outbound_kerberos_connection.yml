@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_outbound_kerberos_connection {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "Detects suspicious outbound network activity via kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation. Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "network_connection"
+    product = "windows"
+    mitre = "credential_access, t1558, t1208, lateral_movement, t1550.003, t1097"
+
+  events:
+(($selection.target.port = "88" and $selection.Initiated = "true") and not ((re.regex($selection.target.process.file.full_path, `.*\\lsass\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\opera\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\chrome\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\firefox\.exe`))))
+
+  condition:
+    $selection
+}

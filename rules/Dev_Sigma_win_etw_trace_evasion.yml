@@ -1,0 +1,17 @@
+rule  Dev_sigma_disable_of_etw_trace {
+ meta:
+    author = "@neu5ron, Florian Roth, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects a command that clears or disables any ETW trace log which could indicate a logging evasion. Author: @neu5ron, Florian Roth, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/03/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1070, t1562.006, car.2016-04-002"
+
+  events:
+((re.regex($selection_clear_1.target.process.command_line, `.*cl.*`) and re.regex($selection_clear_1.target.process.command_line, `.*/Trace.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*clear-log.*`) and re.regex($selection_clear_1.target.process.command_line, `.*/Trace.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*sl.*`) and re.regex($selection_clear_1.target.process.command_line, `.*/e:false.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*set-log.*`) and re.regex($selection_clear_1.target.process.command_line, `.*/e:false.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*Remove-EtwTraceProvider.*`) and re.regex($selection_clear_1.target.process.command_line, `.*EventLog-Microsoft-Windows-WMI-Activity-Trace.*`) and re.regex($selection_clear_1.target.process.command_line, `.*{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*Set-EtwTraceProvider.*`) and re.regex($selection_clear_1.target.process.command_line, `.*{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}.*`) and re.regex($selection_clear_1.target.process.command_line, `.*EventLog-Microsoft-Windows-WMI-Activity-Trace.*`) and re.regex($selection_clear_1.target.process.command_line, `.*0x11.*`)) or (re.regex($selection_clear_1.target.process.command_line, `.*logman.*`) and re.regex($selection_clear_1.target.process.command_line, `.*update.*`) and re.regex($selection_clear_1.target.process.command_line, `.*trace.*`) and re.regex($selection_clear_1.target.process.command_line, `.*--p.*`) and re.regex($selection_clear_1.target.process.command_line, `.*-ets.*`)))
+
+  condition:
+    $selection_clear_1
+}

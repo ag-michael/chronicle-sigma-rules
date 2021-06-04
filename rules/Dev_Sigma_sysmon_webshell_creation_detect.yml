@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_webshell_creation {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Possible webshell file creation on a static web site Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    product = "windows"
+    category = "file_event"
+    mitre = "persistence, t1100, t1505.003"
+
+  events:
+((((re.regex($selection_2.target.file.full_path, `.*\\inetpub\\wwwroot\\.*`) and (re.regex($selection_2.target.file.full_path, `.*\.asp.*`) or re.regex($selection_2.target.file.full_path, `.*\.ashx.*`) or re.regex($selection_2.target.file.full_path, `.*\.ph.*`))) and not ((re.regex($selection_2.target.file.full_path, `.*\\AppData\\Local\\Temp\\.*`) or re.regex($selection_2.target.file.full_path, `.*\\Windows\\Temp\\.*`)))) or (((re.regex($selection_2.target.file.full_path, `.*\\www\\.*`) or re.regex($selection_2.target.file.full_path, `.*\\htdocs\\.*`) or re.regex($selection_2.target.file.full_path, `.*\\html\\.*`)) and re.regex($selection_2.target.file.full_path, `.*\.ph.*`)) and not ((re.regex($selection_2.target.file.full_path, `.*\\AppData\\Local\\Temp\\.*`) or re.regex($selection_2.target.file.full_path, `.*\\Windows\\Temp\\.*`))))) or ((re.regex($selection_2.target.file.full_path, `.*\.jsp`) or (re.regex($selection_2.target.file.full_path, `.*\\cgi-bin\\.*`) and re.regex($selection_2.target.file.full_path, `.*\.pl.*`))) and not ((re.regex($selection_2.target.file.full_path, `.*\\AppData\\Local\\Temp\\.*`) or re.regex($selection_2.target.file.full_path, `.*\\Windows\\Temp\\.*`)))))
+
+  condition:
+    $selection_2
+}

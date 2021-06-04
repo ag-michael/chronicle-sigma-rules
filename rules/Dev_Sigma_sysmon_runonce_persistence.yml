@@ -1,0 +1,17 @@
+rule  Dev_sigma_run_once_task_configuration_in_registry {
+ meta:
+    author = "Avneet Singh @v3t0_, oscd.community"
+    description = "Rule to detect the configuration of Run Once registry key. Configured payload can be run by runonce.exe /AlternateShellStartup Author: Avneet Singh @v3t0_, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/11/15"
+    product = "windows"
+    category = "registry_event"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `HKLM\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components.*`) and re.regex($selection.target.registry.registry_key, `.*\\StubPath`))
+
+  condition:
+    $selection
+}

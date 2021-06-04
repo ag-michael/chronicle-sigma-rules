@@ -1,0 +1,17 @@
+rule  Dev_sigma_empire_powershell_launch_parameters {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious powershell command line parameters used in Empire Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.* -NoP -sta -NonI -W Hidden -Enc .*`) or re.regex($selection.target.process.command_line, `.* -noP -sta -w 1 -enc .*`) or re.regex($selection.target.process.command_line, `.* -NoP -NonI -W Hidden -enc .*`) or re.regex($selection.target.process.command_line, `.* -noP -sta -w 1 -enc.*`) or re.regex($selection.target.process.command_line, `.* -enc  SQB.*`) or re.regex($selection.target.process.command_line, `.* -nop -exec bypass -EncodedCommand SQB.*`))
+
+  condition:
+    $selection
+}

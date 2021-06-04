@@ -1,0 +1,17 @@
+rule  Dev_sigma_startup_folder_file_write {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for files being created in the Windows startup directory. This could be an indicator of persistence. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    category = "file_event"
+    mitre = "persistence, t1547.001"
+
+  events:
+re.regex($selection.target.file.full_path, `.*ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp.*`)
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_nltest_credential_hash_theft {
+ meta:
+    author = "Craig Young, oscd.community"
+    description = "Detects nltest query commands which may leak credential hashes Author: Craig Young, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/04/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\nltest\.exe`) and re.regex($selection.target.process.command_line, `.*\\query.*`))
+
+  condition:
+    $selection
+}

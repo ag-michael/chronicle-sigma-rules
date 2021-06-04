@@ -1,0 +1,17 @@
+rule  Dev_sigma_winlogon_helper_dll {
+ meta:
+    author = "Timur Zinniatullin, oscd.community"
+    description = "Winlogon.exe is a Windows component responsible for actions at logon/logoff as well as the secure attention sequence (SAS) triggered by Ctrl-Alt-Delete. Registry entries in HKLM\\Software[Wow6432Node]Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ and HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ are used to manage additional helper programs and functionalities that support Winlogon. Malicious modifications to these Registry keys may cause Winlogon to load and execute malicious DLLs and/or executables. Author: Timur Zinniatullin, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    product = "windows"
+    service = "powershell"
+    mitre = "persistence, t1547.004, t1004"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.target.process.command_line, `.*CurrentVersion\\Winlogon.*`) and (re.regex($selection.target.process.command_line, `.*Set-ItemProperty.*`) or re.regex($selection.target.process.command_line, `.*New-Item.*`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_file_or_folder_permissions_modifications {
+ meta:
+    author = "Jakob Weinzettl, oscd.community"
+    description = "Detects a file or folder permissions modifications Author: Jakob Weinzettl, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1222"
+
+  events:
+(((re.regex($selection.target.process.file.full_path, `.*\\takeown\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cacls\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\icacls\.exe`)) and re.regex($selection.target.process.command_line, `.*/grant.*`)) or (re.regex($selection.target.process.file.full_path, `.*\\attrib\.exe`) and re.regex($selection.target.process.command_line, `.*-r.*`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_usage_of_the_managebdewsf_script {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects a usage of the manage-bde.wsf script that may indicate an attempt of proxy execution from script Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1216"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*cscript.*`) and re.regex($selection.target.process.command_line, `.*manage-bde\.wsf.*`))
+
+  condition:
+    $selection
+}

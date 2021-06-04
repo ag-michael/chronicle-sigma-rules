@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_registry_persistence_com_search_order_hijacking {
+ meta:
+    author = "Maxime Thiebaut (@0xThiebaut), oscd.community, Cédric Hien"
+    description = "Detects potential COM object hijacking leveraging the COM Search Order Author: Maxime Thiebaut (@0xThiebaut), oscd.community, Cédric Hien."
+    reference = ""
+    version = "0.01"
+    created = "2020/04/14"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1038, t1574.001"
+
+  events:
+((re.regex($selection.target.registry.registry_key, `.*HKU\\.*`) and re.regex($selection.target.registry.registry_key, `.*_Classes\\CLSID\\.*`) and re.regex($selection.target.registry.registry_key, `.*\\InProcServer32\\\(Default\).*`)) and not ((((re.regex($selection.metadata.description, `.*%%systemroot%%\\system32\\.*`) or re.regex($selection.metadata.description, `.*%%systemroot%%\\SysWow64\\.*`)) or (re.regex($selection.metadata.description, `.*\\AppData\\Local\\Microsoft\\OneDrive\\.*`) and (re.regex($selection.metadata.description, `.*\\FileCoAuthLib64\.dll.*`) or re.regex($selection.metadata.description, `.*\\FileSyncShell64\.dll.*`) or re.regex($selection.metadata.description, `.*\\FileSyncApi64\.dll.*`)))) or (re.regex($selection.metadata.description, `.*\\AppData\\Local\\Microsoft\\TeamsMeetingAddin\\.*`) and re.regex($selection.metadata.description, `.*\\Microsoft\.Teams\.AddinLoader\.dll.*`)) or (re.regex($selection.metadata.description, `.*\\AppData\\Roaming\\Dropbox\\.*`) and re.regex($selection.metadata.description, `.*\\DropboxExt64\..*\.dll.*`)))))
+
+  condition:
+    $selection
+}

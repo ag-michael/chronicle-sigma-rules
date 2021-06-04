@@ -1,0 +1,18 @@
+rule  Dev_sigma_quick_execution_of_a_series_of_suspicious_commands {
+ meta:
+    author = "juju4"
+    description = "Detects multiple suspicious process in a limited timeframe Author: juju4."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "car.2013-04-002"
+
+  events:
+($selection.target.process.command_line = "arp.exe" or $selection.target.process.command_line = "at.exe" or $selection.target.process.command_line = "attrib.exe" or $selection.target.process.command_line = "cscript.exe" or $selection.target.process.command_line = "dsquery.exe" or $selection.target.process.command_line = "hostname.exe" or $selection.target.process.command_line = "ipconfig.exe" or $selection.target.process.command_line = "mimikatz.exe" or $selection.target.process.command_line = "nbtstat.exe" or $selection.target.process.command_line = "net.exe" or $selection.target.process.command_line = "netsh.exe" or $selection.target.process.command_line = "nslookup.exe" or $selection.target.process.command_line = "ping.exe" or $selection.target.process.command_line = "quser.exe" or $selection.target.process.command_line = "qwinsta.exe" or $selection.target.process.command_line = "reg.exe" or $selection.target.process.command_line = "runas.exe" or $selection.target.process.command_line = "sc.exe" or $selection.target.process.command_line = "schtasks.exe" or $selection.target.process.command_line = "ssh.exe" or $selection.target.process.command_line = "systeminfo.exe" or $selection.target.process.command_line = "taskkill.exe" or $selection.target.process.command_line = "telnet.exe" or $selection.target.process.command_line = "tracert.exe" or $selection.target.process.command_line = "wscript.exe" or $selection.target.process.command_line = "xcopy.exe" or $selection.target.process.command_line = "pscp.exe" or $selection.target.process.command_line = "copy.exe" or $selection.target.process.command_line = "robocopy.exe" or $selection.target.process.command_line = "certutil.exe" or $selection.target.process.command_line = "vssadmin.exe" or $selection.target.process.command_line = "powershell.exe" or $selection.target.process.command_line = "wevtutil.exe" or $selection.target.process.command_line = "psexec.exe" or $selection.target.process.command_line = "bcedit.exe" or $selection.target.process.command_line = "wbadmin.exe" or $selection.target.process.command_line = "icacls.exe" or $selection.target.process.command_line = "diskpart.exe")
+$selection.MachineName = $target
+
+  condition:
+    $selection and #target > 5
+}

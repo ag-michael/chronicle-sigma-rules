@@ -1,0 +1,17 @@
+rule  Dev_sigma_hurricane_panda_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects Hurricane Panda Activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/03/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, g0009, t1068"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*localgroup.*`) and re.regex($selection.target.process.command_line, `.*admin.*`) and re.regex($selection.target.process.command_line, `.*/add.*`)) or re.regex($selection.target.process.command_line, `.*\\Win64\.exe.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_cobaltstrike_named_pipe {
+ meta:
+    author = "Florian Roth, Wojciech Lesicki"
+    description = "Detects the creation of a named pipe as used by CobaltStrike Author: Florian Roth, Wojciech Lesicki."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/25"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "defense_evasion, privilege_escalation, t1055"
+
+  events:
+((re.regex($selection_MSSE.file.name, `.*\\MSSE-.*`) and re.regex($selection_MSSE.file.name, `.*-server.*`)) or re.regex($selection_MSSE.file.name, `postex_.*`) or re.regex($selection_MSSE.file.name, `postex_ssh_.*`) or re.regex($selection_MSSE.file.name, `status_.*`) or re.regex($selection_MSSE.file.name, `msagent_.*`))
+
+  condition:
+    $selection_MSSE
+}

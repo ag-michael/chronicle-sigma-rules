@@ -1,0 +1,17 @@
+rule  Dev_sigma_syskey_registry_keys_access {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects handle requests and access operations to specific registry keys to calculate the SysKey Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/12"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, t1012"
+
+  events:
+(($selection.metadata.product_event_type = "4656" or $selection.metadata.product_event_type = "4663") and $selection.src.user.user_display_name = "key" and ((re.regex($selection.target.registry.registry_value_data, `.*lsa\\JD`) or re.regex($selection.target.registry.registry_value_data, `.*lsa\\GBG`) or re.regex($selection.target.registry.registry_value_data, `.*lsa\\Skew1`) or re.regex($selection.target.registry.registry_value_data, `.*lsa\\Data`)) or (re.regex($selection.target.file.full_path, `.*lsa\\JD`) or re.regex($selection.target.file.full_path, `.*lsa\\GBG`) or re.regex($selection.target.file.full_path, `.*lsa\\Skew1`) or re.regex($selection.target.file.full_path, `.*lsa\\Data`))))
+
+  condition:
+    $selection
+}

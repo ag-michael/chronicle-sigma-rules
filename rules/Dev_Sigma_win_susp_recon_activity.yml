@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_reconnaissance_activity {
+ meta:
+    author = "Florian Roth, omkar72"
+    description = "Detects suspicious command line activity on Windows systems Author: Florian Roth, omkar72."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1087.001, t1087.002, t1087"
+
+  events:
+($selection.target.process.command_line = "net group \"domain admins\" /domain" or $selection.target.process.command_line = "net localgroup administrators" or $selection.target.process.command_line = "net group \"enterprise admins\" /domain")
+
+  condition:
+    $selection
+}

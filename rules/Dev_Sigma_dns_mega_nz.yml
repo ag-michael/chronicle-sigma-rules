@@ -1,0 +1,17 @@
+rule  Dev_sigma_dns_query_for_megaio_upload_domain {
+ meta:
+    author = "Aaron Greetham (@beardofbinary) - NCC Group"
+    description = "Detects DNS queries for subdomains used for upload to MEGA.io Author: Aaron Greetham (@beardofbinary) - NCC Group."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/26"
+    product = "windows"
+    category = "dns_query"
+    mitre = "exfiltration, t1567.002"
+
+  events:
+($dns_request.metadata.product_event_type = "22" and re.regex($dns_request.QueryName, `.*userstorage\.mega\.co\.nz.*`))
+
+  condition:
+    $dns_request
+}

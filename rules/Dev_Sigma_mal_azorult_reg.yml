@@ -1,0 +1,17 @@
+rule  Dev_sigma_registry_entries_for_azorult_malware {
+ meta:
+    author = "Trent Liffick"
+    description = "Detects the presence of a registry key created during Azorult execution Author: Trent Liffick."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/08"
+    product = "windows"
+    category = "registry_event"
+    mitre = "execution, t1112"
+
+  events:
+(($selection.metadata.product_event_type = "12" or $selection.metadata.product_event_type = "13") and re.regex($selection.target.registry.registry_key, `.*SYSTEM\\.*`) and re.regex($selection.target.registry.registry_key, `.*\\services\\localNETService`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_netexe_user_account_creation {
+ meta:
+    author = "Endgame, JHasenbusch (adapted to sigma for oscd.community)"
+    description = "Identifies creation of local users via the net.exe command Author: Endgame, JHasenbusch (adapted to sigma for oscd.community)."
+    reference = ""
+    version = "0.01"
+    created = "2018/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1136, t1136.001"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.*user.*`) and re.regex($selection.target.process.command_line, `.*add.*`))
+
+  condition:
+    $selection
+}

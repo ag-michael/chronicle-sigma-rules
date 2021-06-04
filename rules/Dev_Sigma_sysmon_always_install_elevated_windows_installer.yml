@@ -1,0 +1,17 @@
+rule  Dev_sigma_always_install_elevated_windows_installer {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community"
+    description = "This rule  Dev_sigma_will looks for Windows Installer service (msiexec.exe) when it tries to install MSI packages with SYSTEM privilege Author: Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    product = "windows"
+    category = "process_creation"
+    mitre = "privilege_escalation, t1548.002"
+
+  events:
+($integrity_level.src.user.user_display_name = "NT AUTHORITY\\SYSTEM" and ((re.regex($integrity_level.target.process.file.full_path, `.*\\Windows\\Installer\\.*`) and re.regex($integrity_level.target.process.file.full_path, `.*msi.*`) and re.regex($integrity_level.target.process.file.full_path, `.*tmp`)) or (re.regex($integrity_level.target.process.file.full_path, `.*\\msiexec\.exe`) and $integrity_level.IntegrityLevel = "System")))
+
+  condition:
+    $integrity_level
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_uac_bypass_via_wsreset {
+ meta:
+    author = "oscd.community, Dmitry Uchakin"
+    description = "Unfixed method for UAC bypass from windows 10. WSReset.exe file associated with the Windows Store. It will run a binary file contained in a low-privilege registry. Author: oscd.community, Dmitry Uchakin."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, privilege_escalation, t1548.002"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*\\AppX82a6gwre4fdg3bt635tn5ctqjf8msdd2\\Shell\\open\\command`)
+
+  condition:
+    $selection
+}

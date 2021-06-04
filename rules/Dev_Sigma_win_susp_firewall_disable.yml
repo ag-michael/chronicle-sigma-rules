@@ -1,0 +1,17 @@
+rule  Dev_sigma_firewall_disabled_via_netsh {
+ meta:
+    author = "Fatih Sirin"
+    description = "Detects netsh commands that turns off the Windows firewall Author: Fatih Sirin."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/01"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.004, s0108"
+
+  events:
+($selection.target.process.command_line = "netsh firewall set opmode mode=disable" or re.regex($selection.target.process.command_line, `netsh advfirewall set .* state off`))
+
+  condition:
+    $selection
+}

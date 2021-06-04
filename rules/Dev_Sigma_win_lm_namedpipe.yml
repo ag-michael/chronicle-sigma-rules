@@ -1,0 +1,17 @@
+rule  Dev_sigma_first_time_seen_remote_named_pipe {
+ meta:
+    author = "Samir Bousseaden"
+    description = "This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1077, t1021.002"
+
+  events:
+(($selection1.metadata.product_event_type = "5145" and re.regex($selection1.target.resource.name, `.*\\IPC$`)) and not ($selection1.metadata.product_event_type = "5145" and re.regex($selection1.target.resource.name, `.*\\IPC$`) and ($selection1.target.file.full_path = "atsvc" or $selection1.target.file.full_path = "samr" or $selection1.target.file.full_path = "lsarpc" or $selection1.target.file.full_path = "winreg" or $selection1.target.file.full_path = "netlogon" or $selection1.target.file.full_path = "srvsvc" or $selection1.target.file.full_path = "protected_storage" or $selection1.target.file.full_path = "wkssvc" or $selection1.target.file.full_path = "browser" or $selection1.target.file.full_path = "netdfs" or $selection1.target.file.full_path = "svcctl" or $selection1.target.file.full_path = "spoolss" or $selection1.target.file.full_path = "ntsvcs" or $selection1.target.file.full_path = "LSM_API_service" or $selection1.target.file.full_path = "HydraLsPipe" or $selection1.target.file.full_path = "TermSrv_API_service" or $selection1.target.file.full_path = "MsFteWds")))
+
+  condition:
+    $selection1
+}

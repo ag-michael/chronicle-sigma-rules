@@ -1,0 +1,34 @@
+rule  Dev_sigma_detected_windows_software_discovery {
+ meta:
+    author = "Nikita Nazarov, oscd.community"
+    description = "Adversaries may attempt to enumerate software for a variety of reasons, such as figuring out what security measures are present or if the compromised system has a version of software that is vulnerable. Author: Nikita Nazarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/16"
+    product = "windows"
+    service = "powershell"
+    mitre = "discovery, t1518"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.target.process.command_line, `.*get-itemProperty.*`) and re.regex($selection.target.process.command_line, `.*\\software\\.*`) and re.regex($selection.target.process.command_line, `.*select-object.*`) and re.regex($selection.target.process.command_line, `.*format-table.*`))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_detected_windows_software_discovery_part_1 {
+ meta:
+    author = "Nikita Nazarov, oscd.community"
+    description = "Adversaries may attempt to enumerate software for a variety of reasons, such as figuring out what security measures are present or if the compromised system has a version of software that is vulnerable. Author: Nikita Nazarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1518"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\reg\.exe`) and re.regex($selection.target.process.command_line, `.*query.*`) and re.regex($selection.target.process.command_line, `.*\\software\\.*`) and re.regex($selection.target.process.command_line, `.*/v.*`) and re.regex($selection.target.process.command_line, `.*svcversion.*`))
+
+  condition:
+    $selection
+}

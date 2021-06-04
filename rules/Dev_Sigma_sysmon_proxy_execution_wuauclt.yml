@@ -1,0 +1,17 @@
+rule  Dev_sigma_proxy_execution_via_wuauclt {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research), Florian Roth"
+    description = "Detects the use of the Windows Update Client binary (wuauclt.exe) to proxy execute code. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research), Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+(((re.regex($selection_one.target.process.file.full_path, `.*wuauclt.*`) or $selection_one.target.file.full_path = "wuauclt.exe") and (re.regex($selection_one.target.process.command_line, `.*UpdateDeploymentProvider.*`) and re.regex($selection_one.target.process.command_line, `.*\.dll.*`) and re.regex($selection_one.target.process.command_line, `.*RunHandlerComServer.*`))) and not ((re.regex($selection_one.target.process.command_line, `.* /UpdateDeploymentProvider UpdateDeploymentProvider\.dll .*`) or re.regex($selection_one.target.process.command_line, `.* wuaueng\.dll .*`))))
+
+  condition:
+    $selection_one
+}

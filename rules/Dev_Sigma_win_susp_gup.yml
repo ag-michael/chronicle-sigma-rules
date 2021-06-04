@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_gup_usage {
+ meta:
+    author = "Florian Roth"
+    description = "Detects execution of the Notepad++ updater in a suspicious directory, which is often used in DLL side-loading attacks Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/06"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1574.002, t1073"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\GUP\.exe`) and not ((re.regex($selection.target.process.file.full_path, `.*\\Users\\.*\\AppData\\Local\\Notepad\+\+\\updater\\GUP\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\.*\\AppData\\Roaming\\Notepad\+\+\\updater\\GUP\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\Program Files\\Notepad\+\+\\updater\\GUP\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\Program Files \(x86\)\\Notepad\+\+\\updater\\GUP\.exe`))))
+
+  condition:
+    $selection
+}

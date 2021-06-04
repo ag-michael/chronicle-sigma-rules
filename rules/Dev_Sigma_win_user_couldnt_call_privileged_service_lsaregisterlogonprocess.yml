@@ -1,0 +1,17 @@
+rule  Dev_sigma_user_couldnt_call_a_privileged_service_lsaregisterlogonprocess {
+ meta:
+    author = "Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community"
+    description = "The 'LsaRegisterLogonProcess' function verifies that the application making the function call is a logon process by checking that it has the SeTcbPrivilege privilege set. Possible Rubeus tries to get a handle to LSA. Author: Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, privilege_escalation, t1208, t1558.003"
+
+  events:
+($selection.metadata.product_event_type = "4673" and $selection.Service = "LsaRegisterLogonProcess()" and $selection.Keywords = "0x8010000000000000")
+
+  condition:
+    $selection
+}

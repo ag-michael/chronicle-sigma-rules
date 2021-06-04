@@ -1,0 +1,17 @@
+rule  Dev_sigma_malicious_service_installations {
+ meta:
+    author = "Florian Roth, Daniil Yugoslavskiy, oscd.community (update)"
+    description = "Detects known malicious service installs that only appear in cases of lateral movement, credential dumping and other suspicious activity Author: Florian Roth, Daniil Yugoslavskiy, oscd.community (update)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/27"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, privilege_escalation, t1003, t1035, t1050, car.2013-09-005, t1543.003, t1569.002"
+
+  events:
+($selection.metadata.product_event_type = "7045" and (re.regex($selection.target.process.command_line, `.*\\PAExec.*`) or $selection.target.process.command_line = "mssecsvc2.0" or re.regex($selection.target.process.command_line, `.*net user.*`)))
+
+  condition:
+    $selection
+}

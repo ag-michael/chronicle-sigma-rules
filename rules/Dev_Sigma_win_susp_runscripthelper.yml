@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_runscripthelperexe {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects execution of powershell scripts via Runscripthelper.exe Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059, defense_evasion, t1202"
+
+  events:
+(re.regex($image_path.target.process.file.full_path, `.*\\Runscripthelper\.exe`) and re.regex($image_path.target.process.command_line, `.*surfacecheck.*`))
+
+  condition:
+    $image_path
+}

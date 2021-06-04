@@ -1,0 +1,17 @@
+rule  Dev_sigma_complus_etwenabled_command_line_arguments {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Potential adversaries stopping ETW providers recording loaded .NET assemblies. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562"
+
+  events:
+re.regex($selection.target.process.command_line, `.*COMPlus_ETWEnabled=0.*`)
+
+  condition:
+    $selection
+}

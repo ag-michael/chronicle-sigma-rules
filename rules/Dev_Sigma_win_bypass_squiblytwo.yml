@@ -1,0 +1,17 @@
+rule  Dev_sigma_squiblytwo {
+ meta:
+    author = "Markus Neis / Florian Roth"
+    description = "Detects WMI SquiblyTwo Attack with possible renamed WMI by looking for imphash Author: Markus Neis / Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1047, t1220, execution, t1059.005, t1059.007, t1059"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*http.*`) and ((re.regex($selection1.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($selection1.target.process.command_line, `.*wmic.*`) and re.regex($selection1.target.process.command_line, `.*format.*`)) or (($selection1.target.file.md5 = "1B1A3F43BF37B5BFE60751F2EE2F326E" or $selection1.target.file.md5 = "37777A96245A3C74EB217308F3546F4C" or $selection1.target.file.md5 = "9D87C9D67CE724033C0B40CC4CA1B206") and re.regex($selection1.target.process.command_line, `.*format:.*`))))
+
+  condition:
+    $selection1
+}

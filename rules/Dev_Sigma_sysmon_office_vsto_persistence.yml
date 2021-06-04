@@ -1,0 +1,17 @@
+rule  Dev_sigma_stealthy_vsto_persistence {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects persistence via Visual Studio Tools for Office (VSTO) add-ins in Office applications. Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/10"
+    category = "registry_event"
+    product = "windows"
+    mitre = "t1137.006, persistence"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\Office\\Outlook\\Addins\\.*`) or re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\Office\\Word\\Addins\\.*`) or re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\Office\\Excel\\Addins\\.*`) or re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\Office\\Powerpoint\\Addins\\.*`) or re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\VSTO\\Security\\Inclusion\\.*`))
+
+  condition:
+    $selection
+}

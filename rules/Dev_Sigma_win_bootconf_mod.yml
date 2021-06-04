@@ -1,0 +1,17 @@
+rule  Dev_sigma_modification_of_boot_configuration {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community"
+    description = "Identifies use of the bcdedit command to delete boot configuration data. This tactic is sometimes used as by malware or an attacker as a destructive technique. Author: E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "impact, t1490"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\bcdedit\.exe`) and re.regex($selection1.target.process.command_line, `.*set.*`)) and ((re.regex($selection1.target.process.command_line, `.*bootstatuspolicy.*`) and re.regex($selection1.target.process.command_line, `.*ignoreallfailures.*`)) or (re.regex($selection1.target.process.command_line, `.*recoveryenabled.*`) and re.regex($selection1.target.process.command_line, `.*no.*`))))
+
+  condition:
+    $selection1
+}

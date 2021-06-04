@@ -1,0 +1,51 @@
+rule  Dev_sigma_tap_driver_installation {
+ meta:
+    author = "Daniil Yugoslavskiy, Ian Davis, oscd.community"
+    description = "Well-known TAP software installation. Possible preparation for data exfiltration using tunnelling techniques Author: Daniil Yugoslavskiy, Ian Davis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "system"
+    mitre = "exfiltration, t1048"
+
+  events:
+($selection.metadata.product_event_type = "7045" and re.regex($selection.target.file.full_path, `.*tap0901.*`))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_tap_driver_installation_part_1 {
+ meta:
+    author = "Daniil Yugoslavskiy, Ian Davis, oscd.community"
+    description = "Well-known TAP software installation. Possible preparation for data exfiltration using tunnelling techniques Author: Daniil Yugoslavskiy, Ian Davis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    category = "driver_load"
+    mitre = "exfiltration, t1048"
+
+  events:
+re.regex($selection.target.file.full_path, `.*tap0901.*`)
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_tap_driver_installation_part_2 {
+ meta:
+    author = "Daniil Yugoslavskiy, Ian Davis, oscd.community"
+    description = "Well-known TAP software installation. Possible preparation for data exfiltration using tunnelling techniques Author: Daniil Yugoslavskiy, Ian Davis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "security"
+    mitre = "exfiltration, t1048"
+
+  events:
+($selection.metadata.product_event_type = "4697" and re.regex($selection.target.file.full_path, `.*tap0901.*`))
+
+  condition:
+    $selection
+}

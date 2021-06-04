@@ -1,0 +1,17 @@
+rule  Dev_sigma_external_disk_drive_or_usb_storage_device {
+ meta:
+    author = "Keith Wright"
+    description = "Detects external diskdrives or plugged in USB devices Author: Keith Wright."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/20"
+    product = "windows"
+    service = "security"
+    mitre = "t1091, t1200, lateral_movement, initial_access"
+
+  events:
+(($selection.metadata.product_event_type = "6416" and $selection.DeviceClassName = "DiskDrive") or $selection.DeviceDescription = "USB Mass Storage Device")
+
+  condition:
+    $selection
+}

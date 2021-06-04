@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_zerologon_cve20201472_exploitation {
+ meta:
+    author = "Aleksandr Akhremchik, @aleqs4ndr, ocsd.community"
+    description = "Detects Netlogon Elevation of Privilege Vulnerability aka Zerologon (CVE-2020-1472) Author: Aleksandr Akhremchik, @aleqs4ndr, ocsd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/15"
+    product = "windows"
+    service = "security"
+    mitre = "t1068, privilege_escalation"
+
+  events:
+(($selection.metadata.product_event_type = "4742" and $selection.SourceUserName = "ANONYMOUS LOGON" and $selection.target.user.user_display_name = "%DC-MACHINE-NAME%") and not (re.regex($selection.ChangedAttributes, `.*Password Last Set:	-.*`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_mimikatz_use {
+ meta:
+    author = "Florian Roth"
+    description = "This method detects mimikatz keywords in different Eventlogs (some of them only appear in older Mimikatz version that are however still used by different threat groups) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/01/10"
+    product = "windows"
+    mitre = "s0002, t1003, lateral_movement, credential_access, car.2013-07-001, car.2019-04-004, t1003.002, t1003.004, t1003.001, t1003.006"
+
+  events:
+(re.regex($event.Message, `.*mimikatz.*`) or re.regex($event.Message, `.*mimilib.*`) or re.regex($event.Message, `.*<3 eo\.oe.*`) or re.regex($event.Message, `.*eo\.oe\.kiwi.*`) or re.regex($event.Message, `.*privilege::debug.*`) or re.regex($event.Message, `.*sekurlsa::logonpasswords.*`) or re.regex($event.Message, `.*lsadump::sam.*`) or re.regex($event.Message, `.*mimidrv\.sys.*`) or re.regex($event.Message, `.* p::d .*`) or re.regex($event.Message, `.* s::l .*`))
+
+  condition:
+    $event
+}

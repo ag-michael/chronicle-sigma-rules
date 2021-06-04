@@ -1,0 +1,17 @@
+rule  Dev_sigma_rclone_execution_via_command_line_or_powershell {
+ meta:
+    author = "Aaron Greetham (@beardofbinary) - NCC Group"
+    description = "Detects Rclone which is commonly used by ransomware groups for exfiltration Author: Aaron Greetham (@beardofbinary) - NCC Group."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/26"
+    product = "windows"
+    category = "process_creation"
+    mitre = "exfiltration, t1567.002"
+
+  events:
+((re.regex($exec_selection.target.process.command_line, `.* pass .*`) or re.regex($exec_selection.target.process.command_line, `.* user .*`) or re.regex($exec_selection.target.process.command_line, `.* copy .*`) or re.regex($exec_selection.target.process.command_line, `.* mega .*`) or re.regex($exec_selection.target.process.command_line, `.* sync .*`) or re.regex($exec_selection.target.process.command_line, `.* config .*`) or re.regex($exec_selection.target.process.command_line, `.* lsd .*`) or re.regex($exec_selection.target.process.command_line, `.* remote .*`) or re.regex($exec_selection.target.process.command_line, `.* ls .*`)) and ($exec_selection.metadata.description = "Rsync for cloud storage" or (re.regex($exec_selection.target.process.file.full_path, `.*\\rclone\.exe`) and (re.regex($exec_selection.src.process.file.full_path, `.*\\PowerShell\.exe`) or re.regex($exec_selection.src.process.file.full_path, `.*\\cmd\.exe`)))))
+
+  condition:
+    $exec_selection
+}

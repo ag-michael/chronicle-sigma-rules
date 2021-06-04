@@ -1,0 +1,16 @@
+rule  Dev_sigma_hijack_legit_rdp_session_to_move_laterally {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects the usage of tsclient share to place a backdoor on the RDP source machine's startup folder Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/21"
+    product = "windows"
+    category = "file_event"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\mstsc\.exe`) and re.regex($selection.target.file.full_path, `.*\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_powershell_session {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects remote PowerShell sessions Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/10"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086, lateral_movement, t1021.006, t1028"
+
+  events:
+(($selection.metadata.product_event_type = "4103" or $selection.metadata.product_event_type = "400") and $selection.HostName = "ServerRemoteHost" and re.regex($selection.HostApplication, `.*wsmprovhost\.exe.*`))
+
+  condition:
+    $selection
+}

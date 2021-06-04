@@ -1,0 +1,17 @@
+rule  Dev_sigma_rar_with_password_or_compression_level {
+ meta:
+    author = "@ROxPinTeddy"
+    description = "Detects the use of rar.exe, on the command line, to create an archive with password protection or with a specific compression level. This is pretty indicative of malicious actions. Author: @ROxPinTeddy."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "collection, t1560.001, exfiltration, t1002"
+
+  events:
+(re.regex($selection.target.process.command_line, `.* -hp.*`) and re.regex($selection.target.process.command_line, `.* -m.*`))
+
+  condition:
+    $selection
+}

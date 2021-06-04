@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_event_subscription {
+ meta:
+    author = "Tom Ueltschi (@c_APT_ure)"
+    description = "Detects creation of WMI event subscription persistence method Author: Tom Ueltschi (@c_APT_ure)."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/12"
+    product = "windows"
+    category = "wmi_event"
+    mitre = "t1084, persistence, t1546.003"
+
+  events:
+($selector.metadata.product_event_type = "19" or $selector.metadata.product_event_type = "20" or $selector.metadata.product_event_type = "21")
+
+  condition:
+    $selector
+}

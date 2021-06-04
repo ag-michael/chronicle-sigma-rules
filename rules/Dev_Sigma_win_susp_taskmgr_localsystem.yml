@@ -1,0 +1,17 @@
+rule  Dev_sigma_taskmgr_as_local_system {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the creation of taskmgr.exe process in context of LOCAL_SYSTEM Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036"
+
+  events:
+($selection.src.user.user_display_name = "NT AUTHORITY\\SYSTEM" and re.regex($selection.target.process.file.full_path, `.*\\taskmgr\.exe`))
+
+  condition:
+    $selection
+}

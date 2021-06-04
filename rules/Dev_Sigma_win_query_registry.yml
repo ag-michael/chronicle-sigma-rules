@@ -1,0 +1,17 @@
+rule  Dev_sigma_query_registry {
+ meta:
+    author = "Timur Zinniatullin, oscd.community"
+    description = "Adversaries may interact with the Windows Registry to gather information about the system, configuration, and installed software. Author: Timur Zinniatullin, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1012, t1007"
+
+  events:
+(re.regex($selection_1.target.process.file.full_path, `.*\\reg\.exe`) and (re.regex($selection_1.target.process.command_line, `.*query.*`) or re.regex($selection_1.target.process.command_line, `.*save.*`) or re.regex($selection_1.target.process.command_line, `.*export.*`)) and (re.regex($selection_1.target.process.command_line, `.*currentVersion\\windows.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\runServicesOnce.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\runServices.*`) or re.regex($selection_1.target.process.command_line, `.*winlogon\\.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\shellServiceObjectDelayLoad.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\runOnce.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\runOnceEx.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\run.*`) or re.regex($selection_1.target.process.command_line, `.*currentVersion\\policies\\explorer\\run.*`) or re.regex($selection_1.target.process.command_line, `.*currentcontrolset\\services.*`)))
+
+  condition:
+    $selection_1
+}

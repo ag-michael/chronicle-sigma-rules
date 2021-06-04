@@ -1,0 +1,16 @@
+rule  Dev_sigma_relevant_antivirus_event {
+ meta:
+    author = "Florian Roth"
+    description = "This detection method points out highly relevant Antivirus events Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/02/19"
+    product = "windows"
+    service = "application"
+
+  events:
+((re.regex($filter.Message, `.*HTool.*`) or re.regex($filter.Message, `.*Hacktool.*`) or re.regex($filter.Message, `.*ASP/Backdoor.*`) or re.regex($filter.Message, `.*JSP/Backdoor.*`) or re.regex($filter.Message, `.*PHP/Backdoor.*`) or re.regex($filter.Message, `.*Backdoor\.ASP.*`) or re.regex($filter.Message, `.*Backdoor\.JSP.*`) or re.regex($filter.Message, `.*Backdoor\.PHP.*`) or re.regex($filter.Message, `.*Webshell.*`) or re.regex($filter.Message, `.*Portscan.*`) or re.regex($filter.Message, `.*Mimikatz.*`) or re.regex($filter.Message, `.*WinCred.*`) or re.regex($filter.Message, `.*PlugX.*`) or re.regex($filter.Message, `.*Korplug.*`) or re.regex($filter.Message, `.*Pwdump.*`) or re.regex($filter.Message, `.*Chopper.*`) or re.regex($filter.Message, `.*WmiExec.*`) or re.regex($filter.Message, `.*Xscan.*`) or re.regex($filter.Message, `.*Clearlog.*`) or re.regex($filter.Message, `.*ASPXSpy.*`)) and not ((re.regex($filter.Message, `.*Keygen.*`) or re.regex($filter.Message, `.*Crack.*`))))
+
+  condition:
+    $filter
+}

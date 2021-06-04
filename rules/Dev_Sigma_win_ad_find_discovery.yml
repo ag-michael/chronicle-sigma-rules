@@ -1,0 +1,17 @@
+rule  Dev_sigma_adfind_usage_detection {
+ meta:
+    author = "Janantha Marasinghe (https://github.com/blueteam0ps)"
+    description = "AdFind continues to be seen across majority of breaches. It is used to domain trust discovery to plan out subsequent steps in the attack chain. Author: Janantha Marasinghe (https://github.com/blueteam0ps)."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1482, t1018"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*domainlist.*`) or re.regex($selection.target.process.command_line, `.*trustdmp.*`) or re.regex($selection.target.process.command_line, `.*dcmodes.*`) or re.regex($selection.target.process.command_line, `.*adinfo.*`) or re.regex($selection.target.process.command_line, `.* dclist .*`) or re.regex($selection.target.process.command_line, `.*computer_pwdnotreqd.*`) or re.regex($selection.target.process.command_line, `.*objectcategory=.*`) or re.regex($selection.target.process.command_line, `.*-subnets -f.*`) or re.regex($selection.target.process.command_line, `.*name=\"Domain Admins\".*`) or re.regex($selection.target.process.command_line, `.*-sc u:.*`) or re.regex($selection.target.process.command_line, `.*domainncs.*`) or re.regex($selection.target.process.command_line, `.*dompol.*`) or re.regex($selection.target.process.command_line, `.* oudmp .*`) or re.regex($selection.target.process.command_line, `.*subnetdmp.*`) or re.regex($selection.target.process.command_line, `.*gpodmp.*`) or re.regex($selection.target.process.command_line, `.*fspdmp.*`) or re.regex($selection.target.process.command_line, `.*users_noexpire.*`) or re.regex($selection.target.process.command_line, `.*computers_active.*`))
+
+  condition:
+    $selection
+}

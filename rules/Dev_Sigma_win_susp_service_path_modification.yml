@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_service_path_modification {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects service path modification to powershell/cmd Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, t1543.003, t1031"
+
+  events:
+(re.regex($selection_1.target.process.file.full_path, `.*\\sc\.exe`) and re.regex($selection_1.target.process.command_line, `.*config.*`) and re.regex($selection_1.target.process.command_line, `.*binpath.*`) and (re.regex($selection_1.target.process.command_line, `.*powershell.*`) or re.regex($selection_1.target.process.command_line, `.*cmd.*`)))
+
+  condition:
+    $selection_1
+}

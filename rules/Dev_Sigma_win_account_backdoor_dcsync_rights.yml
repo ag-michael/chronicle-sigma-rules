@@ -1,0 +1,17 @@
+rule  Dev_sigma_powerview_adddomainobjectacl_dcsync_ad_extend_right {
+ meta:
+    author = "Samir Bousseaden; Roberto Rodriguez @Cyb3rWard0g; oscd.community"
+    description = "backdooring domain object to grant the rights associated with DCSync to a regular user or machine account using Powerview\\Add-DomainObjectAcl DCSync Extended Right cmdlet, will allow to re-obtain the pwd hashes of any user/computer Author: Samir Bousseaden; Roberto Rodriguez @Cyb3rWard0g; oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, t1098"
+
+  events:
+($selection.metadata.product_event_type = "5136" and $selection.LDAPDisplayName = "ntSecurityDescriptor" and (re.regex($selection.target.registry.registry_value_data, `.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*`) or re.regex($selection.target.registry.registry_value_data, `.*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2.*`) or re.regex($selection.target.registry.registry_value_data, `.*89e95b76-444d-4c62-991a-0facbeda640c.*`)))
+
+  condition:
+    $selection
+}

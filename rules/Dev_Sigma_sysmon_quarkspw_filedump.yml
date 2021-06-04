@@ -1,0 +1,17 @@
+rule  Dev_sigma_quarkspwdump_dump_file {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a dump file written by QuarksPwDump password dumper Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/02/10"
+    category = "file_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.002"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Temp\\SAM-.*`) and re.regex($selection.target.file.full_path, `.*\.dmp.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_psattack {
+ meta:
+    author = "Sean Metcalf (source), Florian Roth (rule)"
+    description = "Detects the use of PSAttack PowerShell hack tool Author: Sean Metcalf (source), Florian Roth (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "4103" and "PS ATTACK!!!")
+
+  condition:
+    $selection
+}

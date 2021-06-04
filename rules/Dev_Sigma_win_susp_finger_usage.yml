@@ -1,0 +1,17 @@
+rule  Dev_sigma_fingerexe_suspicious_invocation {
+ meta:
+    author = "Florian Roth, omkar72, oscd.community"
+    description = "Detects suspicious aged finger.exe tool execution often used in malware attacks nowadays Author: Florian Roth, omkar72, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1105"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\finger\.exe`)
+
+  condition:
+    $selection
+}

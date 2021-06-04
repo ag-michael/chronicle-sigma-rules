@@ -1,0 +1,17 @@
+rule  Dev_sigma_koadic_execution {
+ meta:
+    author = "wagga, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects command line parameters used by Koadic hack tool Author: wagga, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.003, t1059, t1059.005, t1059.007, t1064"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) and re.regex($selection.target.process.command_line, `.*/q.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*chcp.*`))
+
+  condition:
+    $selection
+}

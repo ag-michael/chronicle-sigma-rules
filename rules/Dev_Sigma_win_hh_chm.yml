@@ -1,0 +1,17 @@
+rule  Dev_sigma_hhexe_execution {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Dan Beavin), oscd.community"
+    description = "Identifies usage of hh.exe executing recently modified .chm files. Author: E.M. Anhaus (originally from Atomic Blue Detections, Dan Beavin), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.001, execution, t1223"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\hh\.exe`) and re.regex($selection.target.process.command_line, `.*\.chm.*`))
+
+  condition:
+    $selection
+}

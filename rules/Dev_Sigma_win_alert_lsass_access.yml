@@ -1,0 +1,16 @@
+rule  Dev_sigma_lsass_access_detected_via_attack_surface_reduction {
+ meta:
+    author = "Markus Neis"
+    description = "Detects Access to LSASS Process Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/08/26"
+    product = "windows_defender"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+($selection.metadata.product_event_type = "1121" and re.regex($selection.target.file.full_path, `.*\\lsass\.exe`))
+
+  condition:
+    $selection
+}

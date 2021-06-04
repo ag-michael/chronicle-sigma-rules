@@ -1,0 +1,17 @@
+rule  Dev_sigma_notepad_making_network_connection {
+ meta:
+    author = "EagleEye Team"
+    description = "Detects suspicious network connection by Notepad Author: EagleEye Team."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/14"
+    category = "network_connection"
+    product = "windows"
+    mitre = "command_and_control, execution, defense_evasion, t1055"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\notepad\.exe`) and not ($selection.target.port = "9100"))
+
+  condition:
+    $selection
+}

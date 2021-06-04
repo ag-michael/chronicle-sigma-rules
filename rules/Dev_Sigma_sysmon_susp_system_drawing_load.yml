@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_systemdrawing_load {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for processes loading System.Drawing.ni.dll. This could be an indicator of potential Screen Capture. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    category = "image_load"
+    mitre = "collection, t1113"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\System\.Drawing\.ni\.dll`) and not (re.regex($selection.target.process.file.full_path, `.*\\WmiPrvSE\.exe`)))
+
+  condition:
+    $selection
+}

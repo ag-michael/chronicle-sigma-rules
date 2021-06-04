@@ -1,0 +1,17 @@
+rule  Dev_sigma_psexec_accepteula_condition {
+ meta:
+    author = "omkar72 - https://www.fireeye.com/blog/threat-research/2020/10/kegtap-and-singlemalt-with-a-ransomware-chaser.html"
+    description = "Detect ed user accept agreement execution in psexec commandline Author: omkar72 - https://www.fireeye.com/blog/threat-research/2020/10/kegtap-and-singlemalt-with-a-ransomware-chaser.html."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1569, t1021"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\psexec\.exe`) and re.regex($selection.target.process.command_line, `.*accepteula.*`))
+
+  condition:
+    $selection
+}

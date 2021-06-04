@@ -1,0 +1,34 @@
+rule  Dev_sigma_time_travel_debugging_utility_usage {
+ meta:
+    author = "Ensar Şamil, @sblmsrsn, @oscd_initiative"
+    description = "Detects usage of Time Travel Debugging Utility. Adversaries can execute malicious processes and dump processes, such as lsass.exe, via tttracer.exe. Author: Ensar Şamil, @sblmsrsn, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    category = "image_load"
+    mitre = "defense_evasion, credential_access, t1218, t1003.001"
+
+  events:
+(re.regex($selection1.target.process.file.full_path, `.*\\ttdrecord\.dll`) or re.regex($selection1.target.process.file.full_path, `.*\\ttdwriter\.dll`) or re.regex($selection1.target.process.file.full_path, `.*\\ttdloader\.dll`))
+
+  condition:
+    $selection1
+}
+rule  Dev_sigma_time_travel_debugging_utility_usage_part_1 {
+ meta:
+    author = "Ensar Şamil, @sblmsrsn, @oscd_initiative"
+    description = "Detects usage of Time Travel Debugging Utility. Adversaries can execute malicious processes and dump processes, such as lsass.exe, via tttracer.exe. Author: Ensar Şamil, @sblmsrsn, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    category = "process_creation"
+    mitre = "defense_evasion, credential_access, t1218, t1003.001"
+
+  events:
+re.regex($selection2.src.process.file.full_path, `.*\\tttracer\.exe`)
+
+  condition:
+    $selection2
+}

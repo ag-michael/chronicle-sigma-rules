@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_update_client_lolbin {
+ meta:
+    author = "FPT.EagleEye Team"
+    description = "Detects code execution via the Windows Update client (wuauclt) Author: FPT.EagleEye Team."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/17"
+    product = "windows"
+    category = "process_creation"
+    mitre = "command_and_control, execution, t1105, t1218"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*/UpdateDeploymentProvider.*`) and re.regex($selection.target.process.command_line, `.*/RunHandlerComServer.*`) and re.regex($selection.target.process.file.full_path, `.*\\wuauclt\.exe`))
+
+  condition:
+    $selection
+}

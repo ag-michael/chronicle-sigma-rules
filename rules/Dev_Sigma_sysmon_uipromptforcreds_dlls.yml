@@ -1,0 +1,17 @@
+rule  Dev_sigma_uipromptforcredentials_dlls {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects potential use of UIPromptForCredentials functions by looking for some of the DLLs needed for it. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/20"
+    category = "image_load"
+    product = "windows"
+    mitre = "credential_access, collection, t1056.002"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\credui\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wincredui\.dll`)) or ($selection.target.file.full_path = "credui.dll" or $selection.target.file.full_path = "wincredui.dll"))
+
+  condition:
+    $selection
+}

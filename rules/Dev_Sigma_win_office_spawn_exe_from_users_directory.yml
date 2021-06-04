@@ -1,0 +1,17 @@
+rule  Dev_sigma_ms_office_product_spawning_exe_in_user_dir {
+ meta:
+    author = "Jason Lynch"
+    description = "Detects an executable in the users directory started from Microsoft Word, Excel, Powerpoint, Publisher or Visio Author: Jason Lynch."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1204, t1204.002, FIN7, car.2013-05-002"
+
+  events:
+(((re.regex($selection.src.process.file.full_path, `.*\\WINWORD\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\EXCEL\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\POWERPNT\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\MSPUB\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\VISIO\.exe`)) and re.regex($selection.target.process.file.full_path, `C:\\users\\.*`) and re.regex($selection.target.process.file.full_path, `.*\.exe`)) and not (re.regex($selection.target.process.file.full_path, `.*\\Teams\.exe`)))
+
+  condition:
+    $selection
+}

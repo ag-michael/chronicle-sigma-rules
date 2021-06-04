@@ -1,0 +1,17 @@
+rule  Dev_sigma_lsass_memory_dump_via_comsvcs_dll {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects adversaries leveraging the MiniDump export function from comsvcs.dll via rundll32 to perform a memory dump from lsass. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/20"
+    category = "process_access"
+    product = "windows"
+    mitre = "credential_access, t1003.001"
+
+  events:
+($selection.target.process.file.full_path = "C:\\windows\\system32\\lsass.exe" and $selection.src.process.file.full_path = "C:\\Windows\\System32\\rundll32.exe" and re.regex($selection.CallTrace, `.*comsvcs\.dll.*`))
+
+  condition:
+    $selection
+}

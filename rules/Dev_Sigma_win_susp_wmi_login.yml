@@ -1,0 +1,17 @@
+rule  Dev_sigma_login_with_wmi {
+ meta:
+    author = "Thomas Patzke"
+    description = "Detection of logins performed with WMI Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/04"
+    product = "windows"
+    service = "security"
+    mitre = "execution, t1047"
+
+  events:
+($selection.metadata.product_event_type = "4624" and re.regex($selection.target.process.file.full_path, `.*\\WmiPrvSE\.exe`))
+
+  condition:
+    $selection
+}

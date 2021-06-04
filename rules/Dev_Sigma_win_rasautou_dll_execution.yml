@@ -1,0 +1,17 @@
+rule  Dev_sigma_dll_execution_via_rasautouexe {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects using Rasautou.exe for loading arbitrary .DLL specified in -d option and executes the export specified in -p. Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    product = "windows"
+    category = "process_creation"
+    mitre = "defense_evasion, t1218"
+
+  events:
+((re.regex($use_rasautou.target.process.file.full_path, `.*\\rasautou\.exe`) or $use_rasautou.target.file.full_path = "rasdlui.exe") and (re.regex($use_rasautou.target.process.command_line, `.*-d.*`) and re.regex($use_rasautou.target.process.command_line, `.*-p.*`)))
+
+  condition:
+    $use_rasautou
+}

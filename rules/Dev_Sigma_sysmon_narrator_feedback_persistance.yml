@@ -1,0 +1,17 @@
+rule  Dev_sigma_narrators_feedbackhub_persistence {
+ meta:
+    author = "Dmitriy Lifanov, oscd.community"
+    description = "Detects abusing Windows 10 Narrator's Feedback-Hub Author: Dmitriy Lifanov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1060, t1547.001"
+
+  events:
+(($selection1.metadata.event_type = "DeleteValue" and re.regex($selection1.target.registry.registry_key, `.*\\AppXypsaf9f1qserqevf0sws76dx4k9a5206\\Shell\\open\\command\\DelegateExecute`)) or re.regex($selection1.target.registry.registry_key, `.*\\AppXypsaf9f1qserqevf0sws76dx4k9a5206\\Shell\\open\\command\\\(Default\)`))
+
+  condition:
+    $selection1
+}

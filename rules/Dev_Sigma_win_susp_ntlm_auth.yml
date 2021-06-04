@@ -1,0 +1,17 @@
+rule  Dev_sigma_ntlm_logon {
+ meta:
+    author = "Florian Roth"
+    description = "Detects logons using NTLM, which could be caused by a legacy source or attackers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/06/08"
+    product = "windows"
+    service = "ntlm"
+    mitre = "lateral_movement, t1075, t1550.002"
+
+  events:
+($selection.metadata.product_event_type = "8002" and re.regex($selection.CallingProcessName, `.*`))
+
+  condition:
+    $selection
+}

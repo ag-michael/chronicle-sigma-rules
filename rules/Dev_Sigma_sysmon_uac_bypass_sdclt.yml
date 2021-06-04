@@ -1,0 +1,17 @@
+rule  Dev_sigma_uac_bypass_via_sdclt {
+ meta:
+    author = "Omer Yampel"
+    description = "Detects changes to HKCU:\\Software\\Classes\\exefile\\shell\\runas\\command\\isolatedCommand Author: Omer Yampel."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/17"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, privilege_escalation, t1088, t1548.002, car.2019-04-001"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `HKU\\.*`) and re.regex($selection.target.registry.registry_key, `.*_Classes\\exefile\\shell\\runas\\command\\isolatedCommand`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_parent_process {
+ meta:
+    author = "Teymur Kheirkhabarov, Harish Segar (rule)"
+    description = "Detects a suspicious parents of powershell.exe Author: Teymur Kheirkhabarov, Harish Segar (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(((re.regex($selection_image1.src.process.file.full_path, `.*\\mshta\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\rundll32\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\regsvr32\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\services\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\winword\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\wmiprvse\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\powerpnt\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\excel\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\msaccess\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\mspub\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\visio\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\outlook\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\amigo\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\chrome\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\firefox\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\iexplore\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\microsoftedgecp\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\microsoftedge\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\browser\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\vivaldi\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\safari\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\sqlagent\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\sqlserver\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\sqlservr\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\w3wp\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\httpd\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\nginx\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\php-cgi\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*\\jbosssvc\.exe`) or re.regex($selection_image1.src.process.file.full_path, `.*MicrosoftEdgeSH\.exe`)) or re.regex($selection_image1.src.process.file.full_path, `.*tomcat.*`)) and ((re.regex($selection_image1.target.process.command_line, `.*powershell.*`) or re.regex($selection_image1.target.process.command_line, `.*pwsh.*`)) or $selection_image1.metadata.description = "Windows PowerShell" or $selection_image1.metadata.product_name = "PowerShell Core 6"))
+
+  condition:
+    $selection_image1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_access_to_sensitive_file_extensions {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects known sensitive file extensions accessed on a network share Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "collection, t1039"
+
+  events:
+($selection.metadata.product_event_type = "5145" and (re.regex($selection.target.file.full_path, `.*\.pst`) or re.regex($selection.target.file.full_path, `.*\.ost`) or re.regex($selection.target.file.full_path, `.*\.msg`) or re.regex($selection.target.file.full_path, `.*\.nst`) or re.regex($selection.target.file.full_path, `.*\.oab`) or re.regex($selection.target.file.full_path, `.*\.edb`) or re.regex($selection.target.file.full_path, `.*\.nsf`) or re.regex($selection.target.file.full_path, `.*\.bak`) or re.regex($selection.target.file.full_path, `.*\.dmp`) or re.regex($selection.target.file.full_path, `.*\.kirbi`) or re.regex($selection.target.file.full_path, `.*\\groups\.xml`) or re.regex($selection.target.file.full_path, `.*\.rdp`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_psexecpaexec_flags {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious flags used by PsExec and PAExec but no usual program name in command line Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/22"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(((re.regex($selection_flags_1.target.process.command_line, `.*\\\\127\.0\.0\.1.*`) and re.regex($selection_flags_1.target.process.command_line, `.* -s .*`) and re.regex($selection_flags_1.target.process.command_line, `.*cmd\.exe.*`)) or (re.regex($selection_flags_1.target.process.command_line, `.* /accepteula .*`) and re.regex($selection_flags_1.target.process.command_line, `.*cmd /c .*`) and re.regex($selection_flags_1.target.process.command_line, `.* -u .*`) and re.regex($selection_flags_1.target.process.command_line, `.* -p .*`))) and not ((re.regex($selection_flags_1.target.process.command_line, `.*paexec.*`) or re.regex($selection_flags_1.target.process.command_line, `.*PsExec.*`))))
+
+  condition:
+    $selection_flags_1
+}

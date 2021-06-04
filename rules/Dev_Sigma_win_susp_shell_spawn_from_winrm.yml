@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_shells_spawn_by_winrm {
+ meta:
+    author = "Andreas Hunkeler (@Karneades), Markus Neis"
+    description = "Detects suspicious shell spawn from WinRM host process Author: Andreas Hunkeler (@Karneades), Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1190, initial_access, persistence, privilege_escalation"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\wsmprovhost\.exe`) and (re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\schtasks\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\certutil\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\whoami\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bitsadmin\.exe`)))
+
+  condition:
+    $selection
+}

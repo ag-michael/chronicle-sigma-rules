@@ -1,0 +1,17 @@
+rule  Dev_sigma_lazarus_activity {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects different process creation events as described in Malwarebytes's threat report on Lazarus group activity Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0032"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*mshta.*`) and re.regex($selection1.target.process.command_line, `.*\.zip.*`)) or ($selection1.src.process.file.full_path = "C:\\Windows\\System32\\wbem\\wmiprvse.exe" and $selection1.target.process.file.full_path = "C:\\Windows\\System32\\mshta.exe") or (re.regex($selection1.src.process.file.full_path, `C:\\Users\\Public.*`) and $selection1.target.process.file.full_path = "C:\\Windows\\System32\\rundll32.exe"))
+
+  condition:
+    $selection1
+}

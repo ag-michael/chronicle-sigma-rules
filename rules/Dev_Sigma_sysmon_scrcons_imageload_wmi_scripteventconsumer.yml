@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_script_host_process_image_loaded {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects signs of the WMI script host process %SystemRoot%\\system32\\wbem\\scrcons.exe functionality being used via images being loaded by a process. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/02"
+    category = "image_load"
+    product = "windows"
+    mitre = "lateral_movement, privilege_escalation, persistence, t1546.003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\scrcons\.exe`) and (re.regex($selection.target.process.file.full_path, `.*\\vbscript\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemdisp\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wshom\.ocx`) or re.regex($selection.target.process.file.full_path, `.*\\scrrun\.dll`)))
+
+  condition:
+    $selection
+}

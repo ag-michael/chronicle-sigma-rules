@@ -1,0 +1,17 @@
+rule  Dev_sigma_processhacker_privilege_elevation {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a ProcessHacker tool that elevated privileges to a very high level Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/27"
+    product = "windows"
+    service = "system"
+    mitre = "execution, privilege_escalation, t1543.003, t1569.002"
+
+  events:
+($selection.metadata.product_event_type = "7045" and re.regex($selection.target.process.command_line, `ProcessHacker.*`) and $selection.src.user.user_display_name = "LocalSystem")
+
+  condition:
+    $selection
+}

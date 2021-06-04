@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_invocations__specific {
+ meta:
+    author = "Florian Roth (rule), Jonhnathan Ribeiro"
+    description = "Detects suspicious PowerShell invocation command parameters Author: Florian Roth (rule), Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+((re.regex($convert_b64.Message, `.*-nop.*`) and re.regex($convert_b64.Message, `.* -w .*`) and re.regex($convert_b64.Message, `.*hidden.*`) and re.regex($convert_b64.Message, `.* -c .*`) and re.regex($convert_b64.Message, `.*[Convert]::FromBase64String.*`)) or (re.regex($convert_b64.Message, `.* -w .*`) and re.regex($convert_b64.Message, `.*hidden.*`) and re.regex($convert_b64.Message, `.*-noni.*`) and re.regex($convert_b64.Message, `.*-nop.*`) and re.regex($convert_b64.Message, `.* -c .*`) and re.regex($convert_b64.Message, `.*iex.*`) and re.regex($convert_b64.Message, `.*New-Object.*`)) or (re.regex($convert_b64.Message, `.* -w .*`) and re.regex($convert_b64.Message, `.*hidden.*`) and re.regex($convert_b64.Message, `.*-ep.*`) and re.regex($convert_b64.Message, `.*bypass.*`) and re.regex($convert_b64.Message, `.*-Enc.*`)) or (re.regex($convert_b64.Message, `.*powershell.*`) and re.regex($convert_b64.Message, `.*reg.*`) and re.regex($convert_b64.Message, `.*add.*`) and re.regex($convert_b64.Message, `.*HKCU\\software\\microsoft\\windows\\currentversion\\run.*`)) or (re.regex($convert_b64.Message, `.*bypass.*`) and re.regex($convert_b64.Message, `.*-noprofile.*`) and re.regex($convert_b64.Message, `.*-windowstyle.*`) and re.regex($convert_b64.Message, `.*hidden.*`) and re.regex($convert_b64.Message, `.*new-object.*`) and re.regex($convert_b64.Message, `.*system\.net\.webclient.*`) and re.regex($convert_b64.Message, `.*\.download.*`)) or (re.regex($convert_b64.Message, `.*iex.*`) and re.regex($convert_b64.Message, `.*New-Object.*`) and re.regex($convert_b64.Message, `.*Net\.WebClient.*`) and re.regex($convert_b64.Message, `.*\.Download.*`)))
+
+  condition:
+    $convert_b64
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_application_whitelisting_bypass_via_bginfo {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Execute VBscript code that is referenced within the *.bgi file. Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.005, defense_evasion, t1218, t1202"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\bginfo\.exe`) and re.regex($selection.target.process.command_line, `.*/popup.*`) and re.regex($selection.target.process.command_line, `.*/nolicprompt.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_mavinject_process_injection {
+ meta:
+    author = "Florian Roth"
+    description = "Detects process injection using the signed Windows tool Mavinject32.exe Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/12/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1055, t1055.001, t1218"
+
+  events:
+re.regex($selection.target.process.command_line, `.* /INJECTRUNNING .*`)
+
+  condition:
+    $selection
+}

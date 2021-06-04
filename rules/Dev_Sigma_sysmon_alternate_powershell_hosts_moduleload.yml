@@ -1,0 +1,17 @@
+rule  Dev_sigma_alternate_powershell_hosts {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects alternate PowerShell hosts potentially bypassing detections looking for powershell.exe Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    product = "windows"
+    category = "image_load"
+    mitre = "execution, t1059.001"
+
+  events:
+(($selection.metadata.description = "System.Management.Automation" and re.regex($selection.target.process.file.full_path, `.*System\.Management\.Automation.*`)) and not (re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`)))
+
+  condition:
+    $selection
+}

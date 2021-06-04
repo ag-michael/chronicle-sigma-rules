@@ -1,0 +1,17 @@
+rule  Dev_sigma_com_hijack_via_sdclt {
+ meta:
+    author = "Omkar Gudhate"
+    description = "Detects changes to 'HKCU\\Software\\Classes\\Folder\\shell\\open\\command\\DelegateExecute' Author: Omkar Gudhate."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/27"
+    category = "registry_event"
+    product = "windows"
+    mitre = "privilege_escalation, t1546, t1548"
+
+  events:
+$selection.target.registry.registry_key = "HKCU\\Software\\Classes\\Folder\\shell\\open\\command\\DelegateExecute"
+
+  condition:
+    $selection
+}

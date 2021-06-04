@@ -1,0 +1,17 @@
+rule  Dev_sigma_emotet_rundll32_process_creation {
+ meta:
+    author = "FPT.EagleEye"
+    description = "Detecting Emotet DLL loading by looking for rundll32.exe processes with command lines ending in ,RunDLL or ,#1 Author: FPT.EagleEye."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.011"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection.target.process.command_line, `.*,RunDLL`)) and not (re.regex($selection.src.process.file.full_path, `.*\\tracker\.exe`)))
+
+  condition:
+    $selection
+}

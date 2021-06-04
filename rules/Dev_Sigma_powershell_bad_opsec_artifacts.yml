@@ -1,0 +1,17 @@
+rule  Dev_sigma_bad_opsec_powershell_code_artifacts {
+ meta:
+    author = "ok @securonix invrep_de, oscd.community"
+    description = "Focuses on trivial artifacts observed in variants of prevalent offensive ps1 payloads, including Cobalt Strike Beacon, PoshC2, Powerview, Letmein, Empire, Powersploit, and other attack payloads that often undergo minimal changes by attackers due to bad opsec. Author: ok @securonix invrep_de, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(($selection_4104.metadata.product_event_type = "4104" and (re.regex($selection_4104.target.process.command_line, `.*$DoIt.*`) or re.regex($selection_4104.target.process.command_line, `.*harmj0y.*`) or re.regex($selection_4104.target.process.command_line, `.*mattifestation.*`) or re.regex($selection_4104.target.process.command_line, `.*_RastaMouse.*`) or re.regex($selection_4104.target.process.command_line, `.*tifkin_.*`) or re.regex($selection_4104.target.process.command_line, `.*0xdeadbeef.*`))) or ($selection_4104.metadata.product_event_type = "4103" and (re.regex($selection_4104.Payload, `.*$DoIt.*`) or re.regex($selection_4104.Payload, `.*harmj0y.*`) or re.regex($selection_4104.Payload, `.*mattifestation.*`) or re.regex($selection_4104.Payload, `.*_RastaMouse.*`) or re.regex($selection_4104.Payload, `.*tifkin_.*`) or re.regex($selection_4104.Payload, `.*0xdeadbeef.*`))))
+
+  condition:
+    $selection_4104
+}

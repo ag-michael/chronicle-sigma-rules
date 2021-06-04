@@ -1,0 +1,17 @@
+rule  Dev_sigma_apt29 {
+ meta:
+    author = "Florian Roth"
+    description = "This method detects a suspicious powershell command line combination as used by APT29 in a campaign against US think tanks Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/12/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, g0016, t1086, t1059, t1059.001"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*-noni.*`) and re.regex($selection.target.process.command_line, `.*-ep.*`) and re.regex($selection.target.process.command_line, `.*bypass.*`) and re.regex($selection.target.process.command_line, `.*$.*`))
+
+  condition:
+    $selection
+}

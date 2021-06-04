@@ -1,0 +1,17 @@
+rule  Dev_sigma_turla_group_named_pipes {
+ meta:
+    author = "Markus Neis"
+    description = "Detects a named pipe used by Turla group samples Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/06"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "g0010"
+
+  events:
+($selection.file.name = "atctl" or $selection.file.name = "userpipe" or $selection.file.name = "iehelper" or $selection.file.name = "sdlrpc" or $selection.file.name = "comnap")
+
+  condition:
+    $selection
+}

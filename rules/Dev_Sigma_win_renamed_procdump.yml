@@ -1,0 +1,17 @@
+rule  Dev_sigma_renamed_procdump {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the execution of a renamed ProcDump executable often used by attackers or malware Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/18"
+    product = "windows"
+    category = "process_creation"
+    mitre = "defense_evasion, t1036, t1036.003"
+
+  events:
+(($selection1.target.file.full_path = "procdump" and not ((re.regex($selection1.target.process.file.full_path, `.*\\procdump\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\procdump64\.exe`)))) or ((re.regex($selection1.target.process.command_line, `.* -ma .*`) and re.regex($selection1.target.process.command_line, `.* -accepteula .*`)) and not ((re.regex($selection1.target.process.command_line, `.*\\procdump\.exe.*`) or re.regex($selection1.target.process.command_line, `.*\\procdump64\.exe.*`)))))
+
+  condition:
+    $selection1
+}

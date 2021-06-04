@@ -1,0 +1,17 @@
+rule  Dev_sigma_detection_of_powershell_execution_via_sqlpsexe {
+ meta:
+    author = "Agro (@agro_sev) oscd.community"
+    description = "This rule  Dev_sigma_detects execution of a PowerShell code through the sqlps.exe utility, which is included in the standard set of utilities supplied with the MSSQL Server. Script blocks are not logged in this case, so this utility helps to bypass protection mechanisms based on the analysis of these logs. Author: Agro (@agro_sev) oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/10"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, defense_evasion, t1127"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\sqlps\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\sqlps\.exe`)) or ($selection1.target.file.full_path = "sqlps.exe" and not (re.regex($selection1.src.process.file.full_path, `.*\\sqlagent\.exe`))))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_equation_group_dll_u_load {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a specific tool and export used by EquationGroup Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/03/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0020, defense_evasion, t1085, t1218.011"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection1.target.process.command_line, `.*,dll_u`)) or re.regex($selection1.target.process.command_line, `.* -export dll_u .*`))
+
+  condition:
+    $selection1
+}

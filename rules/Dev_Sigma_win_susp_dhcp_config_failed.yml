@@ -1,0 +1,17 @@
+rule  Dev_sigma_dhcp_server_error_failed_loading_the_callout_dll {
+ meta:
+    author = "Dimitrios Slamaris, @atc_project (fix)"
+    description = "This rule  Dev_sigma_detects a DHCP server error in which a specified Callout DLL (in registry) could not be loaded Author: Dimitrios Slamaris, @atc_project (fix)."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/15"
+    product = "windows"
+    service = "system"
+    mitre = "defense_evasion, t1073, t1574.002"
+
+  events:
+(($selection.metadata.product_event_type = "1031" or $selection.metadata.product_event_type = "1032" or $selection.metadata.product_event_type = "1034") and $selection.src.application = "Microsoft-Windows-DHCP-Server")
+
+  condition:
+    $selection
+}

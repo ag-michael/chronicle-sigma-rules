@@ -1,0 +1,17 @@
+rule  Dev_sigma_run_once_task_execution_as_configured_in_registry {
+ meta:
+    author = "Avneet Singh @v3t0_, oscd.community"
+    description = "This rule  Dev_sigma_detects the execution of Run Once task as configured in the registry Author: Avneet Singh @v3t0_, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/18"
+    product = "windows"
+    category = "process_creation"
+    mitre = "defense_evasion, t1112"
+
+  events:
+((re.regex($process_name.target.process.file.full_path, `.*\\runonce\.exe`) or $process_name.metadata.description = "Run Once Wrapper") and re.regex($process_name.target.process.command_line, `.* /AlternateShellStartup.*`))
+
+  condition:
+    $process_name
+}

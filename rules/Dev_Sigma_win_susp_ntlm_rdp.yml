@@ -1,0 +1,17 @@
+rule  Dev_sigma_potential_remote_desktop_connection_to_nondomain_host {
+ meta:
+    author = "James Pemberton"
+    description = "Detects logons using NTLM to hosts that are potentially not part of the domain. Author: James Pemberton."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/22"
+    product = "windows"
+    service = "ntlm"
+    mitre = "command_and_control, t1219"
+
+  events:
+($selection.metadata.product_event_type = "8001" and re.regex($selection.TargetName, `TERMSRV.*`))
+
+  condition:
+    $selection
+}

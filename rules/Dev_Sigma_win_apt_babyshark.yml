@@ -1,0 +1,17 @@
+rule  Dev_sigma_baby_shark_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects activity that could be related to Baby Shark malware Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059, t1086, t1059.003, t1059.001, discovery, t1012, defense_evasion, t1170, t1218, t1218.005"
+
+  events:
+($selection.target.process.command_line = "reg query \"HKEY_CURRENT_USER\\Software\\Microsoft\\Terminal Server Client\\Default\"" or re.regex($selection.target.process.command_line, `powershell\.exe mshta\.exe http.*`) or $selection.target.process.command_line = "cmd.exe /c taskkill /im cmd.exe")
+
+  condition:
+    $selection
+}

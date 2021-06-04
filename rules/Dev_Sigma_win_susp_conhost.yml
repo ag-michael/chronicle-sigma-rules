@@ -1,0 +1,17 @@
+rule  Dev_sigma_conhost_parent_process_executions {
+ meta:
+    author = "omkar72"
+    description = "Detects the conhost execution as parent process. Can be used to evaded defense mechanism. Author: omkar72."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1202"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\conhost\.exe`)
+
+  condition:
+    $selection
+}

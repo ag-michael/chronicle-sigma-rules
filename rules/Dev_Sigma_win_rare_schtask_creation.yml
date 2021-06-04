@@ -1,0 +1,18 @@
+rule  Dev_sigma_rare_scheduled_task_creations {
+ meta:
+    author = "Florian Roth"
+    description = "This rule  Dev_sigma_detects rare scheduled task creations. Typically software gets installed on multiple systems and not only on a few. The aggregation and count function selects tasks with rare names. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/17"
+    product = "windows"
+    service = "taskscheduler"
+    mitre = "persistence, t1053, s0111, t1053.005"
+
+  events:
+$selection.metadata.product_event_type = "106"
+$selection.target.resource.name = $target
+
+  condition:
+    $selection and #target < 5
+}

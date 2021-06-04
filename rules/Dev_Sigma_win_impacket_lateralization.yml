@@ -1,0 +1,17 @@
+rule  Dev_sigma_impacket_lateralization_detection {
+ meta:
+    author = "Ecco, oscd.community, Jonhnathan Ribeiro"
+    description = "Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework Author: Ecco, oscd.community, Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1047, lateral_movement, t1175, t1021.003, t1021"
+
+  events:
+(re.regex($selection_other.target.process.command_line, `.*cmd\.exe.*`) and re.regex($selection_other.target.process.command_line, `.*&1.*`) and (((re.regex($selection_other.src.process.file.full_path, `.*\\wmiprvse\.exe`) or re.regex($selection_other.src.process.file.full_path, `.*\\mmc\.exe`) or re.regex($selection_other.src.process.file.full_path, `.*\\explorer\.exe`) or re.regex($selection_other.src.process.file.full_path, `.*\\services\.exe`)) and re.regex($selection_other.target.process.command_line, `.*/Q.*`) and re.regex($selection_other.target.process.command_line, `.*/c.*`) and re.regex($selection_other.target.process.command_line, `.*\\\\\\\\127\.0\.0\.1\\.*`)) or ((re.regex($selection_other.src.process.command_line, `.*svchost\.exe -k netsvcs.*`) or re.regex($selection_other.src.process.command_line, `.*taskeng\.exe.*`)) and re.regex($selection_other.target.process.command_line, `.*/C.*`) and re.regex($selection_other.target.process.command_line, `.*Windows\\Temp\\.*`))))
+
+  condition:
+    $selection_other
+}

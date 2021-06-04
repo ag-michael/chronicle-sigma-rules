@@ -1,0 +1,17 @@
+rule  Dev_sigma_lazarus_session_highjacker {
+ meta:
+    author = "Trent Liffick (@tliffick), Bartlomiej Czyz (@bczyz1)"
+    description = "Detects executables launched outside their default directories as used by Lazarus Group (Bluenoroff) Author: Trent Liffick (@tliffick), Bartlomiej Czyz (@bczyz1)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, t1036.005"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\msdtc\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\gpvc\.exe`)) and not ((re.regex($selection.target.process.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\SysWOW64\\.*`))))
+
+  condition:
+    $selection
+}

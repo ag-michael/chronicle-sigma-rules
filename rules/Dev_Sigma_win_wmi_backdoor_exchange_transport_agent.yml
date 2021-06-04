@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_backdoor_exchange_transport_agent {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a WMI backdoor in Exchange Transport Agents via WMI event filters Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1546.003, t1084"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\EdgeTransport\.exe`)
+
+  condition:
+    $selection
+}

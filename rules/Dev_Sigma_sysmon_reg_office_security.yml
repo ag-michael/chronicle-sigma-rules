@@ -1,0 +1,17 @@
+rule  Dev_sigma_office_security_settings_changed {
+ meta:
+    author = "Trent Liffick (@tliffick)"
+    description = "Detects registry changes to Office macro settings Author: Trent Liffick (@tliffick)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/22"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($sec_settings.target.registry.registry_key, `.*\\Security\\Trusted Documents\\TrustRecords`) or re.regex($sec_settings.target.registry.registry_key, `.*\\Security\\AccessVBOM`) or re.regex($sec_settings.target.registry.registry_key, `.*\\Security\\VBAWarnings`))
+
+  condition:
+    $sec_settings
+}

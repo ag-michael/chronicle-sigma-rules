@@ -1,0 +1,17 @@
+rule  Dev_sigma_local_user_creation {
+ meta:
+    author = "Patrick Bareiss"
+    description = "Detects local user creation on windows servers, which shouldn't happen in an Active Directory environment. Apply this Sigma Use Case on your windows server logs and not on your DC logs. Author: Patrick Bareiss."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/18"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, t1136, t1136.001"
+
+  events:
+$selection.metadata.product_event_type = "4720"
+
+  condition:
+    $selection
+}

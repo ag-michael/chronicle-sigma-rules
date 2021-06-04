@@ -1,0 +1,17 @@
+rule  Dev_sigma_clr_dll_loaded_via_scripting_applications {
+ meta:
+    author = "omkar72, oscd.community"
+    description = "Detects CLR DLL being loaded by an scripting applications Author: omkar72, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/14"
+    category = "image_load"
+    product = "windows"
+    mitre = "execution, privilege_escalation, t1055"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mshta\.exe`)) and (re.regex($selection.target.process.file.full_path, `.*\\clr\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\mscoree\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\mscorlib\.dll`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_bloodhound_and_sharphound_hack_tool {
+ meta:
+    author = "Florian Roth"
+    description = "Detects command line parameters used by Bloodhound and Sharphound hack tools Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1087.001, t1087.002, t1087, t1482, t1069.001, t1069.002, t1069, execution, t1059.001, t1086"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\Bloodhound\.exe.*`) or re.regex($selection1.target.process.file.full_path, `.*\\SharpHound\.exe.*`)) or (re.regex($selection1.target.process.command_line, `.* -CollectionMethod All .*`) or re.regex($selection1.target.process.command_line, `.*\.exe -c All -d .*`) or re.regex($selection1.target.process.command_line, `.*Invoke-Bloodhound.*`) or re.regex($selection1.target.process.command_line, `.*Get-BloodHoundData.*`)) or (re.regex($selection1.target.process.command_line, `.* -JsonFolder .*`) and re.regex($selection1.target.process.command_line, `.* -ZipFileName .*`)) or (re.regex($selection1.target.process.command_line, `.* DCOnly .*`) and re.regex($selection1.target.process.command_line, `.* --NoSaveCache .*`)))
+
+  condition:
+    $selection1
+}

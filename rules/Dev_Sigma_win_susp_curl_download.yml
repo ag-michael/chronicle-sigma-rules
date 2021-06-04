@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_curl_usage_on_windows {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious curl process start on Windows and outputs the requested document to a local file Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1105"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\curl\.exe`) or $selection1.metadata.product_name = "The curl executable") and re.regex($selection1.target.process.command_line, `.* -O .*`))
+
+  condition:
+    $selection1
+}

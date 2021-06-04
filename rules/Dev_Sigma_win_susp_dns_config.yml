@@ -1,0 +1,17 @@
+rule  Dev_sigma_dns_server_error_failed_loading_the_serverlevelplugindll {
+ meta:
+    author = "Florian Roth"
+    description = "This rule  Dev_sigma_detects a DNS server error in which a specified plugin DLL (in registry) could not be loaded Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/08"
+    product = "windows"
+    service = "dns-server"
+    mitre = "defense_evasion, t1073, t1574.002"
+
+  events:
+($selection.metadata.product_event_type = "150" or $selection.metadata.product_event_type = "770")
+
+  condition:
+    $selection
+}

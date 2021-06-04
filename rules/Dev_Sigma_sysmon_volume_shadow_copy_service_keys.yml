@@ -1,0 +1,17 @@
+rule  Dev_sigma_volume_shadow_copy_service_keys {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects the volume shadow copy service initialization and processing. Registry keys such as HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\VSS\\\\Diag\\\\VolSnap\\\\Volume are captured. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/20"
+    category = "registry_event"
+    product = "windows"
+    mitre = "credential_access, t1003.002"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*System\\CurrentControlSet\\Services\\VSS.*`)
+
+  condition:
+    $selection
+}

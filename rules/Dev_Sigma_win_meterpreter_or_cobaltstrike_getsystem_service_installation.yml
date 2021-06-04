@@ -1,0 +1,51 @@
+rule  Dev_sigma_meterpreter_or_cobalt_strike_getsystem_service_installation {
+ meta:
+    author = "Teymur Kheirkhabarov, Ecco, Florian Roth"
+    description = "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation Author: Teymur Kheirkhabarov, Ecco, Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    product = "windows"
+    service = "system"
+    mitre = "privilege_escalation, t1134, t1134.001, t1134.002"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*cmd.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*%COMSPEC%.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*cmd\.exe.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*rundll32.*`) and re.regex($selection.target.process.command_line, `.*\.dll,a.*`) and re.regex($selection.target.process.command_line, `.*/p:.*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_meterpreter_or_cobalt_strike_getsystem_service_installation_part_1 {
+ meta:
+    author = "Teymur Kheirkhabarov, Ecco, Florian Roth"
+    description = "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation Author: Teymur Kheirkhabarov, Ecco, Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    product = "windows"
+    category = "driver_load"
+    mitre = "privilege_escalation, t1134, t1134.001, t1134.002"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*cmd.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*%COMSPEC%.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*cmd\.exe.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*rundll32.*`) and re.regex($selection.target.process.command_line, `.*\.dll,a.*`) and re.regex($selection.target.process.command_line, `.*/p:.*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_meterpreter_or_cobalt_strike_getsystem_service_installation_part_2 {
+ meta:
+    author = "Teymur Kheirkhabarov, Ecco, Florian Roth"
+    description = "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation Author: Teymur Kheirkhabarov, Ecco, Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    product = "windows"
+    service = "security"
+    mitre = "privilege_escalation, t1134, t1134.001, t1134.002"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*cmd.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*%COMSPEC%.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*cmd\.exe.*`) and re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*echo.*`) and re.regex($selection.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection.target.process.command_line, `.*rundll32.*`) and re.regex($selection.target.process.command_line, `.*\.dll,a.*`) and re.regex($selection.target.process.command_line, `.*/p:.*`)))
+
+  condition:
+    $selection
+}

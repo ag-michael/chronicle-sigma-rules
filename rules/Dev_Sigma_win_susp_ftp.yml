@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_ftpexe {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects renamed ftp.exe, ftp.exe script execution and child processes ran by ftp.exe Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059, defense_evasion, t1202"
+
+  events:
+((re.regex($ftp_path.target.process.command_line, `.*-s:.*`) and (re.regex($ftp_path.target.process.file.full_path, `.*ftp\.exe`) or re.regex($ftp_path.target.file.full_path, `.*ftp\.exe.*`))) or (re.regex($ftp_path.target.file.full_path, `.*ftp\.exe.*`) and not (re.regex($ftp_path.target.process.file.full_path, `.*ftp\.exe`))) or re.regex($ftp_path.src.process.file.full_path, `.*ftp\.exe`))
+
+  condition:
+    $ftp_path
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_psexec_and_wmi_process_creations_block {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects blocking of process creations originating from PSExec and WMI commands Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/14"
+    product = "windows_defender"
+    mitre = "execution, lateral_movement, t1047, t1035, t1569.002"
+
+  events:
+($selection.metadata.product_event_type = "1121" and (re.regex($selection.target.process.file.full_path, `.*\\wmiprvse\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\psexesvc\.exe`)))
+
+  condition:
+    $selection
+}

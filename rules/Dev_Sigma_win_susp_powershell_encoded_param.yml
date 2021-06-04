@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_encoded_character_syntax {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious encoded character syntax often used for defense evasion Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086, defense_evasion, t1027"
+
+  events:
+re.regex($selection.target.process.command_line, `.*\(WCHAR\)0x.*`)
+
+  condition:
+    $selection
+}

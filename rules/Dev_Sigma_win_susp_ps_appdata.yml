@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_script_run_in_appdata {
+ meta:
+    author = "Florian Roth, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder Author: Florian Roth, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*/c.*`) and re.regex($selection.target.process.command_line, `.*powershell.*`) and re.regex($selection.target.process.command_line, `.*\\AppData\\.*`) and (re.regex($selection.target.process.command_line, `.*Local\\.*`) or re.regex($selection.target.process.command_line, `.*Roaming\\.*`)))
+
+  condition:
+    $selection
+}

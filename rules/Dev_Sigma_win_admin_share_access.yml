@@ -1,0 +1,17 @@
+rule  Dev_sigma_access_to_admin_share {
+ meta:
+    author = "Florian Roth"
+    description = "Detects access to $ADMIN share Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/04"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1077, t1021.002"
+
+  events:
+(($selection.metadata.product_event_type = "5140" and $selection.target.resource.name = "Admin$") and not (re.regex($selection.src.user.user_display_name, `.*$`)))
+
+  condition:
+    $selection
+}

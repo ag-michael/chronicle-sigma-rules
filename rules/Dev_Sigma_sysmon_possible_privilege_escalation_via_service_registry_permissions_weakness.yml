@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_privilege_escalation_via_service_permissions_weakness {
+ meta:
+    author = "Teymur Kheirkhabarov"
+    description = "Detect modification of services configuration (ImagePath, FailureCommand and ServiceDLL) in registry by processes with Medium integrity level Author: Teymur Kheirkhabarov."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    product = "windows"
+    category = "registry_event"
+    mitre = "privilege_escalation, t1058, t1574.011"
+
+  events:
+($selection.IntegrityLevel = "Medium" and re.regex($selection.target.registry.registry_key, `.*\\services\\.*`) and (re.regex($selection.target.registry.registry_key, `.*\\ImagePath`) or re.regex($selection.target.registry.registry_key, `.*\\FailureCommand`) or re.regex($selection.target.registry.registry_key, `.*\\Parameters\\ServiceDll`)))
+
+  condition:
+    $selection
+}

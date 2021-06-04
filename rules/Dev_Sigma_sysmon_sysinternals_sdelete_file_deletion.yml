@@ -1,0 +1,17 @@
+rule  Dev_sigma_sysinternals_sdelete_file_deletion {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection to trigger for the deletion of files by Sysinternals SDelete. It looks for the common name pattern used to rename files. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    category = "file_delete"
+    mitre = "defense_evasion, t1070.004"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*\.AAA`) or re.regex($selection.target.file.full_path, `.*\.ZZZ`))
+
+  condition:
+    $selection
+}

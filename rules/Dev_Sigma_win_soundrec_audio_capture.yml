@@ -1,0 +1,17 @@
+rule  Dev_sigma_audio_capture_via_soundrecorder {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community"
+    description = "Detect attacker collecting audio via SoundRecorder application Author: E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "collection, t1123"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\SoundRecorder\.exe`) and re.regex($selection.target.process.command_line, `.*/FILE.*`))
+
+  condition:
+    $selection
+}

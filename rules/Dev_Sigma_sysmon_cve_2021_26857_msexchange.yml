@@ -1,0 +1,17 @@
+rule  Dev_sigma_cve202126857_exchange_exploitation {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects possible successful exploitation for vulnerability described in CVE-2021-26857 by looking for | abnormal subprocesses spawning by Exchange Server’s Unified Messaging service Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1203, execution, cve.2021-26857"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*UMWorkerProcess\.exe`) and not ((re.regex($selection.target.process.file.full_path, `.*wermgr\.exe`) or re.regex($selection.target.process.file.full_path, `.*WerFault\.exe`))))
+
+  condition:
+    $selection
+}

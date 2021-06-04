@@ -1,0 +1,17 @@
+rule  Dev_sigma_winwordexe_loads_suspicious_dll {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects Winword.exe loading of custmom dll via /l cmd switch Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1202"
+
+  events:
+(re.regex($image_path.target.process.file.full_path, `.*\\winword\.exe`) and re.regex($image_path.target.process.command_line, `.*/l.*`))
+
+  condition:
+    $image_path
+}

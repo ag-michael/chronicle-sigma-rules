@@ -1,0 +1,17 @@
+rule  Dev_sigma_microsoft_malware_protection_engine_crash {
+ meta:
+    author = "Florian Roth"
+    description = "This rule  Dev_sigma_detects a suspicious crash of the Microsoft Malware Protection Engine Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/09"
+    product = "windows"
+    service = "application"
+    mitre = "defense_evasion, t1089, t1211, t1562.001"
+
+  events:
+((($selection1.src.application = "Application Error" and $selection1.metadata.product_event_type = "1000") or ($selection1.src.application = "Windows Error Reporting" and $selection1.metadata.product_event_type = "1001")) and (re.regex($selection1.Message, `.*MsMpEng\.exe.*`) or re.regex($selection1.Message, `.*mpengine\.dll.*`)))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_windows_defender_amsi_trigger_detected {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects triggering of AMSI by Windows Defender. Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/14"
+    product = "windows"
+    service = "windefend"
+
+  events:
+($selection.metadata.product_event_type = "1116" and $selection.DetectionSource = "AMSI")
+
+  condition:
+    $selection
+}

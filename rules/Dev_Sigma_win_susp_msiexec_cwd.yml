@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_msiexec_directory {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious msiexec process starts in an uncommon directory Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/14"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036.005, t1036"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\msiexec\.exe`) and not ((re.regex($selection.target.process.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\SysWOW64\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\WinSxS\\.*`))))
+
+  condition:
+    $selection
+}

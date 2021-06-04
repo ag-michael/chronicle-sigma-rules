@@ -1,0 +1,17 @@
+rule  Dev_sigma_registry_persistence_via_explorer_run_key {
+ meta:
+    author = "Florian Roth, oscd.community"
+    description = "Detects a possible persistence mechanism using RUN key for Windows Explorer and pointing to a suspicious folder Author: Florian Roth, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/07/18"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1060, t1547.001, capec.270"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run`) and ((re.regex($selection.metadata.description, `C:\\Windows\\Temp\\.*`) or re.regex($selection.metadata.description, `C:\\ProgramData\\.*`) or re.regex($selection.metadata.description, `C:\\$Recycle\.bin\\.*`) or re.regex($selection.metadata.description, `C:\\Temp\\.*`) or re.regex($selection.metadata.description, `C:\\Users\\Public\\.*`) or re.regex($selection.metadata.description, `C:\\Users\\Default\\.*`)) or re.regex($selection.metadata.description, `.*\\AppData\\.*`)))
+
+  condition:
+    $selection
+}

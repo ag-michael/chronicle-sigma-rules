@@ -1,0 +1,17 @@
+rule  Dev_sigma_failed_logon_from_public_ip {
+ meta:
+    author = "NVISO"
+    description = "A login from a public IP can indicate a misconfigured firewall or network boundary. Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/06"
+    product = "windows"
+    service = "security"
+    mitre = "initial_access, persistence, t1078, t1190, t1133"
+
+  events:
+($selection.metadata.product_event_type = "4625" and not ((re.regex($selection.principal.ip, `.*-.*`) or (re.regex($selection.principal.ip, `10\..*`) or re.regex($selection.principal.ip, `192\.168\..*`) or re.regex($selection.principal.ip, `172\.16\..*`) or re.regex($selection.principal.ip, `172\.17\..*`) or re.regex($selection.principal.ip, `172\.18\..*`) or re.regex($selection.principal.ip, `172\.19\..*`) or re.regex($selection.principal.ip, `172\.20\..*`) or re.regex($selection.principal.ip, `172\.21\..*`) or re.regex($selection.principal.ip, `172\.22\..*`) or re.regex($selection.principal.ip, `172\.23\..*`) or re.regex($selection.principal.ip, `172\.24\..*`) or re.regex($selection.principal.ip, `172\.25\..*`) or re.regex($selection.principal.ip, `172\.26\..*`) or re.regex($selection.principal.ip, `172\.27\..*`) or re.regex($selection.principal.ip, `172\.28\..*`) or re.regex($selection.principal.ip, `172\.29\..*`) or re.regex($selection.principal.ip, `172\.30\..*`) or re.regex($selection.principal.ip, `172\.31\..*`) or re.regex($selection.principal.ip, `127\..*`) or re.regex($selection.principal.ip, `169\.254\..*`)) or $selection.principal.ip = "::1" or (re.regex($selection.principal.ip, `fe80::.*`) or re.regex($selection.principal.ip, `fc00::.*`)))))
+
+  condition:
+    $selection
+}

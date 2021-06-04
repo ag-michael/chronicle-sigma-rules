@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_rundll32_activity {
+ meta:
+    author = "juju4, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects suspicious process related to rundll32 based on arguments Author: juju4, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, execution, t1218.011, t1085"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*javascript:.*`) or re.regex($selection.target.process.command_line, `.*\.RegisterXLL.*`)) or (re.regex($selection.target.process.command_line, `.*url\.dll.*`) and re.regex($selection.target.process.command_line, `.*OpenURL.*`)) or (re.regex($selection.target.process.command_line, `.*url\.dll.*`) and re.regex($selection.target.process.command_line, `.*OpenURLA.*`)) or (re.regex($selection.target.process.command_line, `.*url\.dll.*`) and re.regex($selection.target.process.command_line, `.*FileProtocolHandler.*`)) or (re.regex($selection.target.process.command_line, `.*zipfldr\.dll.*`) and re.regex($selection.target.process.command_line, `.*RouteTheCall.*`)) or (re.regex($selection.target.process.command_line, `.*shell32\.dll.*`) and re.regex($selection.target.process.command_line, `.*Control_RunDLL.*`)) or (re.regex($selection.target.process.command_line, `.*shell32\.dll.*`) and re.regex($selection.target.process.command_line, `.*ShellExec_RunDLL.*`)) or (re.regex($selection.target.process.command_line, `.*mshtml\.dll.*`) and re.regex($selection.target.process.command_line, `.*PrintHTML.*`)) or (re.regex($selection.target.process.command_line, `.*advpack\.dll.*`) and re.regex($selection.target.process.command_line, `.*LaunchINFSection.*`)) or (re.regex($selection.target.process.command_line, `.*advpack\.dll.*`) and re.regex($selection.target.process.command_line, `.*RegisterOCX.*`)) or (re.regex($selection.target.process.command_line, `.*ieadvpack\.dll.*`) and re.regex($selection.target.process.command_line, `.*LaunchINFSection.*`)) or (re.regex($selection.target.process.command_line, `.*ieadvpack\.dll.*`) and re.regex($selection.target.process.command_line, `.*RegisterOCX.*`)) or (re.regex($selection.target.process.command_line, `.*ieframe\.dll.*`) and re.regex($selection.target.process.command_line, `.*OpenURL.*`)) or (re.regex($selection.target.process.command_line, `.*shdocvw\.dll.*`) and re.regex($selection.target.process.command_line, `.*OpenURL.*`)) or (re.regex($selection.target.process.command_line, `.*syssetup\.dll.*`) and re.regex($selection.target.process.command_line, `.*SetupInfObjectInstallAction'.*`)) or (re.regex($selection.target.process.command_line, `.*setupapi\.dll.*`) and re.regex($selection.target.process.command_line, `.*InstallHinfSection.*`)) or (re.regex($selection.target.process.command_line, `.*pcwutl\.dll.*`) and re.regex($selection.target.process.command_line, `.*LaunchApplication.*`)) or (re.regex($selection.target.process.command_line, `.*dfshim\.dll.*`) and re.regex($selection.target.process.command_line, `.*ShOpenVerbApplication.*`)))
+
+  condition:
+    $selection
+}

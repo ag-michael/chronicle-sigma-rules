@@ -1,0 +1,17 @@
+rule  Dev_sigma_office_application_startup__office_test {
+ meta:
+    author = "omkar72"
+    description = "Detects the addition of office test registry that allows a user to specify an arbitrary DLL that will be executed everytime an Office application is started Author: omkar72."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/25"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1137.002"
+
+  events:
+($selection_registry.target.registry.registry_key = "HKEY_CURRENT_USER\\Software\\Microsoft\\Office test\\Special\\Perf" or $selection_registry.target.registry.registry_key = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Office test\\Special\\Perf")
+
+  condition:
+    $selection_registry
+}

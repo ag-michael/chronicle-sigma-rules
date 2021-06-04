@@ -1,0 +1,34 @@
+rule  Dev_sigma_wmi_persistence {
+ meta:
+    author = "Florian Roth, Gleb Sukhodolskiy, Timur Zinniatullin oscd.community"
+    description = "Detects suspicious WMI event filter and command line event consumer based on WMI and Security Logs. Author: Florian Roth, Gleb Sukhodolskiy, Timur Zinniatullin oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/08/22"
+    product = "windows"
+    service = "wmi"
+    mitre = "persistence, privilege_escalation, t1084, t1546.003"
+
+  events:
+(($wmi_filter_to_consumer_binding.metadata.product_event_type = "5861" and (re.regex($wmi_filter_to_consumer_binding.Message, `.*ActiveScriptEventConsumer.*`) or re.regex($wmi_filter_to_consumer_binding.Message, `.*CommandLineEventConsumer.*`) or re.regex($wmi_filter_to_consumer_binding.Message, `.*CommandLineTemplate.*`))) or $wmi_filter_to_consumer_binding.metadata.product_event_type = "5859")
+
+  condition:
+    $wmi_filter_to_consumer_binding
+}
+rule  Dev_sigma_wmi_persistence_part_1 {
+ meta:
+    author = "Florian Roth, Gleb Sukhodolskiy, Timur Zinniatullin oscd.community"
+    description = "Detects suspicious WMI event filter and command line event consumer based on WMI and Security Logs. Author: Florian Roth, Gleb Sukhodolskiy, Timur Zinniatullin oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/08/22"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, privilege_escalation, t1084, t1546.003"
+
+  events:
+($wmi_subscription.metadata.product_event_type = "4662" and $wmi_subscription.src.user.user_display_name = "WMI Namespace" and (re.regex($wmi_subscription.target.registry.registry_value_data, `.*subscription.*`) or re.regex($wmi_subscription.target.file.full_path, `.*subscription.*`)))
+
+  condition:
+    $wmi_subscription
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_ryuk_ransomware {
+ meta:
+    author = "Vasiliy Burov"
+    description = "Detects Ryuk Ransomware command lines Author: Vasiliy Burov."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/06"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.*stop.*`) and (re.regex($selection.target.process.command_line, `.*samss.*`) or re.regex($selection.target.process.command_line, `.*audioendpointbuilder.*`) or re.regex($selection.target.process.command_line, `.*unistoresvc_\?\?\?\?\?.*`)))
+
+  condition:
+    $selection
+}

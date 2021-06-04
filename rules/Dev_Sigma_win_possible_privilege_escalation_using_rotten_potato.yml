@@ -1,0 +1,17 @@
+rule  Dev_sigma_detection_of_possible_rotten_potato {
+ meta:
+    author = "Teymur Kheirkhabarov"
+    description = "Detection of child processes spawned with SYSTEM privileges by parents with LOCAL SERVICE or NETWORK SERVICE privileges Author: Teymur Kheirkhabarov."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1134, t1134.002"
+
+  events:
+((($selection.ParentUser = "NT AUTHORITY\\NETWORK SERVICE" or $selection.ParentUser = "NT AUTHORITY\\LOCAL SERVICE") and $selection.src.user.user_display_name = "NT AUTHORITY\\SYSTEM") and not (re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection.target.process.command_line, `.*DavSetCookie.*`)))
+
+  condition:
+    $selection
+}

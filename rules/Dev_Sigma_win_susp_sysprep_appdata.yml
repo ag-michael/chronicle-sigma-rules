@@ -1,0 +1,17 @@
+rule  Dev_sigma_sysprep_on_appdata_folder {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious sysprep process start with AppData folder as target (as used by Trojan Syndicasec in Thrip report by Symantec) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/06/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\sysprep\.exe`) and re.regex($selection.target.process.command_line, `.*\\AppData\\.*`))
+
+  condition:
+    $selection
+}

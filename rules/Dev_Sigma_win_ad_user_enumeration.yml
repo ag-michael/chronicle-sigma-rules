@@ -1,0 +1,17 @@
+rule  Dev_sigma_ad_user_enumeration {
+ meta:
+    author = "Maxime Thiebaut (@0xThiebaut)"
+    description = "Detects access to a domain user from a non-machine account Author: Maxime Thiebaut (@0xThiebaut)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/30"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, t1087, t1087.002"
+
+  events:
+(($selection.metadata.product_event_type = "4662" and re.regex($selection.src.user.user_display_name, `.*bf967aba-0de6-11d0-a285-00aa003049e2.*`)) and not (re.regex($selection.src.user.user_display_name, `.*$`) or re.regex($selection.src.user.user_display_name, `MSOL_.*`)))
+
+  condition:
+    $selection
+}

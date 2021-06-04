@@ -1,0 +1,17 @@
+rule  Dev_sigma_direct_autorun_keys_modification {
+ meta:
+    author = "Victor Sergeev, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects direct modification of autostart extensibility point (ASEP) in registry using reg.exe. Author: Victor Sergeev, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1547.001, t1060"
+
+  events:
+(re.regex($selection_1.target.process.file.full_path, `.*\\reg\.exe`) and re.regex($selection_1.target.process.command_line, `.*add.*`) and (re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\Run.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\RunOnce.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\RunOnceEx.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\RunServices.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Userinit.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Shell.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows NT\\CurrentVersion\\Windows.*`) or re.regex($selection_1.target.process.command_line, `.*\\software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders.*`) or re.regex($selection_1.target.process.command_line, `.*\\system\\CurrentControlSet\\Control\\SafeBoot\\AlternateShell.*`)))
+
+  condition:
+    $selection_1
+}

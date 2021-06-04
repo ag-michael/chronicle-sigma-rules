@@ -1,0 +1,17 @@
+rule  Dev_sigma_lsass_memory_dump_file_creation {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "LSASS memory dump creation using operating systems utilities. Procdump will use process name in output file if no name is specified Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "file_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*lsass.*`) and re.regex($selection.target.file.full_path, `.*dmp`))
+
+  condition:
+    $selection
+}

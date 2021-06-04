@@ -1,0 +1,17 @@
+rule  Dev_sigma_python_py2exe_image_load {
+ meta:
+    author = "Patrick St. John, OTR (Open Threat Research)"
+    description = "Detects the image load of Python Core indicative of a Python script bundled with Py2Exe. Author: Patrick St. John, OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/03"
+    product = "windows"
+    category = "image_load"
+    mitre = "defense_evasion, t1027.002"
+
+  events:
+$selection.metadata.description = "Python Core"
+
+  condition:
+    $selection
+}

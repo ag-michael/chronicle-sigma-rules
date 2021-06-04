@@ -1,0 +1,17 @@
+rule  Dev_sigma_file_was_not_allowed_to_run {
+ meta:
+    author = "Pushkarev Dmitry"
+    description = "Detect run not allowed files. Applocker is a very useful tool, especially on servers where unprivileged users have access. For example terminal servers. You need configure applocker and log collect to receive these events. Author: Pushkarev Dmitry."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/28"
+    product = "windows"
+    service = "applocker"
+    mitre = "execution, t1086, t1064, t1204, t1035, t1204.002, t1059.001, t1059.003, t1059.005, t1059.006, t1059.007"
+
+  events:
+($selection.metadata.product_event_type = "8004" or $selection.metadata.product_event_type = "8007")
+
+  condition:
+    $selection
+}

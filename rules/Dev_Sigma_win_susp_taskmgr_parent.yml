@@ -1,0 +1,17 @@
+rule  Dev_sigma_taskmgr_as_parent {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the creation of a process from Windows task manager Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/13"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\taskmgr\.exe`) and not ((re.regex($selection.target.process.file.full_path, `.*\\resmon\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mmc\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\taskmgr\.exe`))))
+
+  condition:
+    $selection
+}

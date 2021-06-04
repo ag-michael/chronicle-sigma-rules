@@ -1,0 +1,32 @@
+rule  Dev_sigma_usage_of_sysinternals_tools {
+ meta:
+    author = "Markus Neis"
+    description = "Detects the usage of Sysinternals Tools due to accepteula key being added to Registry Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2017/08/28"
+    product = "windows"
+    category = "registry_event"
+
+  events:
+re.regex($selection1.target.registry.registry_key, `.*\\EulaAccepted`)
+
+  condition:
+    $selection1
+}
+rule  Dev_sigma_usage_of_sysinternals_tools_part_1 {
+ meta:
+    author = "Markus Neis"
+    description = "Detects the usage of Sysinternals Tools due to accepteula key being added to Registry Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2017/08/28"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+re.regex($selection2.target.process.command_line, `.* -accepteula.*`)
+
+  condition:
+    $selection2
+}

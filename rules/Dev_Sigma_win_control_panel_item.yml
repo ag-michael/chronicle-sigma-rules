@@ -1,0 +1,17 @@
+rule  Dev_sigma_control_panel_items {
+ meta:
+    author = "Kyaw Min Thein, Furkan Caliskan (@caliskanfurkan_)"
+    description = "Detects the malicious use of a control panel item Author: Kyaw Min Thein, Furkan Caliskan (@caliskanfurkan_)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/22"
+    product = "windows"
+    category = "process_creation"
+    mitre = "execution, defense_evasion, t1218.002, t1196, persistence, t1546"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*\.cpl`) and not ((re.regex($selection1.target.process.command_line, `.*\\System32\\.*`) or re.regex($selection1.target.process.command_line, `.*%System%.*`)))) or (re.regex($selection1.target.process.file.full_path, `.*\\reg\.exe`) and re.regex($selection1.target.process.command_line, `.*add.*`) and re.regex($selection1.target.process.command_line, `.*CurrentVersion\\\\Control Panel\\\\CPLs.*`)))
+
+  condition:
+    $selection1
+}

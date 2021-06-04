@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_program_location_with_network_connections {
+ meta:
+    author = "Florian Roth"
+    description = "Detects programs with network connections running in suspicious files system locations Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/19"
+    category = "network_connection"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\Users\\All Users\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Default\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Public\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Contacts\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Searches\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\config\\systemprofile\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Fonts\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\IME\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\addins\\.*`)) or re.regex($selection.target.process.file.full_path, `.*\\$Recycle\.bin`) or re.regex($selection.target.process.file.full_path, `C:\\Perflogs\\.*`))
+
+  condition:
+    $selection
+}

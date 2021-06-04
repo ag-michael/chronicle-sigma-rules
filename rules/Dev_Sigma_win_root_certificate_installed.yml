@@ -1,0 +1,34 @@
+rule  Dev_sigma_root_certificate_installed {
+ meta:
+    author = "oscd.community, @redcanary, Zach Stanford @svch0st"
+    description = "Adversaries may install a root certificate on a compromised system to avoid warnings when connecting to adversary controlled web servers. Author: oscd.community, @redcanary, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/10"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, t1553.004"
+
+  events:
+($selection1.metadata.product_event_type = "4104" and re.regex($selection1.target.process.command_line, `.*Cert:\\LocalMachine\\Root.*`) and (re.regex($selection1.target.process.command_line, `.*Move-Item.*`) or re.regex($selection1.target.process.command_line, `.*Import-Certificate.*`)))
+
+  condition:
+    $selection1
+}
+rule  Dev_sigma_root_certificate_installed_part_1 {
+ meta:
+    author = "oscd.community, @redcanary, Zach Stanford @svch0st"
+    description = "Adversaries may install a root certificate on a compromised system to avoid warnings when connecting to adversary controlled web servers. Author: oscd.community, @redcanary, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/10"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1553.004"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*root.*`) and ((re.regex($selection1.target.process.file.full_path, `.*\\certutil\.exe`) and re.regex($selection1.target.process.command_line, `.*-addstore.*`)) or (re.regex($selection1.target.process.file.full_path, `.*\\CertMgr\.exe`) and re.regex($selection1.target.process.command_line, `.*/add.*`))))
+
+  condition:
+    $selection1
+}

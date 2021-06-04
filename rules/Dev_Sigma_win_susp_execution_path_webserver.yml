@@ -1,0 +1,17 @@
+rule  Dev_sigma_execution_in_webserver_root_folder {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious program execution in a web service root folder (filter out false positives) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1505.003, t1100"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\wwwroot\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\wmpub\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\htdocs\\.*`)) and not ((re.regex($selection.target.process.file.full_path, `.*bin\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Tools\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\SMSComponent\\.*`)) and re.regex($selection.src.process.file.full_path, `.*\\services\.exe`)))
+
+  condition:
+    $selection
+}

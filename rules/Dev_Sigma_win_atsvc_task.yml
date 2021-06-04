@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_task_creation_via_atsvc_named_pipe {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects remote task creation via at.exe or API interacting with ATSVC namedpipe Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, persistence, t1053, car.2013-05-004, car.2015-04-001, t1053.002"
+
+  events:
+($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*\\IPC$`) and $selection.target.file.full_path = "atsvc" and re.regex($selection.Accesses, `.*WriteData.*`))
+
+  condition:
+    $selection
+}

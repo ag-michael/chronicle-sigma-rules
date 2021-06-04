@@ -1,0 +1,17 @@
+rule  Dev_sigma_registry_persistence_mechanism_via_windows_telemetry {
+ meta:
+    author = "Lednyov Alexey, oscd.community"
+    description = "Detects persistence method using windows telemetry Author: Lednyov Alexey, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/16"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1053.005"
+
+  events:
+((re.regex($selection.target.registry.registry_key, `.*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\.*`) and re.regex($selection.target.registry.registry_key, `.*\\Command.*`) and re.regex($selection.metadata.description, `.*\.exe.*`)) and not ((re.regex($selection.metadata.description, `.*\\system32\\CompatTelRunner\.exe.*`) or re.regex($selection.metadata.description, `.*\\system32\\DeviceCensus\.exe.*`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_exfiltration_and_tunneling_tools_execution {
+ meta:
+    author = "Daniil Yugoslavskiy, oscd.community"
+    description = "Execution of well known tools for data exfiltration and tunneling Author: Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "exfiltration, command_and_control, t1043, t1041, t1572, t1071.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\plink\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\socat\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\stunnel\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\httptunnel\.exe`))
+
+  condition:
+    $selection
+}

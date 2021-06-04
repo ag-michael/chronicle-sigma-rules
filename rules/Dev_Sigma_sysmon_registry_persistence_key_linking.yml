@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_registry_persistence_com_key_linking {
+ meta:
+    author = "Kutepov Anton, oscd.community"
+    description = "Detects COM object hijacking via TreatAs subkey Author: Kutepov Anton, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/23"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1122"
+
+  events:
+($selection.metadata.event_type = "CreateKey" and re.regex($selection.target.registry.registry_key, `.*HKU\\.*`) and re.regex($selection.target.registry.registry_key, `.*_Classes\\CLSID\\.*`) and re.regex($selection.target.registry.registry_key, `.*\\TreatAs.*`))
+
+  condition:
+    $selection
+}

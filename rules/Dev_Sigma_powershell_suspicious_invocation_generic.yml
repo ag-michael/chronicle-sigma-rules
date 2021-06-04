@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_invocations__generic {
+ meta:
+    author = "Florian Roth (rule)"
+    description = "Detects suspicious PowerShell invocation command parameters Author: Florian Roth (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/12"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+((" -enc " or " -EncodedCommand ") and (" -w hidden " or " -window hidden " or " -windowstyle hidden ") and (" -noni " or " -noninteractive "))
+
+  condition:
+    $encoded
+}

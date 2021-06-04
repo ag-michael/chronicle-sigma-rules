@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_persistence__script_event_consumer_file_write {
+ meta:
+    author = "Thomas Patzke"
+    description = "Detects file writes of WMI script event consumer Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/07"
+    product = "windows"
+    category = "file_event"
+    mitre = "t1084, t1546.003, persistence"
+
+  events:
+$selection.target.process.file.full_path = "C:\\WINDOWS\\system32\\wbem\\scrcons.exe"
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_redmimicry_winnti_playbook_dropped_file {
+ meta:
+    author = "Alexander Rausch"
+    description = "Detects actions caused by the RedMimicry Winnti playbook Author: Alexander Rausch."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/24"
+    product = "windows"
+    category = "file_event"
+    mitre = "defense_evasion, t1027"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*gthread-3\.6\.dll.*`) or re.regex($selection.target.file.full_path, `.*sigcmm-2\.4\.dll.*`) or re.regex($selection.target.file.full_path, `.*\\Windows\\Temp\\tmp\.bat.*`))
+
+  condition:
+    $selection
+}

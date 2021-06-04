@@ -1,0 +1,17 @@
+rule  Dev_sigma_enabled_user_right_in_ad_to_control_user_objects {
+ meta:
+    author = "@neu5ron"
+    description = "Detects scenario where if a user is assigned the SeEnableDelegationPrivilege right in Active Directory it would allow control of other AD user objects. Author: @neu5ron."
+    reference = ""
+    version = "0.01"
+    created = "2017/07/30"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, t1098"
+
+  events:
+($selection.metadata.product_event_type = "4704" and re.regex($selection.Message, `.*SeEnableDelegationPrivilege.*`))
+
+  condition:
+    $selection
+}

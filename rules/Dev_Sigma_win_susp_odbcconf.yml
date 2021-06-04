@@ -1,0 +1,17 @@
+rule  Dev_sigma_application_whitelisting_bypass_via_dll_loaded_by_odbcconfexe {
+ meta:
+    author = "Kirill Kiryanov, Beyu Denis, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects defence evasion attempt via odbcconf.exe execution to load DLL Author: Kirill Kiryanov, Beyu Denis, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.008, execution, t1218"
+
+  events:
+((re.regex($selection_1.target.process.file.full_path, `.*\\odbcconf\.exe`) and (re.regex($selection_1.target.process.command_line, `.*-f.*`) or re.regex($selection_1.target.process.command_line, `.*regsvr.*`))) or (re.regex($selection_1.src.process.file.full_path, `.*\\odbcconf\.exe`) and re.regex($selection_1.target.process.file.full_path, `.*\\rundll32\.exe`)))
+
+  condition:
+    $selection_1
+}

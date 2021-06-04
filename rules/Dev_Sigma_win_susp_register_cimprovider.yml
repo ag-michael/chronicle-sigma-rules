@@ -1,0 +1,17 @@
+rule  Dev_sigma_dll_execution_via_registercimproviderexe {
+ meta:
+    author = "Ivan Dyachkov, Yulia Fomina, oscd.community"
+    description = "Detects using register-cimprovider.exe to execute arbitrary dll file. Author: Ivan Dyachkov, Yulia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1574"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\register-cimprovider\.exe`) and re.regex($selection.target.process.command_line, `.*-path.*`) and re.regex($selection.target.process.command_line, `.*dll.*`))
+
+  condition:
+    $selection
+}

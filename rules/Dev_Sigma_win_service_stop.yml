@@ -1,0 +1,17 @@
+rule  Dev_sigma_stop_windows_service {
+ meta:
+    author = "Jakob Weinzettl, oscd.community"
+    description = "Detects a windows service to be stopped Author: Jakob Weinzettl, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "impact, t1489"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\sc\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.*stop.*`))
+
+  condition:
+    $selection
+}

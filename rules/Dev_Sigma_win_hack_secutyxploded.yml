@@ -1,0 +1,17 @@
+rule  Dev_sigma_securityxploded_tool {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the execution of SecurityXploded Tools Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/12/19"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1555, t1003, t1503"
+
+  events:
+($selection1.metadata.description = "SecurityXploded" or re.regex($selection1.target.process.file.full_path, `.*PasswordDump\.exe`) or re.regex($selection1.target.file.full_path, `.*PasswordDump\.exe`))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_spn_enumeration {
+ meta:
+    author = "Markus Neis, keepwatch"
+    description = "Detects Service Principal Name Enumeration used for Kerberoasting Author: Markus Neis, keepwatch."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/14"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1558.003, t1208"
+
+  events:
+((re.regex($selection_image.target.process.file.full_path, `.*\\setspn\.exe`) or (re.regex($selection_image.metadata.description, `.*Query or reset the computer.*`) and re.regex($selection_image.metadata.description, `.*SPN attribute.*`))) and re.regex($selection_image.target.process.command_line, `.*-q.*`))
+
+  condition:
+    $selection_image
+}

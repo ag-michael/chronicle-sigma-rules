@@ -1,0 +1,17 @@
+rule  Dev_sigma_dnscat_execution {
+ meta:
+    author = "Daniil Yugoslavskiy, oscd.community"
+    description = "Dnscat exfiltration tool execution Author: Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "powershell"
+    mitre = "exfiltration, t1048, execution, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.target.process.command_line, `.*Start-Dnscat2.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_run_powershell_script_from_ads {
+ meta:
+    author = "Sergey Soldatov, Kaspersky Lab, oscd.community"
+    description = "Detects PowerShell script execution from Alternate Data Stream (ADS) Author: Sergey Soldatov, Kaspersky Lab, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1096, t1564.004"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection.target.process.command_line, `.*Get-Content.*`) and re.regex($selection.target.process.command_line, `.*-Stream.*`))
+
+  condition:
+    $selection
+}

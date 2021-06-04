@@ -1,0 +1,17 @@
+rule  Dev_sigma_bad_opsec_defaults_sacrificial_processes_with_improper_arguments {
+ meta:
+    author = "Oleg Kolesnikov @securonix invrep_de, oscd.community"
+    description = "Detects attackers using tooling with bad opsec defaults e.g. spawning a sacrificial process to inject a capability into the process without taking into account how the process is normally run, one trivial example of this is using rundll32.exe without arguments as a sacrificial process (default in CS, now highlighted by c2lint), running WerFault without arguments (Kraken - credit am0nsec), and other examples. Author: Oleg Kolesnikov @securonix invrep_de, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1085, t1218.011"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*\\WerFault\.exe`) or re.regex($selection.target.process.command_line, `.*\\rundll32\.exe`))
+
+  condition:
+    $selection
+}

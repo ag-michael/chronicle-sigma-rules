@@ -1,0 +1,17 @@
+rule  Dev_sigma_data_compressed__rarexe {
+ meta:
+    author = "Timur Zinniatullin, E.M. Anhaus, oscd.community"
+    description = "An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network Author: Timur Zinniatullin, E.M. Anhaus, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "exfiltration, t1002, collection, t1560.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\rar\.exe`) and re.regex($selection.target.process.command_line, `.* a .*`))
+
+  condition:
+    $selection
+}

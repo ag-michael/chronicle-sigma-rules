@@ -1,0 +1,16 @@
+rule  Dev_sigma_renamed_paexec {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious renamed PAExec execution as often used by attackers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/22"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(($selection1.metadata.description = "PAExec Application" or $selection1.OriginalFilename = "PAExec.exe") and not ((re.regex($selection1.target.process.file.full_path, `.*\\PAexec\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\paexec\.exe`))))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_lateral_movement_indicator_condrv {
+ meta:
+    author = "Janantha Marasinghe"
+    description = "This event was observed on the target host during lateral movement. The process name within the event contains the process spawned post compromise. Account Name within the event contains the compromised user account name. This event should to be correlated with 4624 and 4688 for further intrusion context. Author: Janantha Marasinghe."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/27"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, execution, t1021, t1059"
+
+  events:
+($selection.metadata.product_event_type = "4674" and $selection.ObjectServer = "Security" and $selection.src.user.user_display_name = "File" and ($selection.target.file.full_path = "Device\\ConDrv" or $selection.target.registry.registry_value_data = "Device\\ConDrv"))
+
+  condition:
+    $selection
+}

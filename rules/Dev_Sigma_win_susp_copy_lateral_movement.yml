@@ -1,0 +1,17 @@
+rule  Dev_sigma_copy_from_admin_share {
+ meta:
+    author = "Florian Roth, oscd.community, Teymur Kheirkhabarov @HeirhabarovT, Zach Stanford @svch0st"
+    description = "Detects a suspicious copy command to or from an Admin share Author: Florian Roth, oscd.community, Teymur Kheirkhabarov @HeirhabarovT, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, collection, exfiltration, t1039, t1105, t1048, t1021.002"
+
+  events:
+((((re.regex($selection1.target.process.file.full_path, `.*\\robocopy\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\xcopy\.exe`)) or (re.regex($selection1.target.process.file.full_path, `.*\\cmd\.exe`) and re.regex($selection1.target.process.command_line, `.*copy.*`))) or (re.regex($selection1.target.process.file.full_path, `.*\\powershell.*`) and (re.regex($selection1.target.process.command_line, `.*copy-item.*`) or re.regex($selection1.target.process.command_line, `.*copy.*`) or re.regex($selection1.target.process.command_line, `.*cpi .*`) or re.regex($selection1.target.process.command_line, `.* cp .*`)))) and (re.regex($selection1.target.process.command_line, `.*\\\\\\\\.*`) and re.regex($selection1.target.process.command_line, `.*$.*`)))
+
+  condition:
+    $selection1
+}

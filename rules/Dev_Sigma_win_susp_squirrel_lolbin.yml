@@ -1,0 +1,17 @@
+rule  Dev_sigma_squirrel_lolbin {
+ meta:
+    author = "Karneades / Markus Neis, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects Possible Squirrel Packages Manager as Lolbin Author: Karneades / Markus Neis, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, defense_evasion, t1218"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\update\.exe`) and (re.regex($selection.target.process.command_line, `.*--processStart.*`) or re.regex($selection.target.process.command_line, `.*--processStartAndWait.*`) or re.regex($selection.target.process.command_line, `.*--createShortcut.*`)) and re.regex($selection.target.process.command_line, `.*\.exe.*`))
+
+  condition:
+    $selection
+}

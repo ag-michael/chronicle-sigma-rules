@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_camera_and_microphone_access {
+ meta:
+    author = "Den Iuzvyk"
+    description = "Detects Processes accessing the camera and microphone from suspicious folder Author: Den Iuzvyk."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/07"
+    category = "registry_event"
+    product = "windows"
+    mitre = "collection, t1125, t1123"
+
+  events:
+(re.regex($selection_1.target.registry.registry_key, `.*\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\.*`) and re.regex($selection_1.target.registry.registry_key, `.*\\NonPackaged.*`) and (re.regex($selection_1.target.registry.registry_key, `.*microphone.*`) or re.regex($selection_1.target.registry.registry_key, `.*webcam.*`)) and (re.regex($selection_1.target.registry.registry_key, `.*#C:#Windows#Temp#.*`) or re.regex($selection_1.target.registry.registry_key, `.*#C:#$Recycle\.bin#.*`) or re.regex($selection_1.target.registry.registry_key, `.*#C:#Temp#.*`) or re.regex($selection_1.target.registry.registry_key, `.*#C:#Users#Public#.*`) or re.regex($selection_1.target.registry.registry_key, `.*#C:#Users#Default#.*`) or re.regex($selection_1.target.registry.registry_key, `.*#C:#Users#Desktop#.*`)))
+
+  condition:
+    $selection_1
+}

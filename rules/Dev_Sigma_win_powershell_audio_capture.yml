@@ -1,0 +1,17 @@
+rule  Dev_sigma_audio_capture_via_powershell {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community"
+    description = "Detects audio capture via PowerShell Cmdlet Author: E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "collection, t1123"
+
+  events:
+re.regex($selection.target.process.command_line, `.*WindowsAudioDevice-Powershell-Cmdlet.*`)
+
+  condition:
+    $selection
+}

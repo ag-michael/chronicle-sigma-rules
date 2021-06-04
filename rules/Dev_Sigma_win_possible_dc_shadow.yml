@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_dc_shadow {
+ meta:
+    author = "Ilyas Ochkov, oscd.community, Chakib Gzenayi (@Chak092), Hosni Mribah"
+    description = "Detects DCShadow via create new SPN Author: Ilyas Ochkov, oscd.community, Chakib Gzenayi (@Chak092), Hosni Mribah."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, t1207"
+
+  events:
+(($selection1.metadata.product_event_type = "4742" and re.regex($selection1.ServicePrincipalNames, `.*GC/.*`)) or ($selection1.metadata.product_event_type = "5136" and $selection1.LDAPDisplayName = "servicePrincipalName" and re.regex($selection1.target.registry.registry_value_data, `GC/.*`)))
+
+  condition:
+    $selection1
+}

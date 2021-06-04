@@ -1,0 +1,17 @@
+rule  Dev_sigma_sysmon_channel_reference_deletion {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Potential threat actor tampering with Sysmon manifest and eventually disabling it Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/14"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(($selection1.metadata.product_event_type = "4657" and ((re.regex($selection1.target.file.full_path, `.*WINEVT\\Publishers\\{5770385f-c22a-43e0-bf4c-06f5698ffbd9}.*`) or re.regex($selection1.target.file.full_path, `.*WINEVT\\Channels\\Microsoft-Windows-Sysmon/Operational.*`)) or (re.regex($selection1.target.registry.registry_value_data, `.*WINEVT\\Publishers\\{5770385f-c22a-43e0-bf4c-06f5698ffbd9}.*`) or re.regex($selection1.target.registry.registry_value_data, `.*WINEVT\\Channels\\Microsoft-Windows-Sysmon/Operational.*`))) and $selection1.target.registry.registry_value_name = "Enabled" and $selection1.NewValue = "0") or ($selection1.metadata.product_event_type = "4663" and ((re.regex($selection1.target.file.full_path, `.*WINEVT\\Publishers\\{5770385f-c22a-43e0-bf4c-06f5698ffbd9}.*`) or re.regex($selection1.target.file.full_path, `.*WINEVT\\Channels\\Microsoft-Windows-Sysmon/Operational.*`)) or (re.regex($selection1.target.registry.registry_value_data, `.*WINEVT\\Publishers\\{5770385f-c22a-43e0-bf4c-06f5698ffbd9}.*`) or re.regex($selection1.target.registry.registry_value_data, `.*WINEVT\\Channels\\Microsoft-Windows-Sysmon/Operational.*`))) and $selection1.target.process.access_mask = "65536"))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_cve202126858_exchange_exploitation {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects possible successful exploitation for vulnerability described in CVE-2021-26858 by looking for | creation of non-standard files on disk by Exchange Server’s Unified Messaging service | which could indicate dropping web shells or other malicious content Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/03"
+    category = "file_event"
+    product = "windows"
+    mitre = "t1203, execution, cve.2021-26858"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*UMWorkerProcess\.exe`) and not ((re.regex($selection.target.file.full_path, `.*CacheCleanup\.bin`) or re.regex($selection.target.file.full_path, `.*\.txt`) or re.regex($selection.target.file.full_path, `.*\.LOG`) or re.regex($selection.target.file.full_path, `.*\.cfg`) or re.regex($selection.target.file.full_path, `.*cleanup\.bin`))))
+
+  condition:
+    $selection
+}

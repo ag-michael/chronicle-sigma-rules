@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_modules_loaded {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects non wmiprvse loading WMI modules Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/10"
+    category = "image_load"
+    product = "windows"
+    mitre = "execution, t1047"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\wmiclnt\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\WmiApRpl\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wmiprov\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wmiutils\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemcomn\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemprox\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\WMINet_Utils\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemsvc\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\fastprox\.dll`)) and not ((re.regex($selection.target.process.file.full_path, `.*\\WmiPrvSe\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\WmiAPsrv\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\svchost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\DeviceCensus\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\CompatTelRunner\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sdiagnhost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\SIHClient\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\ngentask\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\windows\\system32\\taskhostw\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\windows\\system32\\MoUsoCoreWorker\.exe`))))
+
+  condition:
+    $selection
+}

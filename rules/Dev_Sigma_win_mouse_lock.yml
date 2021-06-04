@@ -1,0 +1,17 @@
+rule  Dev_sigma_mouse_lock_credential_gathering {
+ meta:
+    author = "Cian Heasley"
+    description = "In Kaspersky's 2020 Incident Response Analyst Report they listed legitimate tool \"Mouse Lock\" as being used for both credential access and collection in security incidents. Author: Cian Heasley."
+    reference = ""
+    version = "0.01"
+    created = "2020/08/13"
+    product = "windows"
+    category = "process_creation"
+    mitre = "credential_access, collection, t1056.002"
+
+  events:
+(re.regex($selection.metadata.product_name, `.*Mouse Lock.*`) or re.regex($selection.metadata.description, `.*Misc314.*`) or re.regex($selection.target.process.command_line, `.*Mouse Lock_.*`))
+
+  condition:
+    $selection
+}

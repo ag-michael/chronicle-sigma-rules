@@ -1,0 +1,34 @@
+rule  Dev_sigma_moriya_rootkit {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects the use of Moriya rootkit as described in the securelist's Operation TunnelSnake report Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/06"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, privilege_escalation, t1543.003"
+
+  events:
+($selection.metadata.product_event_type = "7045" and $selection.target.process.command_line = "ZzNetSvc")
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_moriya_rootkit_part_1 {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects the use of Moriya rootkit as described in the securelist's Operation TunnelSnake report Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/06"
+    product = "windows"
+    category = "file_event"
+    mitre = "persistence, privilege_escalation, t1543.003"
+
+  events:
+$selection.target.file.full_path = "C:\\Windows\\System32\\drivers\\MoriyaStreamWatchmen.sys"
+
+  condition:
+    $selection
+}

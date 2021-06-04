@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspect_svchost_memory_asccess {
+ meta:
+    author = "Tim Burrell"
+    description = "Detects suspect access to svchost process memory such as that used by Invoke-Phantom to kill the winRM windows event logging service. Author: Tim Burrell."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/02"
+    category = "process_access"
+    product = "windows"
+    mitre = "defense_evasion, t1562.002, t1089"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\windows\\system32\\svchost\.exe`) and $selection.GrantedAccess = "0x1f3fff" and re.regex($selection.CallTrace, `.*unknown.*`))
+
+  condition:
+    $selection
+}

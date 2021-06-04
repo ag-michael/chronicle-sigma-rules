@@ -1,0 +1,17 @@
+rule  Dev_sigma_microsoft_office_addin_loading {
+ meta:
+    author = "NVISO"
+    description = "Detects add-ins that load when Microsoft Word or Excel starts (.wll/.xll are simply .dll fit for Word or Excel). Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/11"
+    category = "file_event"
+    product = "windows"
+    mitre = "persistence, t1137, t1137.006"
+
+  events:
+(((re.regex($wlldropped.target.file.full_path, `.*\\Microsoft\\Word\\Startup\\.*`) and re.regex($wlldropped.target.file.full_path, `.*\.wll`)) or (re.regex($wlldropped.target.file.full_path, `.*\\Microsoft\\Excel\\Startup\\.*`) and re.regex($wlldropped.target.file.full_path, `.*\.xll`))) or (re.regex($wlldropped.target.file.full_path, `.*\\Microsoft\\Addins\\.*`) and (re.regex($wlldropped.target.file.full_path, `.*\.xlam`) or re.regex($wlldropped.target.file.full_path, `.*\.xla`))))
+
+  condition:
+    $wlldropped
+}

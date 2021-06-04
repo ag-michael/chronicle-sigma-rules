@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_sysvol_domain_group_policy_access {
+ meta:
+    author = "Markus Neis, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects Access to Domain Group Policies stored in SYSVOL Author: Markus Neis, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/04/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1552.006, t1003"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*\\SYSVOL\\.*`) and re.regex($selection.target.process.command_line, `.*\\policies\\.*`))
+
+  condition:
+    $selection
+}

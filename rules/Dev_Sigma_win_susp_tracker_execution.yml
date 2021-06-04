@@ -1,0 +1,17 @@
+rule  Dev_sigma_dll_injection_with_trackerexe {
+ meta:
+    author = "Avneet Singh @v3t0_, oscd.community"
+    description = "This rule  Dev_sigma_detects DLL injection and execution via LOLBAS - Tracker.exe Author: Avneet Singh @v3t0_, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1055.001"
+
+  events:
+((re.regex($process_name.target.process.file.full_path, `.*\\tracker\.exe`) or $process_name.metadata.description = "Tracker") and re.regex($process_name.target.process.command_line, `.* /d .*`) and re.regex($process_name.target.process.command_line, `.* /c .*`))
+
+  condition:
+    $process_name
+}

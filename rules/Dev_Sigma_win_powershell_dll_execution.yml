@@ -1,0 +1,17 @@
+rule  Dev_sigma_detection_of_powershell_execution_via_dll {
+ meta:
+    author = "Markus Neis"
+    description = "Detects PowerShell Strings applied to rundll as seen in PowerShdll.dll Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/08/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1085, t1218.011"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\rundll32\.exe`) or re.regex($selection1.metadata.description, `.*Windows-Hostprozess \(Rundll32\).*`)) and (re.regex($selection1.target.process.command_line, `.*Default\.GetString.*`) or re.regex($selection1.target.process.command_line, `.*FromBase64String.*`)))
+
+  condition:
+    $selection1
+}

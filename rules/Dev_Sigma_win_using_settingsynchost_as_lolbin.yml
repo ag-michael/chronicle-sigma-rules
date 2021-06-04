@@ -1,0 +1,17 @@
+rule  Dev_sigma_using_settingsynchostexe_as_lolbin {
+ meta:
+    author = "Anton Kutepov, oscd.community"
+    description = "Detects using SettingSyncHost.exe to run hijacked binary Author: Anton Kutepov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, defense_evasion, t1574.008"
+
+  events:
+(not ((re.regex($system_utility.target.process.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($system_utility.target.process.file.full_path, `C:\\Windows\\SysWOW64\\.*`))) and (re.regex($system_utility.src.process.command_line, `.*cmd\.exe /c.*`) and re.regex($system_utility.src.process.command_line, `.*RoamDiag\.cmd.*`) and re.regex($system_utility.src.process.command_line, `.*-outputpath.*`)))
+
+  condition:
+    $system_utility
+}

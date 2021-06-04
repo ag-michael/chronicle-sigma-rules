@@ -1,0 +1,17 @@
+rule  Dev_sigma_new_application_in_appcompat {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for a new application in AppCompat. This indicates an application executing for the first time on an endpoint. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    category = "registry_event"
+    mitre = "execution, t1204.002"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*\\AppCompatFlags\\Compatibility Assistant\\Store\\.*`)
+
+  condition:
+    $selection
+}

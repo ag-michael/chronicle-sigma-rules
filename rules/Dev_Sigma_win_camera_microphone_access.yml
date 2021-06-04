@@ -1,0 +1,17 @@
+rule  Dev_sigma_processes_accessing_the_microphone_and_webcam {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Potential adversaries accessing the microphone and webcam in an endpoint. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/07"
+    product = "windows"
+    service = "security"
+    mitre = "collection, t1123"
+
+  events:
+(($selection1.metadata.product_event_type = "4657" or $selection1.metadata.product_event_type = "4656" or $selection1.metadata.product_event_type = "4663") and (re.regex($selection1.target.registry.registry_value_data, `.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone\\NonPackaged.*`) or re.regex($selection1.target.file.full_path, `.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone\\NonPackaged.*`) or re.regex($selection1.target.registry.registry_value_data, `.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam\\NonPackaged.*`) or re.regex($selection1.target.file.full_path, `.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam\\NonPackaged.*`)))
+
+  condition:
+    $selection1
+}

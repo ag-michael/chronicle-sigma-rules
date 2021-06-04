@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_control_panel_dll_load {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious Rundll32 execution from control.exe as used by Equation Group and Exploit Kits Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/04/15"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1085, t1218.011"
+
+  events:
+((re.regex($selection.src.process.file.full_path, `.*\\System32\\control\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe `)) and not (re.regex($selection.target.process.command_line, `.*Shell32\.dll.*`)))
+
+  condition:
+    $selection
+}

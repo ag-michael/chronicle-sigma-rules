@@ -1,0 +1,17 @@
+rule  Dev_sigma_ursnif {
+ meta:
+    author = "megan201296"
+    description = "Detects new registry key created by Ursnif malware. Author: megan201296."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/13"
+    product = "windows"
+    category = "registry_event"
+    mitre = "execution, t1112"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*\\Software\\AppDataLow\\Software\\Microsoft\\.*`)
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_failed_code_integrity_checks {
+ meta:
+    author = "Thomas Patzke"
+    description = "Code integrity failures may indicate tampered executables. Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/03"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1009, t1027.001"
+
+  events:
+($selection.metadata.product_event_type = "5038" or $selection.metadata.product_event_type = "6281")
+
+  condition:
+    $selection
+}

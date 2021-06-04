@@ -1,0 +1,17 @@
+rule  Dev_sigma_execute_code_with_pesterbat {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects code execution via Pester.bat (Pester - Powershell Modulte for testing) Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, defense_evasion, t1216"
+
+  events:
+((re.regex($powershell_module.target.process.file.full_path, `.*\\powershell\.exe`) and re.regex($powershell_module.target.process.command_line, `.*Pester.*`) and re.regex($powershell_module.target.process.command_line, `.*Get-Help.*`)) or (re.regex($powershell_module.target.process.file.full_path, `.*\\cmd\.exe`) and re.regex($powershell_module.target.process.command_line, `.*pester.*`) and re.regex($powershell_module.target.process.command_line, `.*;.*`) and (re.regex($powershell_module.target.process.command_line, `.*help.*`) or re.regex($powershell_module.target.process.command_line, `.*\?.*`))))
+
+  condition:
+    $powershell_module
+}

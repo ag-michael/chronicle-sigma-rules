@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_procexp152sys_file_created_in_tmp {
+ meta:
+    author = "xknow (@xknow_infosec), xorxes (@xor_xes)"
+    description = "Detects the creation of the PROCEXP152.sys file in the application-data local temporary folder. This driver is used by Sysinternals Process Explorer but also by KDU (https://github.com/hfiref0x/KDU) or Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU. Author: xknow (@xknow_infosec), xorxes (@xor_xes)."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/08"
+    product = "windows"
+    category = "file_event"
+    mitre = "t1089, t1562.001, defense_evasion"
+
+  events:
+((re.regex($selection_1.target.file.full_path, `.*\\AppData\\Local\\Temp\\.*`) and re.regex($selection_1.target.file.full_path, `.*PROCEXP152\.sys`)) and not ((re.regex($selection_1.target.process.file.full_path, `.*\\procexp64\.exe.*`) or re.regex($selection_1.target.process.file.full_path, `.*\\procexp\.exe.*`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon64\.exe.*`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon\.exe.*`))))
+
+  condition:
+    $selection_1
+}

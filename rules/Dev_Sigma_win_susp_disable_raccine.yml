@@ -1,0 +1,17 @@
+rule  Dev_sigma_raccine_uninstall {
+ meta:
+    author = "Florian Roth"
+    description = "Detects commands that indicate a Raccine removal from an end system. Raccine is a free ransomware protection tool. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*taskkill .*`) and re.regex($selection1.target.process.command_line, `.*/IM RaccineSettings\.exe.*`)) or (re.regex($selection1.target.process.command_line, `.*reg\.exe.*`) and re.regex($selection1.target.process.command_line, `.*delete.*`) and re.regex($selection1.target.process.command_line, `.*Raccine Tray.*`)) or (re.regex($selection1.target.process.command_line, `.*schtasks.*`) and re.regex($selection1.target.process.command_line, `.*/DELETE.*`) and re.regex($selection1.target.process.command_line, `.*Raccine Rules Updater.*`)))
+
+  condition:
+    $selection1
+}

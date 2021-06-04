@@ -1,0 +1,17 @@
+rule  Dev_sigma_outlook_c2_registry_key {
+ meta:
+    author = "@ScoubiMtl"
+    description = "Detects the modification of Outlook Security Setting to allow unprompted execution. Goes with win_outlook_c2_macro_creation.yml and is particularly interesting if both events occur near to each other. Author: @ScoubiMtl."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/05"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, command_and_control, t1137, t1008, t1546"
+
+  events:
+($selection_registry.target.registry.registry_key = "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\16.0\\Outlook\\Security\\Level" and re.regex($selection_registry.metadata.description, `.*0x00000001.*`))
+
+  condition:
+    $selection_registry
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_call_by_ordinal {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious calls of DLLs in rundll32.dll exports by ordinal Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, execution, t1218.011, t1085"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*\\rundll32\.exe.*`) and re.regex($selection.target.process.command_line, `.*,#.*`)) and not (re.regex($selection.target.process.command_line, `.*EDGEHTML\.dll.*`) and re.regex($selection.target.process.command_line, `.*#141.*`)))
+
+  condition:
+    $selection
+}

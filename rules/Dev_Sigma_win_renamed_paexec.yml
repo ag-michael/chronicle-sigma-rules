@@ -1,0 +1,17 @@
+rule  Dev_sigma_execution_of_renamed_paexec {
+ meta:
+    author = "Jason Lynch"
+    description = "Detects execution of renamed paexec via imphash and executable product string Author: Jason Lynch."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/17"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, t1036.003, FIN7, car.2013-05-009"
+
+  events:
+((re.regex($selection1.metadata.product_name, `.*PAExec.*`) and ($selection1.target.file.md5 = "11D40A7B7876288F919AB819CC2D9802" or $selection1.target.file.md5 = "6444f8a34e99b8f7d9647de66aabe516" or $selection1.target.file.md5 = "dfd6aa3f7b2b1035b76b718f1ddc689f" or $selection1.target.file.md5 = "1a6cca4d5460b1710a12dea39e4a592c")) and not (re.regex($selection1.target.process.file.full_path, `.*paexec.*`)))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_xor_encoded_powershell_command_line {
+ meta:
+    author = "Teymur Kheirkhabarov, Harish Segar (rule)"
+    description = "Detects suspicious powershell process which includes bxor command, alternative obfuscation method to b64 encoded commands. Author: Teymur Kheirkhabarov, Harish Segar (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/29"
+    product = "windows"
+    service = "powershell-classic"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "400" and $selection.HostName = "ConsoleHost" and (re.regex($selection.target.process.command_line, `.*bxor.*`) or re.regex($selection.target.process.command_line, `.*join.*`) or re.regex($selection.target.process.command_line, `.*char.*`)))
+
+  condition:
+    $selection
+}

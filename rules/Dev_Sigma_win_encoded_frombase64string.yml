@@ -1,0 +1,17 @@
+rule  Dev_sigma_encoded_frombase64string {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a base64 encoded FromBase64String keyword in a process command line Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1140, execution, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*OjpGcm9tQmFzZTY0U3RyaW5n.*`) or re.regex($selection.target.process.command_line, `.*o6RnJvbUJhc2U2NFN0cmluZ.*`) or re.regex($selection.target.process.command_line, `.*6OkZyb21CYXNlNjRTdHJpbm.*`))
+
+  condition:
+    $selection
+}

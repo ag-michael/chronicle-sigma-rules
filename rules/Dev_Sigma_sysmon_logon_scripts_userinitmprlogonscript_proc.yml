@@ -1,0 +1,17 @@
+rule  Dev_sigma_logon_scripts_userinitmprlogonscript {
+ meta:
+    author = "Tom Ueltschi (@c_APT_ure)"
+    description = "Detects creation or execution of UserInitMprLogonScript persistence method Author: Tom Ueltschi (@c_APT_ure)."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1037, t1037.001, persistence"
+
+  events:
+(((re.regex($exec_selection.src.process.file.full_path, `.*\\userinit\.exe`) and not (re.regex($exec_selection.target.process.file.full_path, `.*\\explorer\.exe`))) and not ((re.regex($exec_selection.target.process.command_line, `.*netlogon\.bat.*`) or re.regex($exec_selection.target.process.command_line, `.*UsrLogon\.cmd.*`)))) or re.regex($exec_selection.target.process.command_line, `.*UserInitMprLogonScript.*`))
+
+  condition:
+    $exec_selection
+}

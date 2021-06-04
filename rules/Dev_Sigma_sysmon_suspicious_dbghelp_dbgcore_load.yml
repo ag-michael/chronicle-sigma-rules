@@ -1,0 +1,17 @@
+rule  Dev_sigma_load_of_dbghelpdbgcore_dll_from_suspicious_process {
+ meta:
+    author = "Perez Diego (@darkquassar), oscd.community, Ecco"
+    description = "Detects the load of dbghelp/dbgcore DLL (used to make memory dumps) by suspicious processes. Tools like ProcessHacker and some attacker tradecract use MiniDumpWriteDump API found in dbghelp.dll or dbgcore.dll. As an example, SilentTrynity C2 Framework has a module that leverages this API to dump the contents of Lsass.exe and transfer it over the network back to the attacker's machine. Author: Perez Diego (@darkquassar), oscd.community, Ecco."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/27"
+    category = "image_load"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+((((re.regex($signedprocess.target.process.file.full_path, `.*\\dbghelp\.dll`) or re.regex($signedprocess.target.process.file.full_path, `.*\\dbgcore\.dll`)) and (re.regex($signedprocess.target.process.file.full_path, `.*\\msbuild\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\svchost\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\rundll32\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\word\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\excel\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\powerpnt\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\outlook\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\monitoringhost\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\wmic\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\cscript\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\mshta\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\regsvr32\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\schtasks\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\dnx\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\regsvcs\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\sc\.exe`) or re.regex($signedprocess.target.process.file.full_path, `.*\\scriptrunner\.exe`))) and not (re.regex($signedprocess.target.process.file.full_path, `.*Visual Studio.*`))) or (((re.regex($signedprocess.target.process.file.full_path, `.*\\dbghelp\.dll`) or re.regex($signedprocess.target.process.file.full_path, `.*\\dbgcore\.dll`)) and $signedprocess.Signed = "FALSE") and not (re.regex($signedprocess.target.process.file.full_path, `.*Visual Studio.*`))))
+
+  condition:
+    $signedprocess
+}

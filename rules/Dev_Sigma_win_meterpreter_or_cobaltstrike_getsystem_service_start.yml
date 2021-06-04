@@ -1,0 +1,17 @@
+rule  Dev_sigma_meterpreter_or_cobalt_strike_getsystem_service_start {
+ meta:
+    author = "Teymur Kheirkhabarov, Ecco, Florian Roth"
+    description = "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service starting Author: Teymur Kheirkhabarov, Ecco, Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1134, t1134.001, t1134.002"
+
+  events:
+((re.regex($selection_1.src.process.file.full_path, `.*\\services\.exe`) and ((re.regex($selection_1.target.process.command_line, `.*cmd.*`) and re.regex($selection_1.target.process.command_line, `.*/c.*`) and re.regex($selection_1.target.process.command_line, `.*echo.*`) and re.regex($selection_1.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection_1.target.process.command_line, `.*%COMSPEC%.*`) and re.regex($selection_1.target.process.command_line, `.*/c.*`) and re.regex($selection_1.target.process.command_line, `.*echo.*`) and re.regex($selection_1.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection_1.target.process.command_line, `.*cmd\.exe.*`) and re.regex($selection_1.target.process.command_line, `.*/c.*`) and re.regex($selection_1.target.process.command_line, `.*echo.*`) and re.regex($selection_1.target.process.command_line, `.*\\pipe\\.*`)) or (re.regex($selection_1.target.process.command_line, `.*rundll32.*`) and re.regex($selection_1.target.process.command_line, `.*\.dll,a.*`) and re.regex($selection_1.target.process.command_line, `.*/p:.*`)))) and not (re.regex($selection_1.target.process.command_line, `.*MpCmdRun.*`)))
+
+  condition:
+    $selection_1
+}

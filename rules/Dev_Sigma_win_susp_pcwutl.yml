@@ -1,0 +1,17 @@
+rule  Dev_sigma_code_execution_via_pcwutldll {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects launch of executable by calling the LaunchApplication function from pcwutl.dll library. Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.011, execution, t1218"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection.target.process.command_line, `.*pcwutl.*`) and re.regex($selection.target.process.command_line, `.*LaunchApplication.*`))
+
+  condition:
+    $selection
+}

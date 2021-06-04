@@ -1,0 +1,17 @@
+rule  Dev_sigma_volume_shadow_copy_mount {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)"
+    description = "Detects volume shadow copy mount Author: Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/20"
+    product = "windows"
+    service = "system"
+    mitre = "credential_access, t1003.002"
+
+  events:
+($selection.src.application = "Microsoft-Windows-Ntfs" and $selection.metadata.product_event_type = "98" and re.regex($selection.DeviceName, `.*HarddiskVolumeShadowCopy.*`))
+
+  condition:
+    $selection
+}

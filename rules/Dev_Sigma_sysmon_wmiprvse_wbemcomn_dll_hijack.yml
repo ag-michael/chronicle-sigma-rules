@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmiprvse_wbemcomn_dll_hijack {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects a threat actor creating a file named `wbemcomn.dll` in the `C:\\Windows\\System32\\wbem\\` directory over the network and loading it for a WMI DLL Hijack scenario. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    product = "windows"
+    service = "sysmon"
+    mitre = "execution, t1047, lateral_movement, t1021.002"
+
+  events:
+(($selection_one.metadata.product_event_type = "11" and $selection_one.target.process.file.full_path = "System" and re.regex($selection_one.target.file.full_path, `.*\\wbem\\wbemcomn\.dll`)) or ($selection_one.metadata.product_event_type = "7" and re.regex($selection_one.target.process.file.full_path, `.*\\wmiprvse\.exe`) and re.regex($selection_one.target.process.file.full_path, `.*\\wbem\\wbemcomn\.dll`)))
+
+  condition:
+    $selection_one
+}

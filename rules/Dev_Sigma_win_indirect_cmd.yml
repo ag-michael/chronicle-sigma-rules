@@ -1,0 +1,17 @@
+rule  Dev_sigma_indirect_command_execution {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community"
+    description = "Detect indirect command execution via Program Compatibility Assistant pcalua.exe or forfiles.exe Author: E.M. Anhaus (originally from Atomic Blue Detections, Endgame), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1202"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\pcalua\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\forfiles\.exe`))
+
+  condition:
+    $selection
+}

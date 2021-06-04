@@ -1,0 +1,17 @@
+rule  Dev_sigma_lazarus_loaders {
+ meta:
+    author = "Florian Roth"
+    description = "Detects different loaders as described in various threat reports on Lazarus group activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0032"
+
+  events:
+((re.regex($selection_cmd1.target.process.command_line, `.*cmd\.exe /c .*`) and re.regex($selection_cmd1.target.process.command_line, `.* -p 0x.*`) and (re.regex($selection_cmd1.target.process.command_line, `.*C:\\ProgramData\\\\.*`) or re.regex($selection_cmd1.target.process.command_line, `.*C:\\RECYCLER\\\\.*`))) or (re.regex($selection_cmd1.target.process.command_line, `.*rundll32\.exe .*`) and re.regex($selection_cmd1.target.process.command_line, `.*C:\\ProgramData\\\\.*`) and (re.regex($selection_cmd1.target.process.command_line, `.*\.bin,.*`) or re.regex($selection_cmd1.target.process.command_line, `.*\.tmp,.*`) or re.regex($selection_cmd1.target.process.command_line, `.*\.dat,.*`) or re.regex($selection_cmd1.target.process.command_line, `.*\.io,.*`) or re.regex($selection_cmd1.target.process.command_line, `.*\.ini,.*`) or re.regex($selection_cmd1.target.process.command_line, `.*\.db,.*`))))
+
+  condition:
+    $selection_cmd1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_microsoft_binary_suspicious_communication_endpoint {
+ meta:
+    author = "Florian Roth"
+    description = "Detects an executable in the Windows folder accessing suspicious domains Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/08/30"
+    category = "network_connection"
+    product = "windows"
+    mitre = "lateral_movement, t1105"
+
+  events:
+($selection.Initiated = "true" and (re.regex($selection.target.hostname, `.*dl\.dropboxusercontent\.com`) or re.regex($selection.target.hostname, `.*\.pastebin\.com`) or re.regex($selection.target.hostname, `.*\.githubusercontent\.com`)) and re.regex($selection.target.process.file.full_path, `C:\\Windows\\.*`))
+
+  condition:
+    $selection
+}

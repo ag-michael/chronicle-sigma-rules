@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_get_clipboard {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for the Get-Clipboard commands in PowerShell logs. This could be an adversary capturing clipboard contents. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    service = "powershell"
+    mitre = "collection, t1115"
+
+  events:
+(($selection1.metadata.product_event_type = "4104" and re.regex($selection1.target.process.command_line, `.*Get-Clipboard.*`)) or ($selection1.metadata.product_event_type = "4103" and re.regex($selection1.Payload, `.*Get-Clipboard.*`)))
+
+  condition:
+    $selection1
+}

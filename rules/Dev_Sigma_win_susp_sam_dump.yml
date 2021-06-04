@@ -1,0 +1,17 @@
+rule  Dev_sigma_sam_dump_to_appdata {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious SAM dump activity as cause by QuarksPwDump and other password dumpers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/01/27"
+    product = "windows"
+    service = "system"
+    mitre = "credential_access, t1003, t1003.002"
+
+  events:
+($selection.metadata.product_event_type = "16" and re.regex($selection.Message, `.*\\AppData\\Local\\Temp\\SAM-.*`) and re.regex($selection.Message, `.*\.dmp.*`))
+
+  condition:
+    $selection
+}

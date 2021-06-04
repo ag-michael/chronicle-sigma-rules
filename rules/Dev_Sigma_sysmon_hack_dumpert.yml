@@ -1,0 +1,34 @@
+rule  Dev_sigma_dumpert_process_dumper {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the use of Dumpert process dumper, which dumps the lsass.exe process memory Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+$selection.target.file.md5 = "09D278F9DE118EF09163C6140255C690"
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_dumpert_process_dumper_part_1 {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the use of Dumpert process dumper, which dumps the lsass.exe process memory Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/04"
+    category = "file_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+$selection.target.file.full_path = "C:\\Windows\\Temp\\dumpert.dmp"
+
+  condition:
+    $selection
+}

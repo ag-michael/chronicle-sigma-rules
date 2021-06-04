@@ -1,0 +1,17 @@
+rule  Dev_sigma_nonprivileged_usage_of_reg_or_powershell {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Ryan Plas (rule), oscd.community"
+    description = "Search for usage of reg or Powershell by non-priveleged users to modify service configuration in registry Author: Teymur Kheirkhabarov (idea), Ryan Plas (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+($integrity_level.IntegrityLevel = "Medium" and ((re.regex($integrity_level.target.process.command_line, `.*reg.*`) and re.regex($integrity_level.target.process.command_line, `.*add.*`)) or (re.regex($integrity_level.target.process.command_line, `.*powershell.*`) and (re.regex($integrity_level.target.process.command_line, `.*set-itemproperty.*`) or re.regex($integrity_level.target.process.command_line, `.* sp .*`) or re.regex($integrity_level.target.process.command_line, `.*new-itemproperty.*`)))) and (re.regex($integrity_level.target.process.command_line, `.*ControlSet.*`) and re.regex($integrity_level.target.process.command_line, `.*Services.*`)) and (re.regex($integrity_level.target.process.command_line, `.*ImagePath.*`) or re.regex($integrity_level.target.process.command_line, `.*FailureCommand.*`) or re.regex($integrity_level.target.process.command_line, `.*ServiceDLL.*`)))
+
+  condition:
+    $integrity_level
+}

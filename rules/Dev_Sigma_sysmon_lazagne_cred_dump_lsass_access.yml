@@ -1,0 +1,17 @@
+rule  Dev_sigma_credential_dumping_by_lazagne {
+ meta:
+    author = "Bhabesh Raj, Jonhnathan Ribeiro"
+    description = "Detects LSASS process access by LaZagne for credential dumping. Author: Bhabesh Raj, Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/09"
+    category = "process_access"
+    product = "windows"
+    mitre = "credential_access, t1003.001, s0349"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\lsass\.exe`) and re.regex($selection.CallTrace, `.*C:\\\\Windows\\\\SYSTEM32\\\\ntdll\.dll\+.*`) and re.regex($selection.CallTrace, `.*|C:\\\\Windows\\\\System32\\\\KERNELBASE\.dll\+.*`) and re.regex($selection.CallTrace, `.*_ctypes\.pyd\+.*`) and re.regex($selection.CallTrace, `.*python27\.dll\+.*`) and $selection.GrantedAccess = "0x1FFFFF")
+
+  condition:
+    $selection
+}

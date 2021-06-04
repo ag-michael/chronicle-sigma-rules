@@ -1,0 +1,17 @@
+rule  Dev_sigma_unauthorized_system_time_modification {
+ meta:
+    author = "@neu5ron"
+    description = "Detect scenarios where a potentially unauthorized application or user is modifying the system time. Author: @neu5ron."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/05"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1099, t1070.006"
+
+  events:
+($selection.metadata.product_event_type = "4616" and not ((($selection.target.process.file.full_path = "C:\\Program Files\\VMware\\VMware Tools\\vmtoolsd.exe" or $selection.target.process.file.full_path = "C:\\Windows\\System32\\VBoxService.exe") or ($selection.target.process.file.full_path = "C:\\Windows\\System32\\svchost.exe" and $selection.src.user.userid = "S-1-5-19"))))
+
+  condition:
+    $selection
+}

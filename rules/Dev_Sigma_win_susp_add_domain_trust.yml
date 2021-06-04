@@ -1,0 +1,17 @@
+rule  Dev_sigma_addition_of_domain_trusts {
+ meta:
+    author = "Thomas Patzke"
+    description = "Addition of domains is seldom and should be verified for legitimacy. Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/03"
+    product = "windows"
+    service = "security"
+    mitre = "persistence"
+
+  events:
+$selection.metadata.product_event_type = "4706"
+
+  condition:
+    $selection
+}

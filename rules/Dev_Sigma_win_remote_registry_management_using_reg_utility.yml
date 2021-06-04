@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_registry_management_using_reg_utility {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Remote registry management using REG utility from non-admin workstation Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1112, discovery, t1012, credential_access, t1552.002, s0075"
+
+  events:
+(($selection_1.metadata.product_event_type = "5145" and re.regex($selection_1.target.file.full_path, `.*\\winreg.*`)) and not ($selection_1.principal.ip = "%Admins_Workstations%"))
+
+  condition:
+    $selection_1
+}

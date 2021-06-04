@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_defender_download_activity {
+ meta:
+    author = "Matthew Matchen"
+    description = "Detect the use of Windows Defender to download payloads Author: Matthew Matchen."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.010, command_and_control, t1105"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*MpCmdRun\.exe.*`) or $selection1.metadata.description = "Microsoft Malware Protection Command Line Utility") and (re.regex($selection1.target.process.command_line, `.*DownloadFile.*`) and re.regex($selection1.target.process.command_line, `.*url.*`)))
+
+  condition:
+    $selection1
+}

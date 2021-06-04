@@ -1,0 +1,17 @@
+rule  Dev_sigma_empire_powershell_uac_bypass {
+ meta:
+    author = "Ecco"
+    description = "Detects some Empire PowerShell UAC bypass methods Author: Ecco."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, privilege_escalation, t1548.002, t1088, car.2019-04-001"
+
+  events:
+(re.regex($selection.target.process.command_line, `.* -NoP -NonI -w Hidden -c $x=$\(\(gp HKCU:Software\\\\Microsoft\\\\Windows Update\)\.Update\).*`) or re.regex($selection.target.process.command_line, `.* -NoP -NonI -c $x=$\(\(gp HKCU:Software\\\\Microsoft\\\\Windows Update\)\.Update\);.*`))
+
+  condition:
+    $selection
+}

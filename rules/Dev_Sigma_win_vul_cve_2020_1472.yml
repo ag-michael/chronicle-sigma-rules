@@ -1,0 +1,17 @@
+rule  Dev_sigma_vulnerable_netlogon_secure_channel_connection_allowed {
+ meta:
+    author = "NVISO"
+    description = "Detects that a vulnerable Netlogon secure channel connection was allowed, which could be an indicator of CVE-2020-1472. Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/15"
+    product = "windows"
+    service = "system"
+    mitre = "privilege_escalation"
+
+  events:
+$selection.metadata.product_event_type = "5829"
+
+  condition:
+    $selection
+}

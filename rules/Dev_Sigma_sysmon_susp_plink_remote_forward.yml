@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_plink_remote_forwarding {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious Plink tunnel remote forarding to a local port Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/19"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1572, lateral_movement, t1021.001"
+
+  events:
+($selection.metadata.description = "Command-line SSH, Telnet, and Rlogin client" and re.regex($selection.target.process.command_line, `.* -R .*`))
+
+  condition:
+    $selection
+}

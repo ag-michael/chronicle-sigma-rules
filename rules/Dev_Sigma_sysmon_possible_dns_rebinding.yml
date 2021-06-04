@@ -1,0 +1,18 @@
+rule  Dev_sigma_possible_dns_rebinding {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "Detects several different DNS-answers by one domain with IPs from internal and external networks. Normally, DNS-answer contain TTL >100. (DNS-record will saved in host cache for a while TTL). Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    product = "windows"
+    category = "dns_query"
+    mitre = "initial_access, t1189"
+
+  events:
+(re.regex($dns_answer.QueryName, `.*`) and $dns_answer.QueryStatus = "0" and (re.regex($dns_answer.QueryResults, `\(::ffff:\)\?10\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?192\.168\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.16\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.17\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.18\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.19\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.20\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.21\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.22\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.23\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.24\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.25\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.26\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.27\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.28\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.29\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.30\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.31\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?127\..*`)) and (re.regex($dns_answer.QueryName, `.*`) and $dns_answer.QueryStatus = "0") and not ((re.regex($dns_answer.QueryResults, `\(::ffff:\)\?10\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?192\.168\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.16\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.17\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.18\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.19\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.20\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.21\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.22\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.23\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.24\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.25\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.26\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.27\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.28\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.29\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.30\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?172\.31\..*`) or re.regex($dns_answer.QueryResults, `\(::ffff:\)\?127\..*`))))
+$dns_answer.target.hostname = $target
+
+  condition:
+    $dns_answer and #target > 3
+}

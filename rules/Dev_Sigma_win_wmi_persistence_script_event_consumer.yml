@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_persistence__script_event_consumer {
+ meta:
+    author = "Thomas Patzke"
+    description = "Detects WMI script event consumers Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, t1546.003, t1047"
+
+  events:
+($selection.target.process.file.full_path = "C:\\WINDOWS\\system32\\wbem\\scrcons.exe" and $selection.src.process.file.full_path = "C:\\Windows\\System32\\svchost.exe")
+
+  condition:
+    $selection
+}

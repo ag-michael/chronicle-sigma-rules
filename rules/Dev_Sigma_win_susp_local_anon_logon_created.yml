@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_windows_anonymous_logon_local_account_created {
+ meta:
+    author = "James Pemberton / @4A616D6573"
+    description = "Detects the creation of suspicious accounts similar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts. Author: James Pemberton / @4A616D6573."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/31"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, t1136, t1136.001, t1136.002"
+
+  events:
+($selection.metadata.product_event_type = "4720" and re.regex($selection.SAMAccountName, `.*ANONYMOUS.*`) and re.regex($selection.SAMAccountName, `.*LOGON.*`))
+
+  condition:
+    $selection
+}

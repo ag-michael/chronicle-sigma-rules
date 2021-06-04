@@ -1,0 +1,17 @@
+rule  Dev_sigma_dns_hybridconnectionmanager_service_bus {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects Azure Hybrid Connection Manager services querying the Azure service bus service Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/12"
+    product = "windows"
+    service = "sysmon"
+    mitre = "persistence"
+
+  events:
+($selection.metadata.product_event_type = "22" and re.regex($selection.QueryName, `.*servicebus\.windows\.net.*`) and re.regex($selection.target.process.file.full_path, `.*HybridConnectionManager.*`))
+
+  condition:
+    $selection
+}

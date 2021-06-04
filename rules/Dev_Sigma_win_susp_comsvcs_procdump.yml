@@ -1,0 +1,17 @@
+rule  Dev_sigma_process_dump_via_comsvcs_dll {
+ meta:
+    author = "Modexp (idea)"
+    description = "Detects process memory dump via comsvcs.dll and rundll32 Author: Modexp (idea)."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.011, credential_access, t1003.001, t1003"
+
+  events:
+((re.regex($rundll_image.target.process.file.full_path, `.*\\rundll32\.exe`) or $rundll_image.target.file.full_path = "RUNDLL32.EXE") and (re.regex($rundll_image.target.process.command_line, `.*comsvcs.*`) and re.regex($rundll_image.target.process.command_line, `.*MiniDump.*`) and re.regex($rundll_image.target.process.command_line, `.*full.*`)))
+
+  condition:
+    $rundll_image
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_shells_spawned_by_web_servers {
+ meta:
+    author = "Thomas Patzke"
+    description = "Web servers that spawn shell processes could be the result of a successfully placed web shell or an other attack Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1505.003, privilege_escalation, t1190"
+
+  events:
+((re.regex($selection.src.process.file.full_path, `.*\\w3wp\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\httpd\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\nginx\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\php-cgi\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\tomcat\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\UMWorkerProcess\.exe`)) and (re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bitsadmin\.exe`)))
+
+  condition:
+    $selection
+}

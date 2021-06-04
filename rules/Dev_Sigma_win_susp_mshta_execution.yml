@@ -1,0 +1,17 @@
+rule  Dev_sigma_mshta_suspicious_execution_01 {
+ meta:
+    author = "Diego Perez (@darkquassar), Markus Neis, Swisscom (Improve Rule)"
+    description = "Detection for mshta.exe suspicious execution patterns sometimes involving file polyglotism Author: Diego Perez (@darkquassar), Markus Neis, Swisscom (Improve Rule)."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1140, t1218.005"
+
+  events:
+(re.regex($selection1.target.process.file.full_path, `.*\\mshta\.exe`) and (re.regex($selection1.target.process.command_line, `.*vbscript.*`) or re.regex($selection1.target.process.command_line, `.*\.jpg.*`) or re.regex($selection1.target.process.command_line, `.*\.png.*`) or re.regex($selection1.target.process.command_line, `.*\.lnk.*`) or re.regex($selection1.target.process.command_line, `.*\.xls.*`) or re.regex($selection1.target.process.command_line, `.*\.doc.*`) or re.regex($selection1.target.process.command_line, `.*\.zip.*`)))
+
+  condition:
+    $selection1
+}

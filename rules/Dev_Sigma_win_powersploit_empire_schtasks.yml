@@ -1,0 +1,17 @@
+rule  Dev_sigma_default_powersploit_and_empire_schtasks_persistence {
+ meta:
+    author = "Markus Neis, @Karneades"
+    description = "Detects the creation of a schtask via PowerSploit or Empire Default Configuration. Author: Markus Neis, @Karneades."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/06"
+    product = "windows"
+    category = "process_creation"
+    mitre = "execution, persistence, privilege_escalation, t1053, t1086, s0111, g0022, g0060, car.2013-08-001, t1053.005, t1059.001"
+
+  events:
+(re.regex($selection1.src.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection1.target.process.file.full_path, `.*\\schtasks\.exe`) and re.regex($selection1.target.process.command_line, `.*/Create.*`) and re.regex($selection1.target.process.command_line, `.*/SC.*`) and (re.regex($selection1.target.process.command_line, `.*ONLOGON.*`) or re.regex($selection1.target.process.command_line, `.*DAILY.*`) or re.regex($selection1.target.process.command_line, `.*ONIDLE.*`) or re.regex($selection1.target.process.command_line, `.*Updater.*`)) and re.regex($selection1.target.process.command_line, `.*/TN.*`) and re.regex($selection1.target.process.command_line, `.*Updater.*`) and re.regex($selection1.target.process.command_line, `.*/TR.*`) and re.regex($selection1.target.process.command_line, `.*powershell.*`))
+
+  condition:
+    $selection1
+}

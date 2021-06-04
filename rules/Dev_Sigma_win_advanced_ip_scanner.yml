@@ -1,0 +1,34 @@
+rule  Dev_sigma_advanced_ip_scanner {
+ meta:
+    author = "@ROxPinTeddy"
+    description = "Detects the use of Advanced IP Scanner. Seems to be a popular tool for ransomware groups. Author: @ROxPinTeddy."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1046"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\advanced_ip_scanner.*`)
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_advanced_ip_scanner_part_1 {
+ meta:
+    author = "@ROxPinTeddy"
+    description = "Detects the use of Advanced IP Scanner. Seems to be a popular tool for ransomware groups. Author: @ROxPinTeddy."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/12"
+    category = "file_event"
+    product = "windows"
+    mitre = "discovery, t1046"
+
+  events:
+re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Temp\\Advanced IP Scanner 2.*`)
+
+  condition:
+    $selection
+}

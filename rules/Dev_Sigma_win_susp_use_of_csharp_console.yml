@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_use_of_csharp_interactive_console {
+ meta:
+    author = "Michael R. (@nahamike01)"
+    description = "Detects the execution of CSharp interactive console by PowerShell Author: Michael R. (@nahamike01)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1127"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\csi\.exe`) and re.regex($selection.src.process.file.full_path, `.*\\powershell\.exe`) and $selection.target.file.full_path = "csi.exe")
+
+  condition:
+    $selection
+}

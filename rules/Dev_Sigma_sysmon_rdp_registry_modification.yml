@@ -1,0 +1,17 @@
+rule  Dev_sigma_rdp_registry_modification {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects potential malicious modification of the property value of fDenyTSConnections and UserAuthentication to enable remote desktop connections. Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+((re.regex($selection.target.registry.registry_key, `.*\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp\\UserAuthentication`) or re.regex($selection.target.registry.registry_key, `.*\\CurrentControlSet\\Control\\Terminal Server\\fDenyTSConnections`)) and $selection.metadata.description = "DWORD (0x00000000)")
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_outlook_c2_macro_creation {
+ meta:
+    author = "@ScoubiMtl"
+    description = "Detects the creation of a macro file for Outlook. Goes with win_outlook_c2_registry_key. VbaProject.OTM is explicitly mentioned in T1137. Particularly interesting if both events Registry & File Creation happens at the same time. Author: @ScoubiMtl."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/05"
+    category = "file_event"
+    product = "windows"
+    mitre = "persistence, command_and_control, t1137, t1008, t1546"
+
+  events:
+re.regex($selection.target.file.full_path, `.*\\Microsoft\\Outlook\\VbaProject\.OTM`)
+
+  condition:
+    $selection
+}

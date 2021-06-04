@@ -1,0 +1,17 @@
+rule  Dev_sigma_load_undocumented_autoelevated_com_interface {
+ meta:
+    author = "oscd.community, Dmitry Uchakin"
+    description = "COM interface (EditionUpgradeManager) that is not used by standard executables. Author: oscd.community, Dmitry Uchakin."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    category = "process_access"
+    product = "windows"
+    mitre = "defense_evasion, privilege_escalation, t1548.002"
+
+  events:
+re.regex($selection.CallTrace, `.*editionupgrademanagerobj\.dll.*`)
+
+  condition:
+    $selection
+}

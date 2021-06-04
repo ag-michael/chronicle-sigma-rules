@@ -1,0 +1,17 @@
+rule  Dev_sigma_renamed_powershell {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the execution of a renamed PowerShell often used by attackers or malware Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/22"
+    product = "windows"
+    category = "process_creation"
+    mitre = "car.2013-05-009, defense_evasion, t1036, t1036.003"
+
+  events:
+(($selection.metadata.description = "Windows PowerShell" and $selection.metadata.description = "Microsoft Corporation") and not ((re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell_ise\.exe`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_reverse_shell_connection {
+ meta:
+    author = "FPT.EagleEye"
+    description = "Detects the Nishang Invoke-PowerShellTcpOneLine reverse shell Author: FPT.EagleEye."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1086, t1059.005"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection.target.process.command_line, `.*new-object system\.net\.sockets\.tcpclient.*`))
+
+  condition:
+    $selection
+}

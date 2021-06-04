@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_registry_trust_record_modification {
+ meta:
+    author = "Antonlovesdnb"
+    description = "Alerts on trust record modification within the registry, indicating usage of macros Author: Antonlovesdnb."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/19"
+    category = "registry_event"
+    product = "windows"
+    mitre = "initial_access, t1193, t1566.001"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*TrustRecords.*`)
+
+  condition:
+    $selection
+}

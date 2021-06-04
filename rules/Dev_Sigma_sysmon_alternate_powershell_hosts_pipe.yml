@@ -1,0 +1,17 @@
+rule  Dev_sigma_alternate_powershell_hosts_pipe {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects alternate PowerShell hosts potentially bypassing detections looking for powershell.exe Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "execution, t1086, t1059.001"
+
+  events:
+(re.regex($selection.file.name, `PSHost.*`) and not ((re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell_ise\.exe`))))
+
+  condition:
+    $selection
+}

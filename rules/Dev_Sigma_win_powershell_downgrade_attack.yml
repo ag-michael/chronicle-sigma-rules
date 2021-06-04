@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_downgrade_attack {
+ meta:
+    author = "Harish Segar (rule)"
+    description = "Detects PowerShell downgrade attack by comparing the host versions with the actually used engine version 2.0 Author: Harish Segar (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, execution, t1086, t1059.001"
+
+  events:
+((re.regex($selection.target.process.command_line, `.* -version 2 .*`) or re.regex($selection.target.process.command_line, `.* -versio 2 .*`) or re.regex($selection.target.process.command_line, `.* -versi 2 .*`) or re.regex($selection.target.process.command_line, `.* -vers 2 .*`) or re.regex($selection.target.process.command_line, `.* -ver 2 .*`) or re.regex($selection.target.process.command_line, `.* -ve 2 .*`)) and re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`))
+
+  condition:
+    $selection
+}

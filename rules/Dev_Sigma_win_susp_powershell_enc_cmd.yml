@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_encoded_powershell_command_line {
+ meta:
+    author = "Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, Anton Kutepov, oscd.community"
+    description = "Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet) Author: Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, Anton Kutepov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/09/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(((re.regex($selection.target.process.command_line, `.* -e.*`) and re.regex($selection.target.process.command_line, `.* JAB.*`) and re.regex($selection.target.process.command_line, `.* -w.*`) and re.regex($selection.target.process.command_line, `.* hidden .*`)) or (re.regex($selection.target.process.command_line, `.* -e.*`) and (re.regex($selection.target.process.command_line, `.* BA^J.*`) or re.regex($selection.target.process.command_line, `.* SUVYI.*`) or re.regex($selection.target.process.command_line, `.* SQBFAFgA.*`) or re.regex($selection.target.process.command_line, `.* aQBlAHgA.*`) or re.regex($selection.target.process.command_line, `.* aWV4I.*`) or re.regex($selection.target.process.command_line, `.* IAA.*`) or re.regex($selection.target.process.command_line, `.* IAB.*`) or re.regex($selection.target.process.command_line, `.* UwB.*`) or re.regex($selection.target.process.command_line, `.* cwB.*`))) or re.regex($selection.target.process.command_line, `.*\.exe -ENCOD .*`)) and not (re.regex($selection.target.process.command_line, `.* -ExecutionPolicy.*`) and re.regex($selection.target.process.command_line, `.*remotesigned .*`)))
+
+  condition:
+    $selection
+}

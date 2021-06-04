@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_debugger_registration_cmdline {
+ meta:
+    author = "Florian Roth, oscd.community, Jonhnathan Ribeiro"
+    description = "Detects the registration of a debugger for a program that is available in the logon screen (sticky key backdoor). Author: Florian Roth, oscd.community, Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/06"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, t1546.008, t1015"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*\\CurrentVersion\\Image File Execution Options\\.*`) and (re.regex($selection.target.process.command_line, `.*sethc\.exe.*`) or re.regex($selection.target.process.command_line, `.*utilman\.exe.*`) or re.regex($selection.target.process.command_line, `.*osk\.exe.*`) or re.regex($selection.target.process.command_line, `.*magnify\.exe.*`) or re.regex($selection.target.process.command_line, `.*narrator\.exe.*`) or re.regex($selection.target.process.command_line, `.*displayswitch\.exe.*`) or re.regex($selection.target.process.command_line, `.*atbroker\.exe.*`)))
+
+  condition:
+    $selection
+}

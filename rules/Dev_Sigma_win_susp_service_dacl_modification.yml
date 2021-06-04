@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_service_dacl_modification {
+ meta:
+    author = "Jonhnathan Ribeiro, oscd.community"
+    description = "Detects suspicious DACL modifications that can  be used to hide services or make them unstopable Author: Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1543.003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\sc\.exe`) and re.regex($selection.target.process.command_line, `.*sdset.*`) and re.regex($selection.target.process.command_line, `.*D;;.*`) and (re.regex($selection.target.process.command_line, `.*;;;IU.*`) or re.regex($selection.target.process.command_line, `.*;;;SU.*`) or re.regex($selection.target.process.command_line, `.*;;;BA.*`) or re.regex($selection.target.process.command_line, `.*;;;SY.*`) or re.regex($selection.target.process.command_line, `.*;;;WD.*`)))
+
+  condition:
+    $selection
+}

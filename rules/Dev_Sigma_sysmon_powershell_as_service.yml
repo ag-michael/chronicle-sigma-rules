@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_as_a_service_in_registry {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects that a powershell code is written to the registry as a service. Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    category = "registry_event"
+    product = "windows"
+    mitre = "execution, t1569.002"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\Services\\.*`) and re.regex($selection.target.registry.registry_key, `.*\\ImagePath`) and (re.regex($selection.metadata.description, `.*powershell.*`) or re.regex($selection.metadata.description, `.*pwsh.*`)))
+
+  condition:
+    $selection
+}

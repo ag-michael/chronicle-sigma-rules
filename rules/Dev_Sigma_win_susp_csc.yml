@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_parent_of_cscexe {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious parent of csc.exe, which could by a sign of payload delivery Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.005, t1059.007, defense_evasion, t1500, t1218.005, t1027.004"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\csc\.exe`) and (re.regex($selection.src.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\cscript\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\mshta\.exe`)))
+
+  condition:
+    $selection
+}

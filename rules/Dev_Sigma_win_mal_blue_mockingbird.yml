@@ -1,0 +1,51 @@
+rule  Dev_sigma_blue_mockingbird {
+ meta:
+    author = "Trent Liffick (@tliffick)"
+    description = "Attempts to detect system changes made by Blue Mockingbird Author: Trent Liffick (@tliffick)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/14"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1112, t1047"
+
+  events:
+(re.regex($exec_selection.target.process.file.full_path, `.*\\cmd\.exe`) and re.regex($exec_selection.target.process.command_line, `.*sc config.*`) and re.regex($exec_selection.target.process.command_line, `.*wercplsupporte\.dll.*`))
+
+  condition:
+    $exec_selection
+}
+rule  Dev_sigma_blue_mockingbird_part_1 {
+ meta:
+    author = "Trent Liffick (@tliffick)"
+    description = "Attempts to detect system changes made by Blue Mockingbird Author: Trent Liffick (@tliffick)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/14"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1112, t1047"
+
+  events:
+(re.regex($wmic_cmd.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($wmic_cmd.target.process.command_line, `.*COR_PROFILER`))
+
+  condition:
+    $wmic_cmd
+}
+rule  Dev_sigma_blue_mockingbird_part_2 {
+ meta:
+    author = "Trent Liffick (@tliffick)"
+    description = "Attempts to detect system changes made by Blue Mockingbird Author: Trent Liffick (@tliffick)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/14"
+    product = "windows"
+    category = "registry_event"
+    mitre = "execution, t1112, t1047"
+
+  events:
+re.regex($mod_reg.target.registry.registry_key, `.*\\CurrentControlSet\\Services\\wercplsupport\\Parameters\\ServiceDll`)
+
+  condition:
+    $mod_reg
+}

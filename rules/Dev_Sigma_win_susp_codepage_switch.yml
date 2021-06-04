@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_code_page_switch {
+ meta:
+    author = "Florian Roth, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects a code page switch in command line or batch scripts to a rare language Author: Florian Roth, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/14"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\chcp\.com`) and (re.regex($selection.target.process.command_line, `.* 936`) or re.regex($selection.target.process.command_line, `.* 1258`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_wce_wceauxdll_access {
+ meta:
+    author = "Thomas Patzke"
+    description = "Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2017/06/14"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, t1003, s0005"
+
+  events:
+(($selection.metadata.product_event_type = "4656" or $selection.metadata.product_event_type = "4658" or $selection.metadata.product_event_type = "4660" or $selection.metadata.product_event_type = "4663") and (re.regex($selection.target.registry.registry_value_data, `.*\\wceaux\.dll`) or re.regex($selection.target.file.full_path, `.*\\wceaux\.dll`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_createremotethread_api_and_loadlibrary {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects potential use of CreateRemoteThread api and LoadLibrary function to inject DLL into a process Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/11"
+    product = "windows"
+    category = "create_remote_thread"
+    mitre = "defense_evasion, t1055, t1055.001"
+
+  events:
+(re.regex($selection.src.application, `.*\\kernel32\.dll`) and $selection.StartFunction = "LoadLibraryA")
+
+  condition:
+    $selection
+}

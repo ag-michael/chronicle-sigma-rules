@@ -1,0 +1,16 @@
+rule  Dev_sigma_darkside_ransomware_pattern {
+ meta:
+    author = "Florian Roth"
+    description = "Detects DarkSide Ransomware and helpers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/14"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*=[char][byte]\('0x'\+.*`) or re.regex($selection1.target.process.command_line, `.* -work worker0 -path .*`)) or (re.regex($selection1.src.process.command_line, `.*DllHost\.exe /Processid:{3E5FC7F9-9A51-4367-9063-A120244FBEC7}.*`) and re.regex($selection1.target.process.file.full_path, `.*\\AppData\\Local\\Temp\\.*`)))
+
+  condition:
+    $selection1
+}

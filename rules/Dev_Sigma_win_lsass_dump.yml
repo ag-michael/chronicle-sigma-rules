@@ -1,0 +1,17 @@
+rule  Dev_sigma_lsass_memory_dumping {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community"
+    description = "Detect creation of dump files containing the memory space of lsass.exe, which contains sensitive credentials. Identifies usage of Sysinternals procdump.exe to export the memory space of lsass.exe which contains sensitive credentials. Author: E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003.001, t1003"
+
+  events:
+(((re.regex($selection1.target.process.command_line, `.*lsass.*`) and re.regex($selection1.target.process.command_line, `.*\.dmp.*`)) and not (re.regex($selection1.target.process.file.full_path, `.*\\werfault\.exe`))) or (re.regex($selection1.target.process.file.full_path, `.*\\procdump.*`) and re.regex($selection1.target.process.file.full_path, `.*\.exe`) and re.regex($selection1.target.process.command_line, `.*lsass.*`)))
+
+  condition:
+    $selection1
+}

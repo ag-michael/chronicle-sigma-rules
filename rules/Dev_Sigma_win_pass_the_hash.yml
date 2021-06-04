@@ -1,0 +1,17 @@
+rule  Dev_sigma_pass_the_hash_activity {
+ meta:
+    author = "Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method)"
+    description = "Detects the attack technique pass the hash which is used to move laterally inside the network Author: Ilias el Matani (rule), The Information Assurance Directorate at the NSA (method)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/08"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1075, car.2016-04-004, t1550.002"
+
+  events:
+(($selection.extensions.auth.mechanism = "3" and $selection.LogonProcessName = "NtLmSsp" and $selection.principal.hostname = "%Workstations%" and $selection.target.hostname = "%Workstations%" and ($selection.metadata.product_event_type = "4624" or $selection.metadata.product_event_type = "4625")) and not ($selection.src.user.user_display_name = "ANONYMOUS LOGON"))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_winnti_malware_hk_university_campaign {
+ meta:
+    author = "Florian Roth, Markus Neis"
+    description = "Detects specific process characteristics of Winnti malware noticed in Dec/Jan 2020 in a campaign against Honk Kong universities Author: Florian Roth, Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/01"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1574.002, t1073, g0044"
+
+  events:
+(((re.regex($selection1.src.process.file.full_path, `.*C:\\Windows\\Temp.*`) or re.regex($selection1.src.process.file.full_path, `.*\\hpqhvind\.exe.*`)) and re.regex($selection1.target.process.file.full_path, `C:\\ProgramData\\DRM.*`)) or (re.regex($selection1.src.process.file.full_path, `C:\\ProgramData\\DRM.*`) and re.regex($selection1.target.process.file.full_path, `.*\\wmplayer\.exe`)) or (re.regex($selection1.src.process.file.full_path, `.*\\Test\.exe`) and re.regex($selection1.target.process.file.full_path, `.*\\wmplayer\.exe`)) or $selection1.target.process.file.full_path = "C:\\ProgramData\\DRM\\CLR\\CLR.exe" or (re.regex($selection1.src.process.file.full_path, `C:\\ProgramData\\DRM\\Windows.*`) and re.regex($selection1.target.process.file.full_path, `.*\\SearchFilterHost\.exe`)))
+
+  condition:
+    $selection1
+}

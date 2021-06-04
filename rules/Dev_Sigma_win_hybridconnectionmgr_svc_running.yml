@@ -1,0 +1,17 @@
+rule  Dev_sigma_hybridconnectionmanager_service_running {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Rule to detect the Hybrid Connection Manager service running on an endpoint. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/12"
+    product = "windows"
+    service = "Microsoft-ServiceBus-Client"
+    mitre = "persistence"
+
+  events:
+(($selection.metadata.product_event_type = "40300" or $selection.metadata.product_event_type = "40301" or $selection.metadata.product_event_type = "40302") and (re.regex($selection.Message, `.*HybridConnection.*`) or re.regex($selection.Message, `.*sb://.*`) or re.regex($selection.Message, `.*servicebus\.windows\.net.*`) or re.regex($selection.Message, `.*HybridConnectionManage.*`)))
+
+  condition:
+    $selection
+}

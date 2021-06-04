@@ -1,0 +1,17 @@
+rule  Dev_sigma_rubeus_hack_tool {
+ meta:
+    author = "Florian Roth"
+    description = "Detects command line parameters used by Rubeus hack tool Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/12/19"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003, t1558.003, t1558, lateral_movement, t1550.003, t1097"
+
+  events:
+(re.regex($selection.target.process.command_line, `.* asreproast .*`) or re.regex($selection.target.process.command_line, `.* dump /service:krbtgt .*`) or re.regex($selection.target.process.command_line, `.* kerberoast .*`) or re.regex($selection.target.process.command_line, `.* createnetonly /program:.*`) or re.regex($selection.target.process.command_line, `.* ptt /ticket:.*`) or re.regex($selection.target.process.command_line, `.* /impersonateuser:.*`) or re.regex($selection.target.process.command_line, `.* renew /ticket:.*`) or re.regex($selection.target.process.command_line, `.* asktgt /user:.*`) or re.regex($selection.target.process.command_line, `.* harvest /interval:.*`) or re.regex($selection.target.process.command_line, `.* s4u /user:.*`) or re.regex($selection.target.process.command_line, `.* s4u /ticket:.*`) or re.regex($selection.target.process.command_line, `.* hash /password:.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_openwithexe_executes_specified_binary {
+ meta:
+    author = "Beyu Denis, oscd.community (rule), @harr0ey (idea)"
+    description = "The OpenWith.exe executes other binary Author: Beyu Denis, oscd.community (rule), @harr0ey (idea)."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218, execution"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\OpenWith\.exe`) and re.regex($selection.target.process.command_line, `.*/c.*`))
+
+  condition:
+    $selection
+}

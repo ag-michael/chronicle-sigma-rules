@@ -1,0 +1,18 @@
+rule  Dev_sigma_enumeration_via_the_global_catalog {
+ meta:
+    author = "Chakib Gzenayi (@Chak092), Hosni Mribah"
+    description = "Detects enumeration of the global catalog (that can be performed using BloodHound or others AD reconnaissance tools). Adjust Threshold according to domain width. Author: Chakib Gzenayi (@Chak092), Hosni Mribah."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/11"
+    product = "windows"
+    service = "system"
+    mitre = "discovery, t1087, t1087.002"
+
+  events:
+($selection.metadata.product_event_type = "5156" and ($selection.target.port = "3268" or $selection.target.port = "3269"))
+$selection.principal.ip = $target
+
+  condition:
+    $selection and #target > 2000
+}

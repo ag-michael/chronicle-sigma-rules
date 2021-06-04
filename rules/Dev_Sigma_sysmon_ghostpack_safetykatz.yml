@@ -1,0 +1,17 @@
+rule  Dev_sigma_detection_of_safetykatz {
+ meta:
+    author = "Markus Neis"
+    description = "Detects possible SafetyKatz Behaviour Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/07/24"
+    category = "file_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+re.regex($selection.target.file.full_path, `.*\\Temp\\debug\.bin`)
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_defender_exclusion {
+ meta:
+    author = "Florian Roth"
+    description = "Detects requests to exclude files, folders or processes from Antivirus scanning using PowerShell cmdlets Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001"
+
+  events:
+(($selection1.target.process.command_line = "Add-MpPreference" and (re.regex($selection1.target.process.command_line, `.* -ExclusionPath .*`) or re.regex($selection1.target.process.command_line, `.* -ExclusionExtension .*`) or re.regex($selection1.target.process.command_line, `.* -ExclusionProcess .*`))) or (re.regex($selection1.target.process.command_line, `.*QWRkLU1wUHJlZmVyZW5jZ.*`) or re.regex($selection1.target.process.command_line, `.*FkZC1NcFByZWZlcmVuY2.*`) or re.regex($selection1.target.process.command_line, `.*BZGQtTXBQcmVmZXJlbmNl.*`)))
+
+  condition:
+    $selection1
+}

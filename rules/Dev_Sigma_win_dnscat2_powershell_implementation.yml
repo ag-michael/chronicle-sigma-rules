@@ -1,0 +1,18 @@
+rule  Dev_sigma_dnscat2_powershell_implementation_detection_via_process_creation {
+ meta:
+    author = "Cian Heasley"
+    description = "The PowerShell implementation of DNSCat2 calls nslookup to craft queries. Counting nslookup processes spawned by PowerShell will show hundreds or thousands of instances if PS DNSCat2 is active locally. Author: Cian Heasley."
+    reference = ""
+    version = "0.01"
+    created = "2020/08/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1071, t1071.004, t1001.003, t1041"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\nslookup\.exe`) and re.regex($selection.target.process.command_line, `.*\\nslookup\.exe`))
+$selection.src.process.file.full_path = $target
+
+  condition:
+    $selection and #target > 100
+}

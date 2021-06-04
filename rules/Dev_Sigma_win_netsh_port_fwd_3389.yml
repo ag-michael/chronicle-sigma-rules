@@ -1,0 +1,17 @@
+rule  Dev_sigma_netsh_rdp_port_forwarding {
+ meta:
+    author = "Florian Roth, oscd.community"
+    description = "Detects netsh commands that configure a port forwarding of port 3389 used for RDP Author: Florian Roth, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, defense_evasion, command_and_control, t1090"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\netsh\.exe`) and re.regex($selection.target.process.command_line, `.*i.*`) and re.regex($selection.target.process.command_line, `.* p.*`) and re.regex($selection.target.process.command_line, `.*=3389.*`) and re.regex($selection.target.process.command_line, `.* c.*`))
+
+  condition:
+    $selection
+}

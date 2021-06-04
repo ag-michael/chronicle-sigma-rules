@@ -1,0 +1,17 @@
+rule  Dev_sigma_exports_registry_key_to_an_alternate_data_stream {
+ meta:
+    author = "Oddvar Moe, Sander Wiebing, oscd.community"
+    description = "Exports the target Registry key and hides it in the specified alternate data stream. Author: Oddvar Moe, Sander Wiebing, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    product = "windows"
+    category = "create_stream_hash"
+    mitre = "defense_evasion, t1564.004"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\regedit\.exe`)
+
+  condition:
+    $selection
+}

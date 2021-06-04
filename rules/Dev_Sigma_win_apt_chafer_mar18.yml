@@ -1,0 +1,68 @@
+rule  Dev_sigma_chafer_activity {
+ meta:
+    author = "Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018 Author: Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/23"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, g0049, t1053, t1053.005, s0111, t1050, t1543.003, defense_evasion, t1112, command_and_control, t1071, t1071.004"
+
+  events:
+($selection_service.metadata.product_event_type = "7045" and ($selection_service.target.process.command_line = "SC Scheduled Scan" or $selection_service.target.process.command_line = "UpdatMachine"))
+
+  condition:
+    $selection_service
+}
+rule  Dev_sigma_chafer_activity_part_1 {
+ meta:
+    author = "Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018 Author: Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/23"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, g0049, t1053, t1053.005, s0111, t1050, t1543.003, defense_evasion, t1112, command_and_control, t1071, t1071.004"
+
+  events:
+($selection_service.metadata.product_event_type = "4698" and ($selection_service.target.resource.name = "SC Scheduled Scan" or $selection_service.target.resource.name = "UpdatMachine"))
+
+  condition:
+    $selection_service
+}
+rule  Dev_sigma_chafer_activity_part_2 {
+ meta:
+    author = "Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018 Author: Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/23"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, g0049, t1053, t1053.005, s0111, t1050, t1543.003, defense_evasion, t1112, command_and_control, t1071, t1071.004"
+
+  events:
+(re.regex($selection_reg1.target.registry.registry_key, `.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UMe`) or re.regex($selection_reg1.target.registry.registry_key, `.*SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UT`))
+
+  condition:
+    $selection_reg1
+}
+rule  Dev_sigma_chafer_activity_part_3 {
+ meta:
+    author = "Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects Chafer activity attributed to OilRig as reported in Nyotron report in March 2018 Author: Florian Roth, Markus Neis, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, g0049, t1053, t1053.005, s0111, t1050, t1543.003, defense_evasion, t1112, command_and_control, t1071, t1071.004"
+
+  events:
+((re.regex($selection_process0.target.process.command_line, `.*\\Service\.exe.*`) and (re.regex($selection_process0.target.process.command_line, `.*i`) or re.regex($selection_process0.target.process.command_line, `.*u`))) or (re.regex($selection_process0.target.process.command_line, `.*\\microsoft\\Taskbar\\autoit3\.exe`) or re.regex($selection_process0.target.process.command_line, `C:\\wsc\.exe.*`)) or (re.regex($selection_process0.target.process.file.full_path, `.*\\Windows\\Temp\\DB\\.*`) and re.regex($selection_process0.target.process.file.full_path, `.*\.exe`)) or (re.regex($selection_process0.target.process.command_line, `.*\\nslookup\.exe.*`) and re.regex($selection_process0.target.process.command_line, `.*-q=TXT.*`) and re.regex($selection_process0.src.process.file.full_path, `.*\\Autoit.*`)))
+
+  condition:
+    $selection_process0
+}

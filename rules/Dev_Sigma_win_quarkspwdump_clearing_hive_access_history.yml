@@ -1,0 +1,17 @@
+rule  Dev_sigma_quarkspwdump_clearing_access_history {
+ meta:
+    author = "Florian Roth"
+    description = "Detects QuarksPwDump clearing access history in hive Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/15"
+    product = "windows"
+    service = "system"
+    mitre = "credential_access, t1003, t1003.002"
+
+  events:
+($selection.metadata.product_event_type = "16" and re.regex($selection.HiveName, `.*\\AppData\\Local\\Temp\\SAM.*`) and re.regex($selection.HiveName, `.*\.dmp`))
+
+  condition:
+    $selection
+}

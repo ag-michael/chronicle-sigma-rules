@@ -1,0 +1,17 @@
+rule  Dev_sigma_netexe_execution {
+ meta:
+    author = "Michael Haag, Mark Woan (improvements), James Pemberton / @4A616D6573 / oscd.community (improvements)"
+    description = "Detects execution of Net.exe, whether suspicious or benign. Author: Michael Haag, Mark Woan (improvements), James Pemberton / @4A616D6573 / oscd.community (improvements)."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1049, t1018, t1135, t1201, t1069.001, t1069.002, t1087.001, t1087.002, lateral_movement, t1021.002, t1077, s0039"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and (re.regex($selection.target.process.command_line, `.* group.*`) or re.regex($selection.target.process.command_line, `.* localgroup.*`) or re.regex($selection.target.process.command_line, `.* user.*`) or re.regex($selection.target.process.command_line, `.* view.*`) or re.regex($selection.target.process.command_line, `.* share.*`) or re.regex($selection.target.process.command_line, `.* accounts.*`) or re.regex($selection.target.process.command_line, `.* stop .*`)))
+
+  condition:
+    $selection
+}

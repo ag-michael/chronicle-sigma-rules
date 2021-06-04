@@ -1,0 +1,51 @@
+rule  Dev_sigma_powershell_scripts_installed_as_services {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects powershell script installed as a Service Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    service = "system"
+    mitre = "execution, t1569.002"
+
+  events:
+($service_creation.metadata.product_event_type = "7045" and (re.regex($service_creation.target.process.command_line, `.*powershell.*`) or re.regex($service_creation.target.process.command_line, `.*pwsh.*`)))
+
+  condition:
+    $service_creation
+}
+rule  Dev_sigma_powershell_scripts_installed_as_services_part_1 {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects powershell script installed as a Service Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    service = "sysmon"
+    mitre = "execution, t1569.002"
+
+  events:
+($service_creation.metadata.product_event_type = "6" and (re.regex($service_creation.target.process.command_line, `.*powershell.*`) or re.regex($service_creation.target.process.command_line, `.*pwsh.*`)))
+
+  condition:
+    $service_creation
+}
+rule  Dev_sigma_powershell_scripts_installed_as_services_part_2 {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects powershell script installed as a Service Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    service = "security"
+    mitre = "execution, t1569.002"
+
+  events:
+($service_creation.metadata.product_event_type = "4697" and (re.regex($service_creation.target.process.command_line, `.*powershell.*`) or re.regex($service_creation.target.process.command_line, `.*pwsh.*`)))
+
+  condition:
+    $service_creation
+}

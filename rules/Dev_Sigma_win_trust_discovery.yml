@@ -1,0 +1,17 @@
+rule  Dev_sigma_domain_trust_discovery {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community, omkar72"
+    description = "Identifies execution of nltest.exe and dsquery.exe for domain trust discovery. This technique is used by attackers to enumerate Active Directory trusts. Author: E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community, omkar72."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1482"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\nltest\.exe`) and (re.regex($selection.target.process.command_line, `.*domain_trusts.*`) or re.regex($selection.target.process.command_line, `.*all_trusts.*`) or re.regex($selection.target.process.command_line, `.*/dclist.*`))) or (re.regex($selection.target.process.file.full_path, `.*\\dsquery\.exe`) and re.regex($selection.target.process.command_line, `.*trustedDomain.*`)))
+
+  condition:
+    $selection
+}

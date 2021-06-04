@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_commandline_escape {
+ meta:
+    author = "juju4"
+    description = "Detects suspicious process that use escape characters Author: juju4."
+    reference = ""
+    version = "0.01"
+    created = "2018/12/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1140"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*h^t^t^p.*`) or re.regex($selection.target.process.command_line, `.*h\"t\"t\"p.*`))
+
+  condition:
+    $selection
+}

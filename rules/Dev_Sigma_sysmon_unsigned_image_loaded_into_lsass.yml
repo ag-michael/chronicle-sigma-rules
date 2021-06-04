@@ -1,0 +1,17 @@
+rule  Dev_sigma_unsigned_image_loaded_into_lsass_process {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Loading unsigned image (DLL, EXE) into LSASS process Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "image_load"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\lsass\.exe`) and $selection.Signed = "false")
+
+  condition:
+    $selection
+}

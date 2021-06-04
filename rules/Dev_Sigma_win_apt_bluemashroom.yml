@@ -1,0 +1,17 @@
+rule  Dev_sigma_bluemashroom_dll_load {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious DLL loading from AppData Local path as described in BlueMashroom report Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1117, t1218.010"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*\\AppData\\Local\\.*`) and (re.regex($selection.target.process.command_line, `.*\\regsvr32.*`) or re.regex($selection.target.process.command_line, `.*,DllEntry.*`)))
+
+  condition:
+    $selection
+}

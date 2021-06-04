@@ -1,0 +1,17 @@
+rule  Dev_sigma_disable_security_events_logging_adding_reg_key_minint {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "Detects the addition of a key 'MiniNt' to the registry. Upon a reboot, Windows Event Log service will stopped write events. Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.001, t1112"
+
+  events:
+(($selection.target.registry.registry_key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\MiniNt" and $selection.metadata.event_type = "CreateKey") or $selection.NewName = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\MiniNt")
+
+  condition:
+    $selection
+}

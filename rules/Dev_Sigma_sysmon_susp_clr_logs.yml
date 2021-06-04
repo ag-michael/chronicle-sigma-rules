@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspcious_clr_logs_creation {
+ meta:
+    author = "omkar72, oscd.community"
+    description = "Detects suspicious .NET assembly executions Author: omkar72, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "file_event"
+    product = "windows"
+    mitre = "execution, t1059.001"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Microsoft\\CLR.*`) and re.regex($selection.target.file.full_path, `.*\\UsageLogs\\.*`) and (re.regex($selection.target.file.full_path, `.*mshta.*`) or re.regex($selection.target.file.full_path, `.*cscript.*`) or re.regex($selection.target.file.full_path, `.*wscript.*`) or re.regex($selection.target.file.full_path, `.*regsvr32.*`) or re.regex($selection.target.file.full_path, `.*wmic.*`)))
+
+  condition:
+    $selection
+}

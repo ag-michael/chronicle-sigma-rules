@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_adsicache_usage_by_unknown_tool {
+ meta:
+    author = "xknow @xknow_infosec"
+    description = "Detects the usage of ADSI (LDAP) operations by tools. This may also detect tools like LDAPFragger. Author: xknow @xknow_infosec."
+    reference = ""
+    version = "0.01"
+    created = "2019/03/24"
+    product = "windows"
+    category = "file_event"
+    mitre = "t1071, t1001.003, command_and_control"
+
+  events:
+((re.regex($selection_1.target.file.full_path, `.*\\Local\\Microsoft\\Windows\\SchCache\\.*`) and re.regex($selection_1.target.file.full_path, `.*\.sch`)) and not (($selection_1.target.process.file.full_path = "C:\\windows\\system32\\svchost.exe" or $selection_1.target.process.file.full_path = "C:\\windows\\system32\\dllhost.exe" or $selection_1.target.process.file.full_path = "C:\\windows\\system32\\mmc.exe" or $selection_1.target.process.file.full_path = "C:\\windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe" or $selection_1.target.process.file.full_path = "C:\\Windows\\CCM\\CcmExec.exe")))
+
+  condition:
+    $selection_1
+}

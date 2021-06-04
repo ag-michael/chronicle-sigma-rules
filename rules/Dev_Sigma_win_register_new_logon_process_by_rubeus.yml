@@ -1,0 +1,17 @@
+rule  Dev_sigma_register_new_logon_process_by_rubeus {
+ meta:
+    author = "Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community"
+    description = "Detects potential use of Rubeus via registered new trusted logon process Author: Roberto Rodriguez (source), Ilyas Ochkov (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, privilege_escalation, t1208, t1558.003"
+
+  events:
+($selection.metadata.product_event_type = "4611" and $selection.LogonProcessName = "User32LogonProcesss")
+
+  condition:
+    $selection
+}

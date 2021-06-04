@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_vboxdrvinstexe_parameters {
+ meta:
+    author = "Konstantin Grishchenko, oscd.community"
+    description = "Detect VBoxDrvInst.exe run whith parameters allowing processing INF file. This allows to create values in the registry and install drivers. For example one could use this technique to obtain persistence via modifying one of Run or RunOnce registry keys Author: Konstantin Grishchenko, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\VBoxDrvInst\.exe`) and re.regex($selection.target.process.command_line, `.*driver.*`) and re.regex($selection.target.process.command_line, `.*executeinf.*`))
+
+  condition:
+    $selection
+}

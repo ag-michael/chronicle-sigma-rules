@@ -1,0 +1,17 @@
+rule  Dev_sigma_hiding_files_with_attribexe {
+ meta:
+    author = "Sami Ruohonen"
+    description = "Detects usage of attrib.exe to hide files from users. Author: Sami Ruohonen."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1564.001, t1158"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\attrib\.exe`) and re.regex($selection.target.process.command_line, `.* \+h .*`)) and not ((re.regex($selection.target.process.command_line, `.*\\desktop\.ini .*`) or (re.regex($selection.src.process.file.full_path, `.*\\cmd\.exe`) and re.regex($selection.target.process.command_line, `\+R \+H \+S \+A \\.*\.cui`) and re.regex($selection.src.process.command_line, `C:\\WINDOWS\\system32\\.*\.bat`)))))
+
+  condition:
+    $selection
+}

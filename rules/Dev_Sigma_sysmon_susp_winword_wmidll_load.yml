@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_management_instrumentation_dll_loaded_via_microsoft_word {
+ meta:
+    author = "Michael R. (@nahamike01)"
+    description = "Detects DLL's Loaded Via Word Containing VBA Macros Executing WMI Commands Author: Michael R. (@nahamike01)."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/26"
+    category = "image_load"
+    product = "windows"
+    mitre = "execution, t1047"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\winword\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powerpnt\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\excel\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\outlook\.exe`)) and (re.regex($selection.target.process.file.full_path, `.*\\wmiutils\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemcomn\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemprox\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemdisp\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\wbemsvc\.dll`)))
+
+  condition:
+    $selection
+}

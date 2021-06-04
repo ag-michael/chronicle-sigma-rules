@@ -1,0 +1,17 @@
+rule  Dev_sigma_microsoft_binary_github_communication {
+ meta:
+    author = "Michael Haag (idea), Florian Roth (rule)"
+    description = "Detects an executable in the Windows folder accessing github.com Author: Michael Haag (idea), Florian Roth (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2017/08/24"
+    category = "network_connection"
+    product = "windows"
+    mitre = "lateral_movement, t1105, exfiltration, t1567.001, t1048"
+
+  events:
+($selection.Initiated = "true" and (re.regex($selection.target.hostname, `.*\.github\.com`) or re.regex($selection.target.hostname, `.*\.githubusercontent\.com`)) and re.regex($selection.target.process.file.full_path, `C:\\Windows\\.*`))
+
+  condition:
+    $selection
+}

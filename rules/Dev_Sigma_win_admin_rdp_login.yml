@@ -1,0 +1,17 @@
+rule  Dev_sigma_admin_user_remote_logon {
+ meta:
+    author = "juju4"
+    description = "Detect remote login by Administrator user depending on internal pattern Author: juju4."
+    reference = ""
+    version = "0.01"
+    created = "2017/10/29"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1078, t1078.001, t1078.002, t1078.003, car.2016-04-005"
+
+  events:
+($selection.metadata.product_event_type = "4624" and $selection.extensions.auth.mechanism = "10" and $selection.src.application = "Negotiate" and re.regex($selection.src.user.user_display_name, `Admin-.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_bypass_uac_via_wsresetexe {
+ meta:
+    author = "E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community"
+    description = "Identifies use of WSReset.exe to bypass User Account Control. Adversaries use this technique to execute privileged processes. Author: E.M. Anhaus (originally from Atomic Blue Detections, Tony Lambert), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1548.002, t1088"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\wsreset\.exe`) and not (re.regex($selection.target.process.file.full_path, `.*\\conhost\.exe`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_mimikatz_dc_sync {
+ meta:
+    author = "Benjamin Delpy, Florian Roth, Scott Dermott"
+    description = "Detects Mimikatz DC sync security events Author: Benjamin Delpy, Florian Roth, Scott Dermott."
+    reference = ""
+    version = "0.01"
+    created = "2018/06/03"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, s0002, t1003, t1003.006"
+
+  events:
+(((($selection.metadata.product_event_type = "4662" and (re.regex($selection.target.process.file.file_metadata.pe.import_hash, `.*Replicating Directory Changes All.*`) or re.regex($selection.target.process.file.file_metadata.pe.import_hash, `.*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2.*`))) and not ($selection.src.user.domain = "Window Manager")) and not ((re.regex($selection.src.user.user_display_name, `NT AUTHORITY.*`) or re.regex($selection.src.user.user_display_name, `MSOL_.*`)))) and not (re.regex($selection.src.user.user_display_name, `.*$`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_execution_via_diskshadowexe {
+ meta:
+    author = "Ivan Dyachkov, oscd.community"
+    description = "Detects using Diskshadow.exe to execute arbitrary code in text file Author: Ivan Dyachkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1218"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\diskshadow\.exe`) and (re.regex($selection.target.process.command_line, `.*/s.*`) or re.regex($selection.target.process.command_line, `.*-s.*`)))
+
+  condition:
+    $selection
+}

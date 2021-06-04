@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_xor_encoded_powershell_command_line {
+ meta:
+    author = "Sami Ruohonen, Harish Segar (improvement)"
+    description = "Detects suspicious powershell process which includes bxor command, alternative obfuscation method to b64 encoded commands. Author: Sami Ruohonen, Harish Segar (improvement)."
+    reference = ""
+    version = "0.01"
+    created = "2018/09/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1086, t1059.001, t1140, t1027"
+
+  events:
+(($selection.metadata.description = "Windows PowerShell" or $selection.metadata.product_name = "PowerShell Core 6") and (re.regex($selection.target.process.command_line, `.*bxor.*`) or re.regex($selection.target.process.command_line, `.*join.*`) or re.regex($selection.target.process.command_line, `.*char.*`)))
+
+  condition:
+    $selection
+}

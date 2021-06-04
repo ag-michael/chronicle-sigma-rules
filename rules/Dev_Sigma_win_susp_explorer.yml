@@ -1,0 +1,17 @@
+rule  Dev_sigma_proxy_execution_via_explorerexe {
+ meta:
+    author = "Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative"
+    description = "Attackers can use explorer.exe for evading defense mechanisms Author: Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\explorer\.exe`) and re.regex($selection.src.process.file.full_path, `.*\\cmd\.exe`) and re.regex($selection.target.process.command_line, `.*explorer\.exe.*`))
+
+  condition:
+    $selection
+}

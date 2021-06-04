@@ -1,0 +1,17 @@
+rule  Dev_sigma_regsvr32_flags_anomaly {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a flag anomaly in which regsvr32.exe uses a /i flag without using a /n flag at the same time Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/07/13"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.010, t1117"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`) and re.regex($selection.target.process.command_line, `.* /i:.*`)) and not (re.regex($selection.target.process.command_line, `.* /n .*`)))
+
+  condition:
+    $selection
+}

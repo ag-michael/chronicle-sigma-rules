@@ -1,0 +1,17 @@
+rule  Dev_sigma_devtoolslauncherexe_executes_specified_binary {
+ meta:
+    author = "Beyu Denis, oscd.community (rule), @_felamos (idea)"
+    description = "The Devtoolslauncher.exe executes other binary Author: Beyu Denis, oscd.community (rule), @_felamos (idea)."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218, execution"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\devtoolslauncher\.exe`) and re.regex($selection.target.process.command_line, `.*LaunchForDeploy.*`))
+
+  condition:
+    $selection
+}

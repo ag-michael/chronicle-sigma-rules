@@ -1,0 +1,17 @@
+rule  Dev_sigma_wsl_execution {
+ meta:
+    author = "oscd.community, Zach Stanford @svch0st"
+    description = "Detects Possible usage of Windows Subsystem for Linux (WSL) binary as a LOLBIN Author: oscd.community, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, defense_evasion, t1218, t1202"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\wsl\.exe`) and (re.regex($selection.target.process.command_line, `.* -e .*`) or re.regex($selection.target.process.command_line, `.* --exec .*`)))
+
+  condition:
+    $selection
+}

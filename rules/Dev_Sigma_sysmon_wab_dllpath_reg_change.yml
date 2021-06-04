@@ -1,0 +1,17 @@
+rule  Dev_sigma_execution_dll_of_choice_using_wabexe {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "This rule  Dev_sigma_detects that the path to the DLL written in the registry is different from the default one. Launched WAB.exe tries to load the DLL from Registry. Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\Software\\Microsoft\\WAB\\DLLPath`) and not ($selection.metadata.description = "%CommonProgramFiles%\\System\\wab32.dll"))
+
+  condition:
+    $selection
+}

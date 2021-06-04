@@ -1,0 +1,17 @@
+rule  Dev_sigma_rdp_sensitive_settings_changed {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects changes to RDP terminal service sensitive settings Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($selection_reg.target.registry.registry_key, `.*\\services\\TermService\\Parameters\\ServiceDll.*`) or re.regex($selection_reg.target.registry.registry_key, `.*\\Control\\Terminal Server\\fSingleSessionPerUser.*`) or re.regex($selection_reg.target.registry.registry_key, `.*\\Control\\Terminal Server\\fDenyTSConnections.*`))
+
+  condition:
+    $selection_reg
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_cmdkey_cached_credentials_recon {
+ meta:
+    author = "jmallette"
+    description = "Detects usage of cmdkey to look for cached credentials Author: jmallette."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003.005, t1003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\cmdkey\.exe`) and re.regex($selection.target.process.command_line, `.* /list .*`))
+
+  condition:
+    $selection
+}

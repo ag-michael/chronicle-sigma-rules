@@ -1,0 +1,17 @@
+rule  Dev_sigma_protected_storage_service_access {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects access to a protected_storage service over the network. Potential abuse of DPAPI to extract domain backup keys from Domain Controllers Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/10"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1021, t1021.002"
+
+  events:
+($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*IPC.*`) and $selection.target.file.full_path = "protected_storage")
+
+  condition:
+    $selection
+}

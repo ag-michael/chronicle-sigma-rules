@@ -1,0 +1,17 @@
+rule  Dev_sigma_accesschk_usage_after_privilege_escalation {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community"
+    description = "Accesschk is an access and privilege audit tool developed by SysInternal and often being used by attacker to verify if a privilege escalation process succesfull or not Author: Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    product = "windows"
+    category = "process_creation"
+    mitre = "discovery, t1069.001"
+
+  events:
+($integrity_level.IntegrityLevel = "Medium" and (re.regex($integrity_level.metadata.product_name, `.*AccessChk`) or re.regex($integrity_level.metadata.description, `.*Reports effective permissions.*`)))
+
+  condition:
+    $integrity_level
+}

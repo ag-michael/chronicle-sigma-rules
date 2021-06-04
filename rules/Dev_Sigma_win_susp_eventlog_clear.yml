@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_eventlog_clear_or_configuration_using_wevtutil {
+ meta:
+    author = "Ecco, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects clearing or configuration of eventlogs uwing wevtutil, powershell and wmic. Might be used by ransomwares during the attack (seen by NotPetya and others) Author: Ecco, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1070.001, t1070, car.2016-04-002"
+
+  events:
+(((re.regex($selection_wevtutil_binary.target.process.file.full_path, `.*\\powershell\.exe`) and (re.regex($selection_wevtutil_binary.target.process.command_line, `.*Clear-EventLog.*`) or re.regex($selection_wevtutil_binary.target.process.command_line, `.*Remove-EventLog.*`) or re.regex($selection_wevtutil_binary.target.process.command_line, `.*Limit-EventLog.*`))) or (re.regex($selection_wevtutil_binary.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($selection_wevtutil_binary.target.process.command_line, `.* ClearEventLog .*`))) or (re.regex($selection_wevtutil_binary.target.process.file.full_path, `.*\\wevtutil\.exe`) and (re.regex($selection_wevtutil_binary.target.process.command_line, `.*clear-log.*`) or re.regex($selection_wevtutil_binary.target.process.command_line, `.* cl .*`) or re.regex($selection_wevtutil_binary.target.process.command_line, `.*set-log.*`) or re.regex($selection_wevtutil_binary.target.process.command_line, `.* sl .*`))))
+
+  condition:
+    $selection_wevtutil_binary
+}

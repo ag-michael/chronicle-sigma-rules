@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_adfind_execution {
+ meta:
+    author = "FPT.EagleEye Team, omkar72, oscd.community"
+    description = "Detects the execution of a AdFind for Active Directory enumeration Author: FPT.EagleEye Team, omkar72, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/26"
+    product = "windows"
+    category = "process_creation"
+    mitre = "discovery, t1018, t1087.002, t1482, t1069.002"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*objectcategory.*`) or re.regex($selection.target.process.command_line, `.*trustdmp.*`) or re.regex($selection.target.process.command_line, `.*dcmodes.*`) or re.regex($selection.target.process.command_line, `.*dclist.*`) or re.regex($selection.target.process.command_line, `.*computers_pwdnotreqd.*`)) and re.regex($selection.target.process.file.full_path, `.*\\adfind\.exe`))
+
+  condition:
+    $selection
+}

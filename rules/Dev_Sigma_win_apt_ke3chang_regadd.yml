@@ -1,0 +1,17 @@
+rule  Dev_sigma_ke3chang_registry_key_modifications {
+ meta:
+    author = "Markus Neis, Swisscom"
+    description = "Detects Registry modifications performed by Ke3chang malware in campaigns running in 2019 and 2020 Author: Markus Neis, Swisscom."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0004, defense_evasion, t1089, t1562.001"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*-Property DWORD -name DisableFirstRunCustomize -value 2 -Force.*`) or re.regex($selection1.target.process.command_line, `.*-Property String -name Check_Associations -value.*`) or re.regex($selection1.target.process.command_line, `.*-Property DWORD -name IEHarden -value 0 -Force.*`))
+
+  condition:
+    $selection1
+}

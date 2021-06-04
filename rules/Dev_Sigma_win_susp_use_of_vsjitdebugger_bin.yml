@@ -1,0 +1,17 @@
+rule  Dev_sigma_malicious_pe_execution_by_microsoft_visual_studio_debugger {
+ meta:
+    author = "Agro (@agro_sev), Ensar Şamil (@sblmsrsn), oscd.community"
+    description = "There is an option for a MS VS Just-In-Time Debugger \"vsjitdebugger.exe\" to launch specified executable and attach a debugger. This option may be used adversaries to execute malicious code by signed verified binary. The debugger is installed alongside with Microsoft Visual Studio package. Author: Agro (@agro_sev), Ensar Şamil (@sblmsrsn), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/14"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1218, defense_evasion"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\vsjitdebugger\.exe`) and not ((re.regex($selection.ChildImage, `.*\\vsimmersiveactivatehelper.*\.exe`) or re.regex($selection.ChildImage, `.*\\devenv\.exe`))))
+
+  condition:
+    $selection
+}

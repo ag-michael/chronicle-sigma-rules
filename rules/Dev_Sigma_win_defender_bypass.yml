@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_defender_exclusion_set {
+ meta:
+    author = "@BarryShooshooga"
+    description = "Detects scenarios where an windows defender exclusion was added in registry where an entity would want to bypass antivirus scanning from windows defender Author: @BarryShooshooga."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1089, t1562.001"
+
+  events:
+(($selection.metadata.product_event_type = "4657" or $selection.metadata.product_event_type = "4656" or $selection.metadata.product_event_type = "4660" or $selection.metadata.product_event_type = "4663") and (re.regex($selection.target.file.full_path, `.*\\Microsoft\\Windows Defender\\Exclusions\\.*`) or re.regex($selection.target.registry.registry_value_data, `.*\\Microsoft\\Windows Defender\\Exclusions\\.*`)))
+
+  condition:
+    $selection
+}

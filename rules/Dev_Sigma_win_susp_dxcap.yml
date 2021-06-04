@@ -1,0 +1,17 @@
+rule  Dev_sigma_application_whitelisting_bypass_via_dxcapexe {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Detects execution of of Dxcap.exe Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218, execution"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\dxcap\.exe`) and re.regex($selection.target.process.command_line, `.*-c.*`) and re.regex($selection.target.process.command_line, `.*\.exe.*`))
+
+  condition:
+    $selection
+}

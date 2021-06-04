@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_process_hollowing_image_loading {
+ meta:
+    author = "Markus Neis"
+    description = "Detects Loading of samlib.dll, WinSCard.dll from untypical process e.g. through process hollowing by Mimikatz Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/01/07"
+    category = "image_load"
+    product = "windows"
+    mitre = "defense_evasion, t1073, t1574.002"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\notepad\.exe`) and (re.regex($selection.target.process.file.full_path, `.*\\samlib\.dll`) or re.regex($selection.target.process.file.full_path, `.*\\WinSCard\.dll`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_encoded_powershell_command_line {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Vasiliy Burov (rule), oscd.community"
+    description = "Detects specific combinations of encoding methods in the PowerShell command lines Author: Teymur Kheirkhabarov (idea), Vasiliy Burov (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1027, execution, t1059.001"
+
+  events:
+(re.regex($selection1.target.process.file.full_path, `.*\\powershell\.exe`) and (((((re.regex($selection1.target.process.command_line, `.*ToInt.*`) or re.regex($selection1.target.process.command_line, `.*ToDecimal.*`) or re.regex($selection1.target.process.command_line, `.*ToByte.*`) or re.regex($selection1.target.process.command_line, `.*ToUint.*`) or re.regex($selection1.target.process.command_line, `.*ToSingle.*`) or re.regex($selection1.target.process.command_line, `.*ToSByte.*`)) and (re.regex($selection1.target.process.command_line, `.*ToChar.*`) or re.regex($selection1.target.process.command_line, `.*ToString.*`) or re.regex($selection1.target.process.command_line, `.*String.*`))) or (re.regex($selection1.target.process.command_line, `.*char.*`) and re.regex($selection1.target.process.command_line, `.*join.*`))) or (re.regex($selection1.target.process.command_line, `.*split.*`) and re.regex($selection1.target.process.command_line, `.*join.*`))) or (re.regex($selection1.target.process.command_line, `.*ForEach.*`) and re.regex($selection1.target.process.command_line, `.*Xor.*`)) or re.regex($selection1.target.process.command_line, `.*cOnvErTTO-SECUreStRIng.*`)))
+
+  condition:
+    $selection1
+}

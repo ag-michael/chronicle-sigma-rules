@@ -1,0 +1,17 @@
+rule  Dev_sigma_service_execution {
+ meta:
+    author = "Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects manual service execution (start) via system utilities Author: Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1035, t1569.002"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.* start .*`))
+
+  condition:
+    $selection
+}

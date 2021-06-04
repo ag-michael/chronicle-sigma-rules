@@ -1,0 +1,17 @@
+rule  Dev_sigma_security_support_provider_ssp_added_to_lsa_configuration {
+ meta:
+    author = "iwillkeepwatch"
+    description = "Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows. Author: iwillkeepwatch."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/18"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1101, t1547.005"
+
+  events:
+(($selection_registry.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\Security Packages" or $selection_registry.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\OSConfig\\Security Packages") and not ($selection_registry.target.process.file.full_path = "C:\\Windows\\system32\\msiexec.exe" or $selection_registry.target.process.file.full_path = "C:\\Windows\\syswow64\\MsiExec.exe"))
+
+  condition:
+    $selection_registry
+}

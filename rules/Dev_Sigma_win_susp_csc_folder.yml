@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_cscexe_source_file_folder {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious execution of csc.exe, which uses a source in a suspicious folder (e.g. AppData) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1500, t1027.004"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\csc\.exe`) and (re.regex($selection.target.process.command_line, `.*\\AppData\\.*`) or re.regex($selection.target.process.command_line, `.*\\Windows\\Temp\\.*`))) and not (re.regex($selection.src.process.file.full_path, `C:\\Program Files.*`) or (re.regex($selection.src.process.file.full_path, `.*\\sdiagnhost\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\w3wp\.exe`)) or re.regex($selection.src.process.command_line, `.*\\ProgramData\\Microsoft\\Windows Defender Advanced Threat Protection.*`)))
+
+  condition:
+    $selection
+}

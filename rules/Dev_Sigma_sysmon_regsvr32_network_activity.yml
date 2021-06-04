@@ -1,0 +1,34 @@
+rule  Dev_sigma_regsvr32_network_activity {
+ meta:
+    author = "Dmitriy Lifanov, oscd.community"
+    description = "Detects network connections and DNS queries initiated by Regsvr32.exe Author: Dmitriy Lifanov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "network_connection"
+    product = "windows"
+    mitre = "execution, t1559.001, t1175, defense_evasion, t1218.010, t1117"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`)
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_regsvr32_network_activity_part_1 {
+ meta:
+    author = "Dmitriy Lifanov, oscd.community"
+    description = "Detects network connections and DNS queries initiated by Regsvr32.exe Author: Dmitriy Lifanov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "dns_query"
+    product = "windows"
+    mitre = "execution, t1559.001, t1175, defense_evasion, t1218.010, t1117"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`)
+
+  condition:
+    $selection
+}

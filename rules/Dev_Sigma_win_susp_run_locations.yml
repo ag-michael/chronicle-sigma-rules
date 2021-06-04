@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_process_start_locations {
+ meta:
+    author = "juju4, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects suspicious process run from unusual locations Author: juju4, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, car.2013-05-002"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*:\\RECYCLER\\.*`) or re.regex($selection.target.process.file.full_path, `.*:\\SystemVolumeInformation\\.*`)) or (re.regex($selection.target.process.file.full_path, `C:\\Windows\\Tasks\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\debug\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\fonts\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\help\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\drivers\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\addins\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\cursors\\.*`) or re.regex($selection.target.process.file.full_path, `C:\\Windows\\system32\\tasks\\.*`)))
+
+  condition:
+    $selection
+}

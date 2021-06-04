@@ -1,0 +1,17 @@
+rule  Dev_sigma_accessing_winapi_in_powershell_code_injection {
+ meta:
+    author = "Nikita Nazarov, oscd.community"
+    description = "Detecting Code injection with PowerShell in another process Author: Nikita Nazarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    category = "create_remote_thread"
+    mitre = "execution, t1059.001"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\powershell\.exe`)
+
+  condition:
+    $selection
+}

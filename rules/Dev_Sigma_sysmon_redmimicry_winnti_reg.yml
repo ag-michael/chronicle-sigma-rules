@@ -1,0 +1,17 @@
+rule  Dev_sigma_redmimicry_winnti_playbook_registry_manipulation {
+ meta:
+    author = "Alexander Rausch"
+    description = "Detects actions caused by the RedMimicry Winnti playbook Author: Alexander Rausch."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/24"
+    product = "windows"
+    category = "registry_event"
+    mitre = "defense_evasion, t1112"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*HKLM\\SOFTWARE\\Microsoft\\HTMLHelp\\data.*`)
+
+  condition:
+    $selection
+}

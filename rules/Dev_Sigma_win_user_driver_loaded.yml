@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_driver_loaded_by_user {
+ meta:
+    author = "xknow (@xknow_infosec), xorxes (@xor_xes)"
+    description = "Detects the loading of drivers via 'SeLoadDriverPrivilege' required to load or unload a device driver. With this privilege, the user can dynamically load and unload device drivers or other code in to kernel mode. This user right does not apply to Plug and Play device drivers. If you exclude privileged users/admins and processes, which are allowed to do so, you are maybe left with bad programs trying to load malicious kernel drivers. This will detect Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs) and the usage of Sysinternals and various other tools. So you have to work with a whitelist to find the bad stuff. Author: xknow (@xknow_infosec), xorxes (@xor_xes)."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/08"
+    product = "windows"
+    service = "security"
+    mitre = "t1089, defense_evasion, t1562.001"
+
+  events:
+(($selection_1.metadata.product_event_type = "4673" and $selection_1.PrivilegeList = "SeLoadDriverPrivilege" and $selection_1.Service = "-") and not ((re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\Dism\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\rundll32\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\fltMC\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\HelpPane\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\mmc\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\svchost\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Windows\\System32\\wimserv\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procexp64\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procexp\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon64\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\Google\\Chrome\\Application\\chrome\.exe`))))
+
+  condition:
+    $selection_1
+}

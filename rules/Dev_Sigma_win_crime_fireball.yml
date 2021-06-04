@@ -1,0 +1,17 @@
+rule  Dev_sigma_fireball_archer_install {
+ meta:
+    author = "Florian Roth"
+    description = "Detects Archer malware invocation via rundll32 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/06/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, defense_evasion, t1218.011, t1085"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*rundll32\.exe.*`) and re.regex($selection.target.process.command_line, `.*InstallArcherSvc.*`))
+
+  condition:
+    $selection
+}

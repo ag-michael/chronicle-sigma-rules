@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_ransomware_or_unauthorized_mbr_modifications {
+ meta:
+    author = "@neu5ron"
+    description = "Detects, possibly, malicious unauthorized usage of bcdedit.exe Author: @neu5ron."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1070, persistence, t1542.003, t1067"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\bcdedit\.exe`) and (re.regex($selection.target.process.command_line, `.*delete.*`) or re.regex($selection.target.process.command_line, `.*deletevalue.*`) or re.regex($selection.target.process.command_line, `.*import.*`)))
+
+  condition:
+    $selection
+}

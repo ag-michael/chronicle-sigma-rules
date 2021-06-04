@@ -1,0 +1,17 @@
+rule  Dev_sigma_frombase64string_command_line {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious FromBase64String expressions in command line arguments Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1027, defense_evasion, t1140, t1059.001"
+
+  events:
+re.regex($selection.target.process.command_line, `.*::FromBase64String\(.*`)
+
+  condition:
+    $selection
+}

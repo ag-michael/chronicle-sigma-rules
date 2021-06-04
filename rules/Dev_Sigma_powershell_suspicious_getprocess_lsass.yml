@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_getprocess_lsass_in_scriptblock {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a Get-Process command on lsass process, which is in almost all cases a sign of malicious activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/04/23"
+    product = "windows"
+    service = "powershell"
+    mitre = "credential_access, t1003.001"
+
+  events:
+($event.metadata.product_event_type = "4104" and re.regex($event.target.process.command_line, `.*Get-Process lsass.*`))
+
+  condition:
+    $event
+}

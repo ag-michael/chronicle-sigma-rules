@@ -1,0 +1,17 @@
+rule  Dev_sigma_lazarus_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects different process creation events as described in various threat reports on Lazarus group activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0032"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*reg\.exe save hklm\\sam %temp%\\~reg_sam\.save.*`) or re.regex($selection1.target.process.command_line, `.*1q2w3e4r@#$@#$@#$.*`) or re.regex($selection1.target.process.command_line, `.* -hp1q2w3e4 .*`) or re.regex($selection1.target.process.command_line, `.*\.dat data03 10000 -p .*`)) or (re.regex($selection1.target.process.command_line, `.*process call create.*`) and re.regex($selection1.target.process.command_line, `.* > %temp%\\~.*`)) or (re.regex($selection1.target.process.command_line, `.*netstat -aon | find .*`) and re.regex($selection1.target.process.command_line, `.* > %temp%\\~.*`)) or re.regex($selection1.target.process.command_line, `.*\.255 10 C:\\ProgramData\\\\.*`))
+
+  condition:
+    $selection1
+}

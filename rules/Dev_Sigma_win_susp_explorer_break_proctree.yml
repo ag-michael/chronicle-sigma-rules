@@ -1,0 +1,17 @@
+rule  Dev_sigma_explorer_root_flag_process_tree_break {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a command line process that uses explorer.exe /root, which is similar to cmd.exe /c, only it breaks the process tree and makes its parent a new instance of explorer Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/06/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*explorer\.exe.*`) and re.regex($selection.target.process.command_line, `.* /root,.*`))
+
+  condition:
+    $selection
+}

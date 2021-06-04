@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_service_binary_directory {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a service binary running in a suspicious directory Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/09"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\Users\\Public\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\$Recycle\.bin.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\All Users\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Default\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Contacts\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Searches\\.*`) or re.regex($selection.target.process.file.full_path, `.*C:\\Perflogs\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\config\\systemprofile\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Fonts\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\IME\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\addins\\.*`)) and (re.regex($selection.src.process.file.full_path, `.*\\services\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\svchost\.exe`)))
+
+  condition:
+    $selection
+}

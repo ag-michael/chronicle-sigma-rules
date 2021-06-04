@@ -1,0 +1,17 @@
+rule  Dev_sigma_disabled_ie_security_features {
+ meta:
+    author = "Florian Roth"
+    description = "Detects command lines that indicate unwanted modifications to registry keys that disable important Internet Explorer security features Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/19"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001, t1089"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.* -name IEHarden .*`) and re.regex($selection1.target.process.command_line, `.* -value 0 .*`)) or (re.regex($selection1.target.process.command_line, `.* -name DEPOff .*`) and re.regex($selection1.target.process.command_line, `.* -value 1 .*`)) or (re.regex($selection1.target.process.command_line, `.* -name DisableFirstRunCustomize .*`) and re.regex($selection1.target.process.command_line, `.* -value 2 .*`)))
+
+  condition:
+    $selection1
+}

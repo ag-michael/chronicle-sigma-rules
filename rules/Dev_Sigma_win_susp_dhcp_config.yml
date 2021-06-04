@@ -1,0 +1,17 @@
+rule  Dev_sigma_dhcp_server_loaded_the_callout_dll {
+ meta:
+    author = "Dimitrios Slamaris"
+    description = "This rule  Dev_sigma_detects a DHCP server in which a specified Callout DLL (in registry) was loaded Author: Dimitrios Slamaris."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/15"
+    product = "windows"
+    service = "system"
+    mitre = "defense_evasion, t1073, t1574.002"
+
+  events:
+($selection.metadata.product_event_type = "1033" and $selection.src.application = "Microsoft-Windows-DHCP-Server")
+
+  condition:
+    $selection
+}

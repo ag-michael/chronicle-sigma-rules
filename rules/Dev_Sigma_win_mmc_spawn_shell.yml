@@ -1,0 +1,17 @@
+rule  Dev_sigma_mmc_spawning_windows_shell {
+ meta:
+    author = "Karneades, Swisscom CSIRT"
+    description = "Detects a Windows command line executable started from MMC Author: Karneades, Swisscom CSIRT."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, t1175, t1021.003"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\mmc\.exe`) and ((re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\reg\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`)) or re.regex($selection.target.process.file.full_path, `.*\\BITSADMIN.*`)))
+
+  condition:
+    $selection
+}

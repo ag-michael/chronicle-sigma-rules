@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_esentutl_use {
+ meta:
+    author = "Florian Roth"
+    description = "Detects flags often used with the LOLBAS Esentutl for malicious activity. It could be used in rare cases by administrators to access locked files or during maintenance. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, execution, s0404, t1218"
+
+  events:
+(re.regex($selection.target.process.command_line, `.* /vss .*`) and re.regex($selection.target.process.command_line, `.* /y .*`))
+
+  condition:
+    $selection
+}

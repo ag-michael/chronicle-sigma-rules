@@ -1,0 +1,17 @@
+rule  Dev_sigma_netsh_port_forwarding {
+ meta:
+    author = "Florian Roth, omkar72, oscd.community"
+    description = "Detects netsh commands that configure a port forwarding Author: Florian Roth, omkar72, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, defense_evasion, command_and_control, t1090"
+
+  events:
+(re.regex($selection1.target.process.file.full_path, `.*\\netsh\.exe`) and ((re.regex($selection1.target.process.command_line, `.*interface.*`) and re.regex($selection1.target.process.command_line, `.*portproxy.*`) and re.regex($selection1.target.process.command_line, `.*add.*`) and re.regex($selection1.target.process.command_line, `.*v4tov4.*`)) or (re.regex($selection1.target.process.command_line, `.*connectp.*`) and re.regex($selection1.target.process.command_line, `.*listena.*`) and re.regex($selection1.target.process.command_line, `.*c=.*`))))
+
+  condition:
+    $selection1
+}

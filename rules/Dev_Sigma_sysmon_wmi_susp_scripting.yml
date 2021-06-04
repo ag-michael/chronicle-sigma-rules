@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_scripting_in_a_wmi_consumer {
+ meta:
+    author = "Florian Roth, Jonhnathan Ribeiro"
+    description = "Detects suspicious scripting in WMI Event Consumers Author: Florian Roth, Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/15"
+    product = "windows"
+    category = "wmi_event"
+    mitre = "t1086, execution, t1059.005"
+
+  events:
+($selection.metadata.product_event_type = "20" and ((re.regex($selection.Destination, `.*new-object.*`) and re.regex($selection.Destination, `.*net\.webclient.*`) and re.regex($selection.Destination, `.*\.downloadstring.*`)) or (re.regex($selection.Destination, `.*new-object.*`) and re.regex($selection.Destination, `.*net\.webclient.*`) and re.regex($selection.Destination, `.*\.downloadfile.*`)) or (re.regex($selection.Destination, `.* iex\(.*`) or re.regex($selection.Destination, `.*WScript\.shell.*`) or re.regex($selection.Destination, `.* -nop .*`) or re.regex($selection.Destination, `.* -noprofile .*`) or re.regex($selection.Destination, `.* -decode .*`) or re.regex($selection.Destination, `.* -enc .*`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_copy_from_or_to_system32 {
+ meta:
+    author = "Florian Roth, Markus Neis"
+    description = "Detects a suspicious copy command that copies a system program from System32 to another directory on disk - sometimes used to use LOLBINs like certutil or desktopimgdownldr to a different location with a different name Author: Florian Roth, Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/03"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036.003"
+
+  events:
+((re.regex($selection.target.process.command_line, `.* /c copy.*`) or re.regex($selection.target.process.command_line, `.*xcopy.*`)) and re.regex($selection.target.process.command_line, `.*\\System32\\.*`))
+
+  condition:
+    $selection
+}

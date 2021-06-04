@@ -1,0 +1,17 @@
+rule  Dev_sigma_dit_snapshot_viewer_use {
+ meta:
+    author = "Furkan Caliskan (@caliskanfurkan_)"
+    description = "Detects the use of Ditsnap tool. Seems to be a tool for ransomware groups. Author: Furkan Caliskan (@caliskanfurkan_)."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003.003, t1003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\ditsnap\.exe`) or re.regex($selection.target.process.command_line, `.*ditsnap\.exe.*`))
+
+  condition:
+    $selection
+}

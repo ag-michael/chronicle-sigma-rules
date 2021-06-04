@@ -1,0 +1,17 @@
+rule  Dev_sigma_exports_critical_registry_keys_to_a_file {
+ meta:
+    author = "Oddvar Moe, Sander Wiebing, oscd.community"
+    description = "Detects the export of a crital Registry key to a file. Author: Oddvar Moe, Sander Wiebing, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "exfiltration, t1012"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\regedit\.exe`) and re.regex($selection.target.process.command_line, `.* /E .*`) and (re.regex($selection.target.process.command_line, `.*hklm.*`) or re.regex($selection.target.process.command_line, `.*hkey_local_machine.*`)) and (re.regex($selection.target.process.command_line, `.*\\system`) or re.regex($selection.target.process.command_line, `.*\\sam`) or re.regex($selection.target.process.command_line, `.*\\security`)))
+
+  condition:
+    $selection
+}

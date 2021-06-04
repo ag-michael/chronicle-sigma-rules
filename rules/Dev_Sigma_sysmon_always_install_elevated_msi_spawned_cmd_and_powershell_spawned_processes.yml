@@ -1,0 +1,17 @@
+rule  Dev_sigma_msi_spawned_cmd_and_powershell_spawned_processes {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community"
+    description = "This rule  Dev_sigma_will looks for Windows Installer service (msiexec.exe) spawned command line and/or powershell that spawned other processes Author: Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    product = "windows"
+    category = "process_creation"
+    mitre = "privilege_escalation, t1548.002"
+
+  events:
+((re.regex($parent_image.src.process.file.full_path, `.*\\cmd\.exe`) or re.regex($parent_image.src.process.file.full_path, `.*\\powershell\.exe`)) and re.regex($parent_image.ParentOfParentImage, `.*\\Windows\\Installer\\.*`) and re.regex($parent_image.ParentOfParentImage, `.*msi.*`) and re.regex($parent_image.ParentOfParentImage, `.*tmp`))
+
+  condition:
+    $parent_image
+}

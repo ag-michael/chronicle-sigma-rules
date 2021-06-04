@@ -1,0 +1,17 @@
+rule  Dev_sigma_iis_nativecode_module_command_line_installation {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious IIS native-code module installations via command line Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2012/12/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1505.003, t1100"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\appcmd\.exe`) and re.regex($selection.target.process.command_line, `.*install.*`) and re.regex($selection.target.process.command_line, `.*module.*`) and re.regex($selection.target.process.command_line, `.*/name:.*`))
+
+  condition:
+    $selection
+}

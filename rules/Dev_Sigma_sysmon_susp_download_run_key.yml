@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_run_key_from_download {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/01"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1060, t1547.001"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\Downloads\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Temporary Internet Files\\Content\.Outlook\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Local Settings\\Temporary Internet Files\\.*`)) and re.regex($selection.target.registry.registry_key, `.*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\.*`))
+
+  condition:
+    $selection
+}

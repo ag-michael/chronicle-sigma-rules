@@ -1,0 +1,17 @@
+rule  Dev_sigma_dumping_process_via_sqldumperexe {
+ meta:
+    author = "Kirill Kiryanov, oscd.community"
+    description = "Detects process dump via legitimate sqldumper.exe binary Author: Kirill Kiryanov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\sqldumper\.exe`) and (re.regex($selection.target.process.command_line, `.*0x0110.*`) or re.regex($selection.target.process.command_line, `.*0x01100:40.*`)))
+
+  condition:
+    $selection
+}

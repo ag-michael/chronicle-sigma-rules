@@ -1,0 +1,17 @@
+rule  Dev_sigma_dcerpc_smb_spoolss_named_pipe {
+ meta:
+    author = "OTR (Open Threat Research)"
+    description = "Detects the use of the spoolss named pipe over SMB. This can be used to trigger the authentication via NTLM of any machine that has the spoolservice enabled. Author: OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/28"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1021.002"
+
+  events:
+($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*\\IPC$`) and $selection.target.file.full_path = "spoolss")
+
+  condition:
+    $selection
+}

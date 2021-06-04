@@ -1,0 +1,17 @@
+rule  Dev_sigma_command_line_execution_with_suspicious_url_and_appdata_strings {
+ meta:
+    author = "Florian Roth, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell) Author: Florian Roth, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.003, t1059.001, command_and_control, t1105"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) and re.regex($selection.target.process.command_line, `.*http.*`) and re.regex($selection.target.process.command_line, `.*://.*`) and re.regex($selection.target.process.command_line, `.*%AppData%.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_usb_device_plugged {
+ meta:
+    author = "Florian Roth"
+    description = "Detects plugged USB devices Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/09"
+    product = "windows"
+    service = "driver-framework"
+    mitre = "initial_access, t1200"
+
+  events:
+($selection.metadata.product_event_type = "2003" or $selection.metadata.product_event_type = "2100" or $selection.metadata.product_event_type = "2102")
+
+  condition:
+    $selection
+}

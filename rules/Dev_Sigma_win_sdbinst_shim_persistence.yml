@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_shim_database_persistence_via_sdbinstexe {
+ meta:
+    author = "Markus Neis"
+    description = "Detects installation of a new shim using sdbinst.exe. A shim can be used to load malicious DLLs into applications. Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, t1546.011, t1138"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\sdbinst\.exe`) and re.regex($selection.target.process.command_line, `.*\.sdb.*`)) and not (re.regex($selection.target.process.command_line, `.*iisexpressshim\.sdb.*`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_turla_png_dropper_service {
+ meta:
+    author = "Florian Roth"
+    description = "This method detects malicious services mentioned in Turla PNG dropper report by NCC Group in November 2018 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/23"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, g0010, t1050, t1543.003"
+
+  events:
+($selection.metadata.product_event_type = "7045" and $selection.target.process.command_line = "WerFaultSvc")
+
+  condition:
+    $selection
+}

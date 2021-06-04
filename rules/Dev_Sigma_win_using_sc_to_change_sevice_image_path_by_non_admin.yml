@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_privilege_escalation_via_weak_service_permissions {
+ meta:
+    author = "Teymur Kheirkhabarov"
+    description = "Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand Author: Teymur Kheirkhabarov."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, defense_evasion, privilege_escalation, t1574.011"
+
+  events:
+((re.regex($scbynonadmin.target.process.file.full_path, `.*\\sc\.exe`) and $scbynonadmin.IntegrityLevel = "Medium") and ((re.regex($scbynonadmin.target.process.command_line, `.*config.*`) and re.regex($scbynonadmin.target.process.command_line, `.*binPath.*`)) or (re.regex($scbynonadmin.target.process.command_line, `.*failure.*`) and re.regex($scbynonadmin.target.process.command_line, `.*command.*`))))
+
+  condition:
+    $scbynonadmin
+}

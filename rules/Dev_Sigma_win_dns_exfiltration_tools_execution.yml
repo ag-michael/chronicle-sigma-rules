@@ -1,0 +1,17 @@
+rule  Dev_sigma_dns_exfiltration_and_tunneling_tools_execution {
+ meta:
+    author = "Daniil Yugoslavskiy, oscd.community"
+    description = "Well-known DNS Exfiltration tools execution Author: Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "exfiltration, t1048.001, t1048, command_and_control, t1071.004, t1071, t1132.001, t1132"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\iodine\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\dnscat2.*`))
+
+  condition:
+    $selection
+}

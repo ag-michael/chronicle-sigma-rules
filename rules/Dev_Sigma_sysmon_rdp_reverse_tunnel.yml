@@ -1,0 +1,17 @@
+rule  Dev_sigma_rdp_over_reverse_ssh_tunnel {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects svchost hosting RDP termsvcs communicating with the loopback address and on TCP port 3389 Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/16"
+    category = "network_connection"
+    product = "windows"
+    mitre = "command_and_control, t1572, lateral_movement, t1021.001, t1076, car.2013-07-002"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\svchost\.exe`) and $selection.Initiated = "true" and $selection.principal.port = "3389") and (re.regex($selection.target.ip, `127\..*`) or $selection.target.ip = "::1"))
+
+  condition:
+    $selection
+}

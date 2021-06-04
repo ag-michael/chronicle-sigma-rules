@@ -1,0 +1,17 @@
+rule  Dev_sigma_mounted_windows_admin_shares_with_netexe {
+ meta:
+    author = "oscd.community, Teymur Kheirkhabarov @HeirhabarovT, Zach Stanford @svch0st"
+    description = "Detects when an admin share is mounted using net.exe Author: oscd.community, Teymur Kheirkhabarov @HeirhabarovT, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, t1021.002"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.* use .*`) and re.regex($selection.target.process.command_line, `.*\\\\\\.*.*$.*`))
+
+  condition:
+    $selection
+}

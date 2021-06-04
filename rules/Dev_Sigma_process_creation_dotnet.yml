@@ -1,0 +1,17 @@
+rule  Dev_sigma_dotnetexe_exec_dll_and_execute_unsigned_code_lolbin {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "dotnet.exe will execute any DLL and execute unsigned code Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1218"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*\.dll`) or re.regex($selection.target.process.command_line, `.*\.csproj`)) and re.regex($selection.target.process.file.full_path, `.*\\dotnet\.exe`))
+
+  condition:
+    $selection
+}

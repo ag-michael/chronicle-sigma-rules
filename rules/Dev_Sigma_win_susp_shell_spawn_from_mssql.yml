@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_shells_spawn_by_sql_server {
+ meta:
+    author = "FPT.EagleEye Team"
+    description = "Detects suspicious shell spawn from MSSQL process, this might be sight of RCE or SQL Injection Author: FPT.EagleEye Team."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "t1100, t1190, initial_access, persistence, privilege_escalation"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\sqlservr\.exe`) and (re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bitsadmin\.exe`)))
+
+  condition:
+    $selection
+}

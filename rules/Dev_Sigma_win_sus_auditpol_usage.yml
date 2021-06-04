@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_auditpol_usage {
+ meta:
+    author = "Janantha Marasinghe (https://github.com/blueteam0ps)"
+    description = "Threat actors can use auditpol binary to change audit policy configuration to impair detection capability. This can be carried out by selectively disabling/removing certain audit policies as well as restoring a custom policy owned by the threat actor. Author: Janantha Marasinghe (https://github.com/blueteam0ps)."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.002"
+
+  events:
+(re.regex($selection_auditpol_binary.target.process.file.full_path, `.*\\auditpol\.exe`) and (re.regex($selection_auditpol_binary.target.process.command_line, `.*disable.*`) or re.regex($selection_auditpol_binary.target.process.command_line, `.*clear.*`) or re.regex($selection_auditpol_binary.target.process.command_line, `.*remove.*`) or re.regex($selection_auditpol_binary.target.process.command_line, `.*restore.*`)))
+
+  condition:
+    $selection_auditpol_binary
+}

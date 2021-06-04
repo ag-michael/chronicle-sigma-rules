@@ -1,0 +1,34 @@
+rule  Dev_sigma_operation_wocao_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects activity mentioned in Operation Wocao report Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/20"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, t1012, defense_evasion, t1036.004, t1036, t1027, execution, t1053.005, t1053, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "4799" and $selection.GroupName = "Administrators" and re.regex($selection.target.process.file.full_path, `.*\\checkadmin\.exe`))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_operation_wocao_activity_part_1 {
+ meta:
+    author = "Florian Roth"
+    description = "Detects activity mentioned in Operation Wocao report Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/12/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1012, defense_evasion, t1036.004, t1036, t1027, execution, t1053.005, t1053, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*checkadmin\.exe 127\.0\.0\.1 -all.*`) or re.regex($selection.target.process.command_line, `.*netsh advfirewall firewall add rule  Dev_sigma_name=powershell dir=in.*`) or re.regex($selection.target.process.command_line, `.*cmd /c powershell\.exe -ep bypass -file c:\\s\.ps1.*`) or re.regex($selection.target.process.command_line, `.*/tn win32times /f.*`) or re.regex($selection.target.process.command_line, `.*create win32times binPath=.*`) or re.regex($selection.target.process.command_line, `.*\\c$\\windows\\system32\\devmgr\.dll.*`) or re.regex($selection.target.process.command_line, `.* -exec bypass -enc JgAg.*`) or re.regex($selection.target.process.command_line, `.*type .*keepass\\KeePass\.config\.xml.*`) or re.regex($selection.target.process.command_line, `.*iie\.exe iie\.txt.*`) or re.regex($selection.target.process.command_line, `.*reg query HKEY_CURRENT_USER\\Software\\.*\\PuTTY\\Sessions\\.*`))
+
+  condition:
+    $selection
+}

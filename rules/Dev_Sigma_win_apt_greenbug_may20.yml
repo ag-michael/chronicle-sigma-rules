@@ -1,0 +1,17 @@
+rule  Dev_sigma_greenbug_campaign_indicators {
+ meta:
+    author = "Florian Roth"
+    description = "Detects tools and process executions as observed in a Greenbug campaign in May 2020 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0049, execution, t1059.001, t1086, command_and_control, t1105, defense_evasion, t1036, t1036.005"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*bitsadmin.*`) and re.regex($selection1.target.process.command_line, `.*/transfer.*`) and re.regex($selection1.target.process.command_line, `.*CSIDL_APPDATA.*`)) or re.regex($selection1.target.process.command_line, `.*CSIDL_SYSTEM_DRIVE.*`) or (re.regex($selection1.target.process.command_line, `.*\\msf\.ps1.*`) or re.regex($selection1.target.process.command_line, `.*8989 -e cmd\.exe.*`) or re.regex($selection1.target.process.command_line, `.*system\.Data\.SqlClient\.SqlDataAdapter\($cmd\); [void]$da\.fill.*`) or re.regex($selection1.target.process.command_line, `.*-nop -w hidden -c $k=new-object.*`) or re.regex($selection1.target.process.command_line, `.*[Net\.CredentialCache]::DefaultCredentials;IEX .*`) or re.regex($selection1.target.process.command_line, `.* -nop -w hidden -c $m=new-object net\.webclient;$m.*`) or re.regex($selection1.target.process.command_line, `.*-noninteractive -executionpolicy bypass whoami.*`) or re.regex($selection1.target.process.command_line, `.*-noninteractive -executionpolicy bypass netstat -a.*`) or re.regex($selection1.target.process.command_line, `.*L3NlcnZlc.*`)) or (re.regex($selection1.target.process.file.full_path, `.*\\adobe\\Adobe\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\oracle\\local\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\revshell\.exe`) or re.regex($selection1.target.process.file.full_path, `.*infopagesbackup\\ncat\.exe`) or re.regex($selection1.target.process.file.full_path, `.*CSIDL_SYSTEM\\cmd\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\programdata\\oracle\\java\.exe`) or re.regex($selection1.target.process.file.full_path, `.*CSIDL_COMMON_APPDATA\\comms\\comms\.exe`) or re.regex($selection1.target.process.file.full_path, `.*\\Programdata\\VMware\\Vmware\.exe`)))
+
+  condition:
+    $selection1
+}

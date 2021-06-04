@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmimplant_hack_tool {
+ meta:
+    author = "NVISO"
+    description = "Detects parameters used by WMImplant Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/26"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1047, t1059.001, t1086"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*WMImplant.*`) or re.regex($selection.target.process.command_line, `.* change_user .*`) or re.regex($selection.target.process.command_line, `.* gen_cli .*`) or re.regex($selection.target.process.command_line, `.* command_exec .*`) or re.regex($selection.target.process.command_line, `.* disable_wdigest .*`) or re.regex($selection.target.process.command_line, `.* disable_winrm .*`) or re.regex($selection.target.process.command_line, `.* enable_wdigest .*`) or re.regex($selection.target.process.command_line, `.* enable_winrm .*`) or re.regex($selection.target.process.command_line, `.* registry_mod .*`) or re.regex($selection.target.process.command_line, `.* remote_posh .*`) or re.regex($selection.target.process.command_line, `.* sched_job .*`) or re.regex($selection.target.process.command_line, `.* service_mod .*`) or re.regex($selection.target.process.command_line, `.* process_kill .*`) or re.regex($selection.target.process.command_line, `.* active_users .*`) or re.regex($selection.target.process.command_line, `.* basic_info .*`) or re.regex($selection.target.process.command_line, `.* power_off .*`) or re.regex($selection.target.process.command_line, `.* vacant_system .*`) or re.regex($selection.target.process.command_line, `.* logon_events .*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_octopus_scanner_malware {
+ meta:
+    author = "NVISO"
+    description = "Detects Octopus Scanner Malware. Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/09"
+    product = "windows"
+    category = "file_event"
+    mitre = "t1195, t1195.001"
+
+  events:
+(re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Microsoft\\Cache134\.dat`) or re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Microsoft\\ExplorerSync\.db`))
+
+  condition:
+    $selection
+}

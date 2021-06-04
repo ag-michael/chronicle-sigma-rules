@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_amsi_bypass_via_net_reflection {
+ meta:
+    author = "Markus Neis"
+    description = "Detects Request to amsiInitFailed that can be used to disable AMSI Scanning Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/08/17"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.001"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*System\.Management\.Automation\.AmsiUtils.*`) and re.regex($selection1.target.process.command_line, `.*amsiInitFailed.*`))
+
+  condition:
+    $selection1
+}

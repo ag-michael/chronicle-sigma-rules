@@ -1,0 +1,17 @@
+rule  Dev_sigma_disabled_volume_snapshots {
+ meta:
+    author = "Florian Roth"
+    description = "Detects commands that temporarily turn off Volume Snapshots Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/28"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*reg.*`) and re.regex($selection.target.process.command_line, `.* add .*`) and re.regex($selection.target.process.command_line, `.*\\Services\\VSS\\Diag.*`) and re.regex($selection.target.process.command_line, `.*/d Disabled.*`))
+
+  condition:
+    $selection
+}

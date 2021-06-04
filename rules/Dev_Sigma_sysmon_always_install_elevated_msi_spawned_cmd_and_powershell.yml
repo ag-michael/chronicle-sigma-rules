@@ -1,0 +1,17 @@
+rule  Dev_sigma_always_install_elevated_msi_spawned_cmd_and_powershell {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community"
+    description = "This rule  Dev_sigma_will looks for Windows Installer service (msiexec.exe) spawned command line and/or powershell Author: Teymur Kheirkhabarov (idea), Mangatas Tondang (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    product = "windows"
+    category = "process_creation"
+    mitre = "privilege_escalation, t1548.002"
+
+  events:
+((re.regex($image.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($image.target.process.file.full_path, `.*\\powershell\.exe`)) and re.regex($image.src.process.file.full_path, `.*\\Windows\\Installer\\.*`) and re.regex($image.src.process.file.full_path, `.*msi.*`) and re.regex($image.src.process.file.full_path, `.*tmp`))
+
+  condition:
+    $image
+}

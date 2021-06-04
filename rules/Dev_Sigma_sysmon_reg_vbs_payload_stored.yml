@@ -1,0 +1,16 @@
+rule  Dev_sigma_vbscript_payload_stored_in_registry {
+ meta:
+    author = "Florian Roth"
+    description = "Detects VBScript content stored into registry keys as seen being used by UNC2452 group Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/05"
+    category = "registry_event"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.registry.registry_key, `.*Software\\Microsoft\\Windows\\CurrentVersion.*`) and (re.regex($selection.metadata.description, `.*vbscript.*`) or re.regex($selection.metadata.description, `.*jscript.*`) or re.regex($selection.metadata.description, `.*mshtml.*`) or re.regex($selection.metadata.description, `.*mshtml,.*`) or re.regex($selection.metadata.description, `.*mshtml .*`) or re.regex($selection.metadata.description, `.*RunHTMLApplication.*`) or re.regex($selection.metadata.description, `.*Execute\(.*`) or re.regex($selection.metadata.description, `.*CreateObject.*`) or re.regex($selection.metadata.description, `.*RegRead.*`) or re.regex($selection.metadata.description, `.*window\.close.*`))) and not (re.regex($selection.target.registry.registry_key, `.*Software\\Microsoft\\Windows\\CurrentVersion\\Run.*`)))
+
+  condition:
+    $selection
+}

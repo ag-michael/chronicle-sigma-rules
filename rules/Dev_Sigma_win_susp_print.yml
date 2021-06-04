@@ -1,0 +1,17 @@
+rule  Dev_sigma_abusing_print_executable {
+ meta:
+    author = "Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative"
+    description = "Attackers can use print.exe for remote file copy Author: Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\print\.exe`) and re.regex($selection1.target.process.command_line, `print.*`) and re.regex($selection1.target.process.command_line, `.*/D.*`) and re.regex($selection1.target.process.command_line, `.*\.exe.*`)) and not (re.regex($selection1.target.process.command_line, `.*print\.exe.*`)))
+
+  condition:
+    $selection1
+}

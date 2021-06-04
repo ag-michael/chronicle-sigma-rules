@@ -1,0 +1,17 @@
+rule  Dev_sigma_impacket_psexec_execution {
+ meta:
+    author = "Bhabesh Raj"
+    description = "Detects execution of Impacket's psexec.py. Author: Bhabesh Raj."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/14"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1021.002"
+
+  events:
+($selection1.metadata.product_event_type = "5145" and re.regex($selection1.target.resource.name, `.*\\IPC$`) and (re.regex($selection1.target.file.full_path, `.*RemCom_stdint.*`) or re.regex($selection1.target.file.full_path, `.*RemCom_stdoutt.*`) or re.regex($selection1.target.file.full_path, `.*RemCom_stderrt.*`)))
+
+  condition:
+    $selection1
+}

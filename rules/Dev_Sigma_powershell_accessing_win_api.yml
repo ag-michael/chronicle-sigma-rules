@@ -1,0 +1,17 @@
+rule  Dev_sigma_accessing_winapi_in_powershell {
+ meta:
+    author = "Nikita Nazarov, oscd.community"
+    description = "Detecting use WinAPI Functions in PowerShell Author: Nikita Nazarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1106"
+
+  events:
+($selection.metadata.product_event_type = "4104" and (re.regex($selection.Message, `.*WaitForSingleObject.*`) or re.regex($selection.Message, `.*QueueUserApc.*`) or re.regex($selection.Message, `.*RtlCreateUserThread.*`) or re.regex($selection.Message, `.*OpenProcess.*`) or re.regex($selection.Message, `.*VirtualAlloc.*`) or re.regex($selection.Message, `.*VirtualFree.*`) or re.regex($selection.Message, `.*WriteProcessMemory.*`) or re.regex($selection.Message, `.*CreateUserThread.*`) or re.regex($selection.Message, `.*CloseHanlde.*`) or re.regex($selection.Message, `.*GetDelegateForFunctionPointer.*`) or re.regex($selection.Message, `.*CreateThread.*`) or re.regex($selection.Message, `.*memcpy.*`) or re.regex($selection.Message, `.*LoadLibrary.*`) or re.regex($selection.Message, `.*GetModuleHandle.*`) or re.regex($selection.Message, `.*GetProcAdress.*`) or re.regex($selection.Message, `.*VirtualProtect.*`) or re.regex($selection.Message, `.*FreeLibrary.*`) or re.regex($selection.Message, `.*ReadProcessMemory.*`) or re.regex($selection.Message, `.*CreateRemoteThread.*`) or re.regex($selection.Message, `.*AdjustTokenPrivileges.*`) or re.regex($selection.Message, `.*WriteByte.*`) or re.regex($selection.Message, `.*WriteInt32.*`) or re.regex($selection.Message, `.*OpenThreadToken.*`) or re.regex($selection.Message, `.*PtrToString.*`) or re.regex($selection.Message, `.*FreeHGlobal.*`) or re.regex($selection.Message, `.*ZeroFreeGlobalAllocUnicode.*`) or re.regex($selection.Message, `.*OpenProcessToken.*`) or re.regex($selection.Message, `.*GetTokenInformation.*`) or re.regex($selection.Message, `.*SetThreadToken.*`) or re.regex($selection.Message, `.*ImpersonateLoggedOnUser.*`) or re.regex($selection.Message, `.*RevertToSelf.*`) or re.regex($selection.Message, `.*GetLogonSessionData.*`) or re.regex($selection.Message, `.*CreateProcessWithToken.*`) or re.regex($selection.Message, `.*DuplicateRokenEx.*`) or re.regex($selection.Message, `.*OpenWindowStation.*`) or re.regex($selection.Message, `.*OpenDesktop.*`) or re.regex($selection.Message, `.*MiniDumpWrireDump.*`) or re.regex($selection.Message, `.*AddSecurityPackage.*`) or re.regex($selection.Message, `.*EnumerateSecurityPackages.*`) or re.regex($selection.Message, `.*GetProcessHandle.*`) or re.regex($selection.Message, `.*DangerousGetHandle.*`) or re.regex($selection.Message, `.*Kernel32.*`) or re.regex($selection.Message, `.*Advapi32.*`) or re.regex($selection.Message, `.*Msvcrt.*`) or re.regex($selection.Message, `.*ntdll.*`) or re.regex($selection.Message, `.*User32.*`) or re.regex($selection.Message, `.*Secur32.*`)))
+
+  condition:
+    $selection
+}

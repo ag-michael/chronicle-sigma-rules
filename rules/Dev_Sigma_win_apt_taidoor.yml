@@ -1,0 +1,17 @@
+rule  Dev_sigma_taidoor_rat_dll_load {
+ meta:
+    author = "Florian Roth"
+    description = "Detects specific process characteristics of Chinese TAIDOOR RAT malware load Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1055, t1055.001"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*dll,MyStart.*`) or re.regex($selection1.target.process.command_line, `.*dll MyStart.*`)) or (re.regex($selection1.target.process.command_line, `.* MyStart`) and re.regex($selection1.target.process.command_line, `.*rundll32\.exe.*`)))
+
+  condition:
+    $selection1
+}

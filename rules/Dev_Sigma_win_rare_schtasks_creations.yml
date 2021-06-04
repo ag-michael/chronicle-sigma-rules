@@ -1,0 +1,18 @@
+rule  Dev_sigma_rare_schtasks_creations {
+ meta:
+    author = "Florian Roth"
+    description = "Detects rare scheduled tasks creations that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious code Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/23"
+    product = "windows"
+    service = "security"
+    mitre = "execution, privilege_escalation, persistence, t1053, car.2013-08-001, t1053.005"
+
+  events:
+$selection.metadata.product_event_type = "4698"
+$selection.target.resource.name = $target
+
+  condition:
+    $selection and #target < 5
+}

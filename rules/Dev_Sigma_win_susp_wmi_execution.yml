@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_wmi_execution {
+ meta:
+    author = "Michael Haag, Florian Roth, juju4, oscd.community"
+    description = "Detects WMI executing suspicious commands Author: Michael Haag, Florian Roth, juju4, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1047, car.2016-03-002"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\wmic\.exe`) and ((re.regex($selection.target.process.command_line, `.*/NODE:.*`) and re.regex($selection.target.process.command_line, `.*process.*`) and re.regex($selection.target.process.command_line, `.*call.*`) and re.regex($selection.target.process.command_line, `.*create .*`)) or (re.regex($selection.target.process.command_line, `.* path .*`) and (re.regex($selection.target.process.command_line, `.*AntiVirus.*`) or re.regex($selection.target.process.command_line, `.*Firewall.*`)) and re.regex($selection.target.process.command_line, `.*Product.*`) and re.regex($selection.target.process.command_line, `.* get .*`))))
+
+  condition:
+    $selection
+}

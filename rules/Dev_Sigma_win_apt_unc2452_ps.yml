@@ -1,0 +1,17 @@
+rule  Dev_sigma_unc2452_powershell_pattern {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a specific PowerShell command line pattern used by the UNC2452 actors as mentioned in Microsoft and Symantec reports Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/20"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, t1047, sunburst"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*Invoke-WMIMethod win32_process -name create -argumentlist.*`) and re.regex($selection1.target.process.command_line, `.*rundll32 c:\\windows.*`)) or (re.regex($selection1.target.process.command_line, `.*wmic /node:.*`) and re.regex($selection1.target.process.command_line, `.*process call create \"rundll32 c:\\windows.*`)))
+
+  condition:
+    $selection1
+}

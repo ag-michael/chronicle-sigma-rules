@@ -1,0 +1,17 @@
+rule  Dev_sigma_credentials_dumping_tools_accessing_lsass_memory {
+ meta:
+    author = "Florian Roth, Roberto Rodriguez, Dimitrios Slamaris, Mark Russinovich, Thomas Patzke, Teymur Kheirkhabarov, Sherif Eldeeb, James Dickenson, Aleksey Potapov, oscd.community (update)"
+    description = "Detects process access LSASS memory which is typical for credentials dumping tools Author: Florian Roth, Roberto Rodriguez, Dimitrios Slamaris, Mark Russinovich, Thomas Patzke, Teymur Kheirkhabarov, Sherif Eldeeb, James Dickenson, Aleksey Potapov, oscd.community (update)."
+    reference = ""
+    version = "0.01"
+    created = "2017/02/16"
+    category = "process_access"
+    product = "windows"
+    mitre = "credential_access, t1003.001, t1003, s0002, car.2019-04-004"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\lsass\.exe`) and (re.regex($selection.GrantedAccess, `.*0x40.*`) or re.regex($selection.GrantedAccess, `.*0x1000.*`) or re.regex($selection.GrantedAccess, `.*0x1400.*`) or re.regex($selection.GrantedAccess, `.*0x100000.*`) or re.regex($selection.GrantedAccess, `.*0x1410.*`) or re.regex($selection.GrantedAccess, `.*0x1010.*`) or re.regex($selection.GrantedAccess, `.*0x1438.*`) or re.regex($selection.GrantedAccess, `.*0x143a.*`) or re.regex($selection.GrantedAccess, `.*0x1418.*`) or re.regex($selection.GrantedAccess, `.*0x1f0fff.*`) or re.regex($selection.GrantedAccess, `.*0x1f1fff.*`) or re.regex($selection.GrantedAccess, `.*0x1f2fff.*`) or re.regex($selection.GrantedAccess, `.*0x1f3fff.*`))) and not ((re.regex($selection.target.process.file.full_path, `.*\\wmiprvse\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\taskmgr\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\procexp64\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\procexp\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\lsm\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\MsMpEng\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\csrss\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wininit\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\vmtoolsd\.exe`))))
+
+  condition:
+    $selection
+}

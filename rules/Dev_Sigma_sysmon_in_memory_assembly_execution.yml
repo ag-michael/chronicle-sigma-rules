@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_inmemory_module_execution {
+ meta:
+    author = "Perez Diego (@darkquassar), oscd.community, Jonhnathan Ribeiro"
+    description = "Detects the access to processes by other suspicious processes which have reflectively loaded libraries in their memory space. An example is SilentTrinity C2 behaviour. Generally speaking, when Sysmon EventID 10 cannot reference a stack call to a dll loaded from disk (the standard way), it will display \"UNKNOWN\" as the module name. Usually this means the stack call points to a module that was reflectively loaded in memory. Adding to this, it is not common to see such few calls in the stack (ntdll.dll --> kernelbase.dll --> unknown) which essentially means that most of the functions required by the process to execute certain routines are already present in memory, not requiring any calls to external libraries. The latter should also be considered suspicious. Author: Perez Diego (@darkquassar), oscd.community, Jonhnathan Ribeiro."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/27"
+    category = "process_access"
+    product = "windows"
+    mitre = "privilege_escalation, defense_evasion, t1055.001, t1055.002, t1055"
+
+  events:
+(((re.regex($selection1.CallTrace, `.*C:\\\\Windows\\\\SYSTEM32\\\\ntdll\.dll\+.*`) and re.regex($selection1.CallTrace, `.*|C:\\\\Windows\\\\System32\\\\KERNELBASE\.dll\+.*`) and re.regex($selection1.CallTrace, `.*|UNKNOWN\(.*`) and re.regex($selection1.CallTrace, `.*\).*`)) or (re.regex($selection1.CallTrace, `.*UNKNOWN\(.*`) and re.regex($selection1.CallTrace, `.*\)|UNKNOWN\(.*`) and re.regex($selection1.CallTrace, `.*\)`))) or ((re.regex($selection1.CallTrace, `.*UNKNOWN.*`) and ($selection1.GrantedAccess = "0x1F0FFF" or $selection1.GrantedAccess = "0x1F1FFF" or $selection1.GrantedAccess = "0x143A" or $selection1.GrantedAccess = "0x1410" or $selection1.GrantedAccess = "0x1010" or $selection1.GrantedAccess = "0x1F2FFF" or $selection1.GrantedAccess = "0x1F3FFF" or $selection1.GrantedAccess = "0x1FFFFF")) and not (re.regex($selection1.src.process.file.full_path, `.*\\Windows\\System32\\sdiagnhost\.exe`))))
+
+  condition:
+    $selection1
+}

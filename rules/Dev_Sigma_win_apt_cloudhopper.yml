@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmiexec_vbs_script {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious file execution by wscript and cscript Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/04/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, g0045, t1064, t1059.005"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`) and re.regex($selection.target.process.command_line, `.*\.vbs.*`) and re.regex($selection.target.process.command_line, `.*/shell.*`))
+
+  condition:
+    $selection
+}

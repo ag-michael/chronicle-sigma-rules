@@ -1,0 +1,17 @@
+rule  Dev_sigma_mstsc_shadowing {
+ meta:
+    author = "Florian Roth"
+    description = "Detects RDP session hijacking by using MSTSC shadowing Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/24"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, t1563.002"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*noconsentprompt.*`) and re.regex($selection.target.process.command_line, `.*shadow:.*`))
+
+  condition:
+    $selection
+}

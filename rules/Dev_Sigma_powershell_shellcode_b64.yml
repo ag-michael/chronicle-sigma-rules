@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_shellcode {
+ meta:
+    author = "David Ledbetter (shellcode), Florian Roth (rule)"
+    description = "Detects Base64 encoded Shellcode Author: David Ledbetter (shellcode), Florian Roth (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/17"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, privilege_escalation, t1055, execution, t1059.001, t1086"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.target.process.command_line, `.*AAAAYInlM.*`) and (re.regex($selection.target.process.command_line, `.*OiCAAAAYInlM.*`) or re.regex($selection.target.process.command_line, `.*OiJAAAAYInlM.*`)))
+
+  condition:
+    $selection
+}

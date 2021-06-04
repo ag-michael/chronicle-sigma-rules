@@ -1,0 +1,34 @@
+rule  Dev_sigma_awl_bypass_with_winrmvbs_and_malicious_wsmptyxslwsmtxtxsl {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects execution of attacker-controlled WsmPty.xsl or WsmTxt.xsl via winrm.vbs and copied cscript.exe (can be renamed) Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1216"
+
+  events:
+(re.regex($contains_format_pretty_arg.target.process.command_line, `.*winrm.*`) and (re.regex($contains_format_pretty_arg.target.process.command_line, `.*format:pretty.*`) or re.regex($contains_format_pretty_arg.target.process.command_line, `.*format:\"pretty\".*`) or re.regex($contains_format_pretty_arg.target.process.command_line, `.*format:\"text\".*`) or re.regex($contains_format_pretty_arg.target.process.command_line, `.*format:text.*`)) and not ((re.regex($contains_format_pretty_arg.target.process.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($contains_format_pretty_arg.target.process.file.full_path, `C:\\Windows\\SysWOW64\\.*`))))
+
+  condition:
+    $contains_format_pretty_arg
+}
+rule  Dev_sigma_awl_bypass_with_winrmvbs_and_malicious_wsmptyxslwsmtxtxsl_part_1 {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects execution of attacker-controlled WsmPty.xsl or WsmTxt.xsl via winrm.vbs and copied cscript.exe (can be renamed) Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/06"
+    product = "windows"
+    category = "file_event"
+    mitre = "defense_evasion, t1216"
+
+  events:
+((re.regex($system_files.target.file.full_path, `.*WsmPty\.xsl`) or re.regex($system_files.target.file.full_path, `.*WsmTxt\.xsl`)) and not ((re.regex($system_files.target.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($system_files.target.file.full_path, `C:\\Windows\\SysWOW64\\.*`))))
+
+  condition:
+    $system_files
+}

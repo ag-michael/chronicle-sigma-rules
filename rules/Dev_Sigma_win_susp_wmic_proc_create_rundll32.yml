@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_wmi_execution_using_rundll32 {
+ meta:
+    author = "Florian Roth"
+    description = "Detects WMI executing rundll32 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1047"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*process call create.*`) and re.regex($selection.target.process.command_line, `.*rundll32.*`))
+
+  condition:
+    $selection
+}

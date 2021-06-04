@@ -1,0 +1,16 @@
+rule  Dev_sigma_regedit_as_trusted_installer {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a regedit started with TrustedInstaller privileges or by ProcessHacker.exe Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/27"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\regedit\.exe`) and (re.regex($selection.src.process.file.full_path, `.*\\TrustedInstaller\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\ProcessHacker\.exe`)))
+
+  condition:
+    $selection
+}

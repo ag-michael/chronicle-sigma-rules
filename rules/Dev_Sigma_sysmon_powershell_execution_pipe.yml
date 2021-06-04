@@ -1,0 +1,17 @@
+rule  Dev_sigma_t1086_powershell_execution {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects execution of PowerShell Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "execution, t1059.001"
+
+  events:
+re.regex($selection.file.name, `PSHost.*`)
+
+  condition:
+    $selection
+}

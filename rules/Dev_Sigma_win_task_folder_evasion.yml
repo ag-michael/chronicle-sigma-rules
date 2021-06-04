@@ -1,0 +1,16 @@
+rule  Dev_sigma_tasks_folder_evasion {
+ meta:
+    author = "Sreeman"
+    description = "The Tasks folder in system32 and syswow64 are globally writable paths. Adversaries can take advantage of this and load or influence any script hosts or ANY .NET Application in Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr Author: Sreeman."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/13"
+    product = "Windows"
+    mitre = "defense_evasion, persistence, execution, t1574.002, t1059, t1064"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*echo .*`) or re.regex($selection1.target.process.command_line, `.*copy .*`) or re.regex($selection1.target.process.command_line, `.*type .*`) or re.regex($selection1.target.process.command_line, `.*file createnew.*`)) and (re.regex($selection1.target.process.command_line, `.* C:\\Windows\\System32\\Tasks\\.*`) or re.regex($selection1.target.process.command_line, `.* C:\\Windows\\SysWow64\\Tasks\\.*`)))
+
+  condition:
+    $selection1
+}

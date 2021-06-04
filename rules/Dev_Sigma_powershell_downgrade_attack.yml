@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_downgrade_attack {
+ meta:
+    author = "Florian Roth (rule), Lee Holmes (idea), Harish Segar (improvements)"
+    description = "Detects PowerShell downgrade attack by comparing the host versions with the actually used engine version 2.0 Author: Florian Roth (rule), Lee Holmes (idea), Harish Segar (improvements)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/22"
+    product = "windows"
+    service = "powershell-classic"
+    mitre = "defense_evasion, execution, t1059.001, t1086"
+
+  events:
+(($selection.metadata.product_event_type = "400" and re.regex($selection.EngineVersion, `2\..*`)) and not (re.regex($selection.HostVersion, `2\..*`)))
+
+  condition:
+    $selection
+}

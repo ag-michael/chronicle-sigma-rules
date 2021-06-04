@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_atbroker_execution {
+ meta:
+    author = "Mateusz Wydra, oscd.community"
+    description = "Atbroker executing non-deafualt Assistive Technology applications Author: Mateusz Wydra, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*AtBroker\.exe`) and re.regex($selection1.target.process.command_line, `.*start.*`)) and not ((re.regex($selection1.target.process.command_line, `.*animations.*`) or re.regex($selection1.target.process.command_line, `.*audiodescription.*`) or re.regex($selection1.target.process.command_line, `.*caretbrowsing.*`) or re.regex($selection1.target.process.command_line, `.*caretwidth.*`) or re.regex($selection1.target.process.command_line, `.*colorfiltering.*`) or re.regex($selection1.target.process.command_line, `.*cursorscheme.*`) or re.regex($selection1.target.process.command_line, `.*filterkeys.*`) or re.regex($selection1.target.process.command_line, `.*focusborderheight.*`) or re.regex($selection1.target.process.command_line, `.*focusborderwidth.*`) or re.regex($selection1.target.process.command_line, `.*highcontrast.*`) or re.regex($selection1.target.process.command_line, `.*keyboardcues.*`) or re.regex($selection1.target.process.command_line, `.*keyboardpref.*`) or re.regex($selection1.target.process.command_line, `.*magnifierpane.*`) or re.regex($selection1.target.process.command_line, `.*messageduration.*`) or re.regex($selection1.target.process.command_line, `.*minimumhitradius.*`) or re.regex($selection1.target.process.command_line, `.*mousekeys.*`) or re.regex($selection1.target.process.command_line, `.*Narrator.*`) or re.regex($selection1.target.process.command_line, `.*osk.*`) or re.regex($selection1.target.process.command_line, `.*overlappedcontent.*`) or re.regex($selection1.target.process.command_line, `.*showsounds.*`) or re.regex($selection1.target.process.command_line, `.*soundsentry.*`) or re.regex($selection1.target.process.command_line, `.*stickykeys.*`) or re.regex($selection1.target.process.command_line, `.*togglekeys.*`) or re.regex($selection1.target.process.command_line, `.*windowarranging.*`) or re.regex($selection1.target.process.command_line, `.*windowtracking.*`) or re.regex($selection1.target.process.command_line, `.*windowtrackingtimeout.*`) or re.regex($selection1.target.process.command_line, `.*windowtrackingzorder.*`))))
+
+  condition:
+    $selection1
+}

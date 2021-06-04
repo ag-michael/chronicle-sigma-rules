@@ -1,0 +1,17 @@
+rule  Dev_sigma_raw_disk_access_using_illegitimate_tools {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Raw disk access using illegitimate tools, possible defence evasion Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    product = "windows"
+    category = "raw_access_thread"
+    mitre = "defense_evasion, t1006"
+
+  events:
+(not (re.regex($filter_1.Device, `.*floppy.*`)) and not ((re.regex($filter_1.target.process.file.full_path, `.*\\wmiprvse\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\sdiagnhost\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\searchindexer\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\csrss\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\defrag\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\smss\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\vssvc\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\compattelrunner\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\wininit\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\autochk\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\taskhost\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\dfsrs\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\vds\.exe`) or re.regex($filter_1.target.process.file.full_path, `.*\\lsass\.exe`))))
+
+  condition:
+    $filter_1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_enabling_cor_profiler_environment_variables {
+ meta:
+    author = "Jose Rodriguez (@Cyb3rPandaH), OTR (Open Threat Research)"
+    description = "This rule  Dev_sigma_detects cor_enable_profiling and cor_profiler environment variables being set and configured. Author: Jose Rodriguez (@Cyb3rPandaH), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/10"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, defense_evasion, t1574.012"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\COR_ENABLE_PROFILING`) or re.regex($selection.target.registry.registry_key, `.*\\COR_PROFILER`))
+
+  condition:
+    $selection
+}

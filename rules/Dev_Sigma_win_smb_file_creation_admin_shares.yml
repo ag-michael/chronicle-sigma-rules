@@ -1,0 +1,17 @@
+rule  Dev_sigma_smb_create_remote_file_admin_share {
+ meta:
+    author = "Jose Rodriguez (@Cyb3rPandaH), OTR (Open Threat Research)"
+    description = "Look for non-system accounts SMB accessing a file with write (0x2) access mask via administrative share (i.e C$). Author: Jose Rodriguez (@Cyb3rPandaH), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/08/06"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1021.002"
+
+  events:
+(($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*C$`) and $selection.target.process.access_mask = "0x2") and not (re.regex($selection.src.user.user_display_name, `.*$`)))
+
+  condition:
+    $selection
+}

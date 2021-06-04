@@ -1,0 +1,17 @@
+rule  Dev_sigma_complus_etwenabled_registry_modification {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Potential adversaries stopping ETW providers recording loaded .NET assemblies. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/05"
+    product = "windows"
+    category = "registry_event"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*SOFTWARE\\Microsoft\\\.NETFramework\\ETWEnabled`) and $selection.metadata.description = "DWORD (0x00000000)")
+
+  condition:
+    $selection
+}

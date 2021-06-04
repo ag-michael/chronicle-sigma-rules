@@ -1,0 +1,17 @@
+rule  Dev_sigma_weak_encryption_enabled_and_kerberoast {
+ meta:
+    author = "@neu5ron"
+    description = "Detects scenario where weak encryption is enabled for a user profile which could be used for hash/password cracking. Author: @neu5ron."
+    reference = ""
+    version = "0.01"
+    created = "2017/07/30"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1089, t1562.001"
+
+  events:
+($selection.metadata.product_event_type = "4738" and (re.regex($selection.Message, `.*DES.*`) or re.regex($selection.Message, `.*Preauth.*`) or re.regex($selection.Message, `.*Encrypted.*`)) and re.regex($selection.Message, `.*Enabled.*`))
+
+  condition:
+    $selection
+}

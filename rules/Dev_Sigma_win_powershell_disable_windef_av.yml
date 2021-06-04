@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_used_to_disable_windows_defender_av_security_monitoring {
+ meta:
+    author = "ok @securonix invrep-de, oscd.community"
+    description = "Detects attackers attempting to disable Windows Defender using Powershell Author: ok @securonix invrep-de, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and (re.regex($selection.target.process.command_line, `.*-DisableBehaviorMonitoring $true.*`) or re.regex($selection.target.process.command_line, `.*-DisableRuntimeMonitoring $true.*`)))
+
+  condition:
+    $selection
+}

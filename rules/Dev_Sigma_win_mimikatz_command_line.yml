@@ -1,0 +1,17 @@
+rule  Dev_sigma_mimikatz_command_line {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Detection well-known mimikatz command line arguments Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001, t1003.002, t1003.004, t1003.005, t1003.006"
+
+  events:
+((re.regex($selection_1.target.process.command_line, `.*DumpCreds.*`) or re.regex($selection_1.target.process.command_line, `.*invoke-mimikatz.*`)) or ((re.regex($selection_1.target.process.command_line, `.*rpc.*`) or re.regex($selection_1.target.process.command_line, `.*token.*`) or re.regex($selection_1.target.process.command_line, `.*crypto.*`) or re.regex($selection_1.target.process.command_line, `.*dpapi.*`) or re.regex($selection_1.target.process.command_line, `.*sekurlsa.*`) or re.regex($selection_1.target.process.command_line, `.*kerberos.*`) or re.regex($selection_1.target.process.command_line, `.*lsadump.*`) or re.regex($selection_1.target.process.command_line, `.*privilege.*`) or re.regex($selection_1.target.process.command_line, `.*process.*`)) and re.regex($selection_1.target.process.command_line, `.*::.*`)))
+
+  condition:
+    $selection_1
+}

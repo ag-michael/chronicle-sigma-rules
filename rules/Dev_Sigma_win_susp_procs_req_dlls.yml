@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_process_start_without_dll {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious start of program that usually requires a DLL as parameter, which can be a sign of process injection or hollowing activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/27"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*\\rundll32\.exe`) or re.regex($selection.target.process.command_line, `.*\\regsvcs\.exe`) or re.regex($selection.target.process.command_line, `.*\\regasm\.exe`) or re.regex($selection.target.process.command_line, `.*\\regsvr32\.exe`)) and not ((re.regex($selection.src.process.file.full_path, `.*\\AppData\\Local\\.*`) or re.regex($selection.src.process.file.full_path, `.*\\Microsoft\\Edge\\.*`))))
+
+  condition:
+    $selection
+}

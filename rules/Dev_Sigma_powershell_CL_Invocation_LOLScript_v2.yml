@@ -1,0 +1,18 @@
+rule  Dev_sigma_execution_via_cl_invocationps1_2_lines {
+ meta:
+    author = "oscd.community, Natalia Shornikova"
+    description = "Detects Execution via SyncInvoke in CL_Invocation.ps1 module Author: oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/14"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, t1216"
+
+  events:
+($selection2.metadata.product_event_type = "4104" and (re.regex($selection2.target.process.command_line, `.*CL_Invocation\.ps1.*`) or re.regex($selection2.target.process.command_line, `.*SyncInvoke.*`)))
+$selection2.Computer = $target
+
+  condition:
+    $selection2 and #target > 2
+}

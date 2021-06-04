@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_csiexe_usage {
+ meta:
+    author = "Konstantin Grishchenko, oscd.community"
+    description = "Csi.exe is a signed binary from Micosoft that comes with Visual Studio and provides C# interactive capabilities. It can be used to run C# code from a file passed as a parameter in command line. Early version of this utility provided with Microsoft “Roslyn” Community Technology Preview was named 'rcsi.exe' Author: Konstantin Grishchenko, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/17"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1072, defense_evasion, t1218"
+
+  events:
+((re.regex($basic.target.process.file.full_path, `.*\\csi\.exe`) or re.regex($basic.target.process.file.full_path, `.*\\rcsi\.exe`) or $basic.target.file.full_path = "csi.exe" or $basic.target.file.full_path = "rcsi.exe") and $basic.metadata.description = "Microsoft Corporation")
+
+  condition:
+    $basic
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_file_created_with_system_process_name {
+ meta:
+    author = "Sander Wiebing"
+    description = "Detects the creation of a executable with a system process name in a suspicious folder Author: Sander Wiebing."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/26"
+    category = "file_event"
+    product = "windows"
+    mitre = "defense_evasion, t1036, t1036.005"
+
+  events:
+((re.regex($selection.target.file.full_path, `.*\\svchost\.exe`) or re.regex($selection.target.file.full_path, `.*\\rundll32\.exe`) or re.regex($selection.target.file.full_path, `.*\\services\.exe`) or re.regex($selection.target.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.file.full_path, `.*\\regsvr32\.exe`) or re.regex($selection.target.file.full_path, `.*\\spoolsv\.exe`) or re.regex($selection.target.file.full_path, `.*\\lsass\.exe`) or re.regex($selection.target.file.full_path, `.*\\smss\.exe`) or re.regex($selection.target.file.full_path, `.*\\csrss\.exe`) or re.regex($selection.target.file.full_path, `.*\\conhost\.exe`) or re.regex($selection.target.file.full_path, `.*\\wininit\.exe`) or re.regex($selection.target.file.full_path, `.*\\lsm\.exe`) or re.regex($selection.target.file.full_path, `.*\\winlogon\.exe`) or re.regex($selection.target.file.full_path, `.*\\explorer\.exe`) or re.regex($selection.target.file.full_path, `.*\\taskhost\.exe`) or re.regex($selection.target.file.full_path, `.*\\Taskmgr\.exe`) or re.regex($selection.target.file.full_path, `.*\\taskmgr\.exe`) or re.regex($selection.target.file.full_path, `.*\\sihost\.exe`) or re.regex($selection.target.file.full_path, `.*\\RuntimeBroker\.exe`) or re.regex($selection.target.file.full_path, `.*\\runtimebroker\.exe`) or re.regex($selection.target.file.full_path, `.*\\smartscreen\.exe`) or re.regex($selection.target.file.full_path, `.*\\dllhost\.exe`) or re.regex($selection.target.file.full_path, `.*\\audiodg\.exe`) or re.regex($selection.target.file.full_path, `.*\\wlanext\.exe`)) and not ((re.regex($selection.target.file.full_path, `C:\\Windows\\System32\\.*`) or re.regex($selection.target.file.full_path, `C:\\Windows\\system32\\.*`) or re.regex($selection.target.file.full_path, `C:\\Windows\\SysWow64\\.*`) or re.regex($selection.target.file.full_path, `C:\\Windows\\SysWOW64\\.*`) or re.regex($selection.target.file.full_path, `C:\\Windows\\winsxs\\.*`) or re.regex($selection.target.file.full_path, `C:\\Windows\\WinSxS\\.*`) or re.regex($selection.target.file.full_path, `SystemRoot\\System32\\.*`)) and re.regex($selection.target.process.file.full_path, `.*\\Windows\\System32\\dism\.exe`)))
+
+  condition:
+    $selection
+}

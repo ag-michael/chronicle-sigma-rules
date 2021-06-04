@@ -1,0 +1,17 @@
+rule  Dev_sigma_scheduled_task_creation {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the creation of scheduled tasks in user session Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, persistence, privilege_escalation, t1053.005, t1053, s0111, car.2013-08-001"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\schtasks\.exe`) and re.regex($selection.target.process.command_line, `.* /create .*`)) and not ($selection.src.user.user_display_name = "NT AUTHORITY\\SYSTEM"))
+
+  condition:
+    $selection
+}

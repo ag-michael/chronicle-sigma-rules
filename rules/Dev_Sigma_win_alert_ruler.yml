@@ -1,0 +1,17 @@
+rule  Dev_sigma_hacktool_ruler {
+ meta:
+    author = "Florian Roth"
+    description = "This events that are generated when using the hacktool Ruler by Sensepost Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/05/31"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, execution, t1087, t1075, t1114, t1059, t1550.002"
+
+  events:
+(($selection1.metadata.product_event_type = "4776" and $selection1.Workstation = "RULER") or (($selection1.metadata.product_event_type = "4624" or $selection1.metadata.product_event_type = "4625") and $selection1.principal.hostname = "RULER"))
+
+  condition:
+    $selection1
+}

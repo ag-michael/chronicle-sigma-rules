@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_pcap_drivers {
+ meta:
+    author = "Cian Heasley"
+    description = "Detects Windows Pcap driver installation based on a list of associated .sys files. Author: Cian Heasley."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/10"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, credential_access, t1040"
+
+  events:
+($selection.metadata.product_event_type = "4697" and (re.regex($selection.target.process.command_line, `.*pcap.*`) or re.regex($selection.target.process.command_line, `.*npcap.*`) or re.regex($selection.target.process.command_line, `.*npf.*`) or re.regex($selection.target.process.command_line, `.*nm3.*`) or re.regex($selection.target.process.command_line, `.*ndiscap.*`) or re.regex($selection.target.process.command_line, `.*nmnt.*`) or re.regex($selection.target.process.command_line, `.*windivert.*`) or re.regex($selection.target.process.command_line, `.*USBPcap.*`) or re.regex($selection.target.process.command_line, `.*pktmon.*`)))
+
+  condition:
+    $selection
+}

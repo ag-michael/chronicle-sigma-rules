@@ -1,0 +1,17 @@
+rule  Dev_sigma_execution_from_suspicious_folder {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a suspicious execution from an uncommon folder Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\$Recycle\.bin\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\config\\systemprofile\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Intel\\Logs\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\RSA\\MachineKeys\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\All Users\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Default\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\NetworkService\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Users\\Public\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\addins\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\debug\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Fonts\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Help\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\IME\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Media\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\repair\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\security\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\system32\\config\\systemprofile\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\System32\\Tasks\\.*`) or re.regex($selection.target.process.file.full_path, `.*\\Windows\\Tasks\\.*`)) or re.regex($selection.target.process.file.full_path, `C:\\Perflogs\\.*`))
+
+  condition:
+    $selection
+}

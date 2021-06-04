@@ -1,0 +1,17 @@
+rule  Dev_sigma_path_to_screensaver_binary_modified {
+ meta:
+    author = "Bartlomiej Czyz @bczyz1, oscd.community"
+    description = "Detects value modification of registry key containing path to binary used as screensaver. Author: Bartlomiej Czyz @bczyz1, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/11"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, privilege_escalation, t1546.002"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\Control Panel\\Desktop\\SCRNSAVE\.EXE`) and not ((re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\explorer\.exe`))))
+
+  condition:
+    $selection
+}

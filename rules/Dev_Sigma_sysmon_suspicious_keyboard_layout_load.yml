@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_keyboard_layout_load {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/12"
+    category = "registry_event"
+    product = "windows"
+
+  events:
+((re.regex($selection_registry.target.registry.registry_key, `.*\\Keyboard Layout\\Preload\\.*`) or re.regex($selection_registry.target.registry.registry_key, `.*\\Keyboard Layout\\Substitutes\\.*`)) and (re.regex($selection_registry.metadata.description, `.*00000429.*`) or re.regex($selection_registry.metadata.description, `.*00050429.*`) or re.regex($selection_registry.metadata.description, `.*0000042a.*`)))
+
+  condition:
+    $selection_registry
+}

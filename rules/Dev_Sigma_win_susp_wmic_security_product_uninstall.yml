@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmic_uninstall_security_product {
+ meta:
+    author = "Florian Roth"
+    description = "Detects deinstallation of security products using WMIC utility Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*wmic.*`) and re.regex($selection.target.process.command_line, `.*product where name=.*`) and re.regex($selection.target.process.command_line, `.*call uninstall.*`) and re.regex($selection.target.process.command_line, `.*/nointeractive.*`) and (re.regex($selection.target.process.command_line, `.*Antivirus.*`) or re.regex($selection.target.process.command_line, `.*Endpoint Security.*`) or re.regex($selection.target.process.command_line, `.*Endpoint Detection.*`) or re.regex($selection.target.process.command_line, `.*Crowdstrike Sensor.*`) or re.regex($selection.target.process.command_line, `.*Windows Defender.*`) or re.regex($selection.target.process.command_line, `.*VirusScan.*`) or re.regex($selection.target.process.command_line, `.*Threat Protection.*`) or re.regex($selection.target.process.command_line, `.*Endpoint Sensor.*`)))
+
+  condition:
+    $selection
+}

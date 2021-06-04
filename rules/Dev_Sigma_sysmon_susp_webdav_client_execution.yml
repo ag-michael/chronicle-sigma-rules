@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_webdav_client_execution {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for svchost.exe spawning rundll32.exe with command arguments like C:\\windows\\system32\\davclnt.dll,DavSetCookie. This could be an indicator of exfiltration or use of WebDav to launch code (hosted on WebDav Server). Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "exfiltration, t1048.003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection.target.process.command_line, `.*C:\\windows\\system32\\davclnt\.dll,DavSetCookie.*`))
+
+  condition:
+    $selection
+}

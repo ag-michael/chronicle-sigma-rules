@@ -1,0 +1,17 @@
+rule  Dev_sigma_creation_of_a_local_hidden_user_account_by_registry {
+ meta:
+    author = "Christian Burkard"
+    description = "Sysmon registry detection of a local hidden user account. Author: Christian Burkard."
+    reference = ""
+    version = "0.01"
+    created = "2021/05/03"
+    product = "windows"
+    category = "registry_event"
+    mitre = "persistence, t1136.001"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `HKLM\\SAM\\SAM\\Domains\\Account\\Users\\Names\\.*`) and re.regex($selection.target.registry.registry_key, `.*$`) and re.regex($selection.target.process.file.full_path, `.*lsass\.exe`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_netsh_port_or_application_allowed {
+ meta:
+    author = "Markus Neis, Sander Wiebing"
+    description = "Allow Incoming Connections by Port or Application on Windows Firewall Author: Markus Neis, Sander Wiebing."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/29"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.004"
+
+  events:
+(re.regex($selection1.target.process.file.full_path, `.*\\netsh\.exe`) and re.regex($selection1.target.process.command_line, `.*firewall.*`) and re.regex($selection1.target.process.command_line, `.*add.*`))
+
+  condition:
+    $selection1
+}

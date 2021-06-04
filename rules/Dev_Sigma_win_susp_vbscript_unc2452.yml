@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_vbscript_un2452_pattern {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious inline VBScript keywords as used by UNC2452 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/05"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*Execute.*`) and re.regex($selection.target.process.command_line, `.*CreateObject.*`) and re.regex($selection.target.process.command_line, `.*RegRead.*`) and re.regex($selection.target.process.command_line, `.*window\.close.*`) and re.regex($selection.target.process.command_line, `.*\\Microsoft\\Windows\\CurrentVersion.*`)) and not (re.regex($selection.target.process.command_line, `.*\\Software\\Microsoft\\Windows\\CurrentVersion\\Run.*`)))
+
+  condition:
+    $selection
+}

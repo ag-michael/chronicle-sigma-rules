@@ -1,0 +1,17 @@
+rule  Dev_sigma_mmc20_lateral_movement {
+ meta:
+    author = "@2xxeformyshirt (Security Risk Advisors) - rule; Teymur Kheirkhabarov (idea)"
+    description = "Detects MMC20.Application Lateral Movement; specifically looks for the spawning of the parent MMC.exe with a command line of \"-Embedding\" as a child of svchost.exe Author: @2xxeformyshirt (Security Risk Advisors) - rule; Teymur Kheirkhabarov (idea)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1175, t1021.003"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\svchost\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\mmc\.exe`) and re.regex($selection.target.process.command_line, `.*-Embedding.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_psexe_renamed_sysinternals_tool {
+ meta:
+    author = "Florian Roth"
+    description = "Detects renamed SysInternals tool execution with a binary named ps.exe as used by Dragonfly APT group and documented in TA17-293A report Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/10/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, g0035, t1036, t1036.003, car.2013-05-009"
+
+  events:
+$selection.target.process.command_line = "ps.exe -accepteula"
+
+  condition:
+    $selection
+}

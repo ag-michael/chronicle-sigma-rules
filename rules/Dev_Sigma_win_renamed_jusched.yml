@@ -1,0 +1,17 @@
+rule  Dev_sigma_renamed_juschedexe {
+ meta:
+    author = "Markus Neis, Swisscom"
+    description = "Detects renamed jusched.exe used by cobalt group Author: Markus Neis, Swisscom."
+    reference = ""
+    version = "0.01"
+    created = "2019/06/04"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, defense_evasion, t1036, t1036.003"
+
+  events:
+(($selection1.metadata.description = "Java Update Scheduler" or $selection1.metadata.description = "Java(TM) Update Scheduler") and not (re.regex($selection1.target.process.file.full_path, `.*\\jusched\.exe`)))
+
+  condition:
+    $selection1
+}

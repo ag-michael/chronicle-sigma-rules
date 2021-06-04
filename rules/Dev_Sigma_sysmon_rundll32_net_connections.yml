@@ -1,0 +1,17 @@
+rule  Dev_sigma_rundll32_internet_connection {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a rundll32 that communicates with public IP addresses Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/04"
+    category = "network_connection"
+    product = "windows"
+    mitre = "defense_evasion, t1218.011, t1085, execution"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) and $selection.Initiated = "true") and not ((re.regex($selection.target.ip, `10\..*`) or re.regex($selection.target.ip, `192\.168\..*`) or re.regex($selection.target.ip, `172\.16\..*`) or re.regex($selection.target.ip, `172\.17\..*`) or re.regex($selection.target.ip, `172\.18\..*`) or re.regex($selection.target.ip, `172\.19\..*`) or re.regex($selection.target.ip, `172\.20\..*`) or re.regex($selection.target.ip, `172\.21\..*`) or re.regex($selection.target.ip, `172\.22\..*`) or re.regex($selection.target.ip, `172\.23\..*`) or re.regex($selection.target.ip, `172\.24\..*`) or re.regex($selection.target.ip, `172\.25\..*`) or re.regex($selection.target.ip, `172\.26\..*`) or re.regex($selection.target.ip, `172\.27\..*`) or re.regex($selection.target.ip, `172\.28\..*`) or re.regex($selection.target.ip, `172\.29\..*`) or re.regex($selection.target.ip, `172\.30\..*`) or re.regex($selection.target.ip, `172\.31\..*`) or re.regex($selection.target.ip, `127\..*`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_wsfjsejsvbavbe_file_execution {
+ meta:
+    author = "Michael Haag"
+    description = "Detects suspicious file execution by wscript and cscript Author: Michael Haag."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.005, t1059.007, t1064"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`)) and (re.regex($selection.target.process.command_line, `.*\.jse.*`) or re.regex($selection.target.process.command_line, `.*\.vbe.*`) or re.regex($selection.target.process.command_line, `.*\.js.*`) or re.regex($selection.target.process.command_line, `.*\.vba.*`)))
+
+  condition:
+    $selection
+}

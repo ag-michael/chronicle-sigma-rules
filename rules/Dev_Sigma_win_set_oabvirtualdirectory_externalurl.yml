@@ -1,0 +1,17 @@
+rule  Dev_sigma_set_oabvirtualdirectory_externalurl_property {
+ meta:
+    author = "Jose Rodriguez @Cyb3rPandaH"
+    description = "Rule to detect an adversary setting OabVirtualDirectory External URL property to a script Author: Jose Rodriguez @Cyb3rPandaH."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/15"
+    product = "windows"
+    service = "msexchange-management"
+    mitre = "persistence, t1505.003"
+
+  events:
+(re.regex($selection.Message, `.*Set-OabVirtualDirectory.*`) and re.regex($selection.Message, `.*ExternalUrl.*`) and re.regex($selection.Message, `.*Page_Load.*`) and re.regex($selection.Message, `.*script.*`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_findstr_launching_lnk_file {
+ meta:
+    author = "Trent Liffick"
+    description = "Detects usage of findstr to identify and execute a lnk file as seen within the HHS redirect attack Author: Trent Liffick."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/01"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, t1202, t1027.003"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\findstr\.exe`) and re.regex($selection.target.process.command_line, `.*\.lnk`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_indirect_command_execution_by_program_compatibility_wizard {
+ meta:
+    author = "A. Sungurov , oscd.community"
+    description = "Detect indirect command execution via Program Compatibility Assistant pcwrun.exe Author: A. Sungurov , oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218, execution"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\pcwrun\.exe`)
+
+  condition:
+    $selection
+}

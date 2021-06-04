@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_non_powershell_wsman_com_provider {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects suspicious use of the WSMAN provider without PowerShell.exe as the host application. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/24"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, lateral_movement, t1021.003"
+
+  events:
+(re.regex($selection.Message, `.*ProviderName=WSMan.*`) and not (re.regex($selection.Message, `.*HostApplication=.*powershell.*`)))
+
+  condition:
+    $selection
+}

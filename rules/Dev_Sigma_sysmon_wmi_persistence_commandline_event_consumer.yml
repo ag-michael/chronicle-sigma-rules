@@ -1,0 +1,17 @@
+rule  Dev_sigma_wmi_persistence__command_line_event_consumer {
+ meta:
+    author = "Thomas Patzke"
+    description = "Detects WMI command line event consumers Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/07"
+    category = "image_load"
+    product = "windows"
+    mitre = "t1084, t1546.003, persistence"
+
+  events:
+($selection.target.process.file.full_path = "C:\\Windows\\System32\\wbem\\WmiPrvSE.exe" and re.regex($selection.target.process.file.full_path, `.*\\wbemcons\.dll`))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_dll_load_via_lsass {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a method to load DLL via LSASS process using an undocumented Registry key Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/16"
+    category = "registry_event"
+    product = "windows"
+    mitre = "execution, persistence, t1177, t1547.008"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*\\CurrentControlSet\\Services\\NTDS\\DirectoryServiceExtPt.*`) or re.regex($selection.target.registry.registry_key, `.*\\CurrentControlSet\\Services\\NTDS\\LsaDbExtPt.*`))
+
+  condition:
+    $selection
+}

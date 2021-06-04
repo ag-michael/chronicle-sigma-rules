@@ -1,0 +1,17 @@
+rule  Dev_sigma_netsh_rdp_port_opening {
+ meta:
+    author = "Sander Wiebing"
+    description = "Detects netsh commands that opens the port 3389 used for RDP, used in Sarwent Malware Author: Sander Wiebing."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/23"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.004"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*netsh.*`) and ((re.regex($selection1.target.process.command_line, `.*firewall add portopening.*`) and re.regex($selection1.target.process.command_line, `.*tcp 3389.*`)) or (re.regex($selection1.target.process.command_line, `.*advfirewall firewall add rule.*`) and re.regex($selection1.target.process.command_line, `.*action=allow.*`) and re.regex($selection1.target.process.command_line, `.*protocol=TCP.*`) and re.regex($selection1.target.process.command_line, `.*localport=3389.*`))))
+
+  condition:
+    $selection1
+}

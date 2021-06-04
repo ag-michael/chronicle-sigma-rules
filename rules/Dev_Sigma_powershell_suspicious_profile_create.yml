@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_profileps1_modification {
+ meta:
+    author = "HieuTT35"
+    description = "Detects a change in profile.ps1 of the Powershell profile Author: HieuTT35."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/24"
+    product = "windows"
+    category = "file_event"
+    mitre = "persistence, privilege_escalation, t1546.013"
+
+  events:
+(re.regex($target1.target.file.full_path, `.*\\profile\.ps1.*`) and (re.regex($target1.target.file.full_path, `.*\\My Documents\\PowerShell\\.*`) or re.regex($target1.target.file.full_path, `.*C:\\Windows\\System32\\WindowsPowerShell\\v1\.0\\.*`)))
+
+  condition:
+    $target1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_inmemory_powershell {
+ meta:
+    author = "Tom Kern, oscd.community, Natalia Shornikova"
+    description = "Detects loading of essential DLL used by PowerShell, but not by the process powershell.exe. Detects meterpreter's \"load powershell\" extension. Author: Tom Kern, oscd.community, Natalia Shornikova."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/14"
+    category = "image_load"
+    product = "windows"
+    mitre = "t1086, t1059.001, execution"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\System\.Management\.Automation\.Dll`) or re.regex($selection.target.process.file.full_path, `.*\\System\.Management\.Automation\.ni\.Dll`)) and not ((re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell_ise\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\WINDOWS\\System32\\sdiagnhost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mscorsvw\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\WINDOWS\\System32\\RemoteFXvGPUDisablement\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sqlps\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wsmprovhost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\winrshost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\syncappvpublishingserver\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\runscripthelper\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\ServerManager\.exe`))))
+
+  condition:
+    $selection
+}

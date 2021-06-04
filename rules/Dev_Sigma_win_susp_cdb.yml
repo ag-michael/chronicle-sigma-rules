@@ -1,0 +1,17 @@
+rule  Dev_sigma_possible_app_whitelisting_bypass_via_windbgcdb_as_a_shellcode_runner {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Launch 64-bit shellcode from a debugger script file using cdb.exe. Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1106, defense_evasion, t1218, t1127"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\cdb\.exe`) and re.regex($selection.target.process.command_line, `.*-cf.*`))
+
+  condition:
+    $selection
+}

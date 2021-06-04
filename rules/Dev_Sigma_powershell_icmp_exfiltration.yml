@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_icmp_exfiltration {
+ meta:
+    author = "Bartlomiej Czyz @bczyz1, oscd.community"
+    description = "Detects Exfiltration Over Alternative Protocol - ICMP. Adversaries may steal data by exfiltrating it over an un-encrypted network protocol other than that of the existing command and control channel. Author: Bartlomiej Czyz @bczyz1, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/10"
+    product = "windows"
+    service = "powershell"
+    mitre = "exfiltration, t1048.003"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.target.process.command_line, `.*New-Object.*`) and re.regex($selection.target.process.command_line, `.*System\.Net\.NetworkInformation\.Ping.*`) and re.regex($selection.target.process.command_line, `.*\.Send\(.*`))
+
+  condition:
+    $selection
+}

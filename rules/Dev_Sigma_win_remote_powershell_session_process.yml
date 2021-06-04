@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_powershell_session_host_process_winrm {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects remote PowerShell sections by monitoring for wsmprovhost (WinRM host process) as a parent or child process (sign of an active ps remote session) Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1086, t1059.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\wsmprovhost\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\wsmprovhost\.exe`))
+
+  condition:
+    $selection
+}

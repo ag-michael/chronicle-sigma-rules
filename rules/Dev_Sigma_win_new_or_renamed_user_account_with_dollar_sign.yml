@@ -1,0 +1,17 @@
+rule  Dev_sigma_new_or_renamed_user_account_with__in_attribute_samaccountname {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "Detects possible bypass EDR and SIEM via abnormal user account name. Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1036"
+
+  events:
+(($selection.metadata.product_event_type = "4720" or $selection.metadata.product_event_type = "4781") and re.regex($selection.UserName, `.*$.*`))
+
+  condition:
+    $selection
+}

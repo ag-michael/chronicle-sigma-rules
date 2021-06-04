@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_create_local_user {
+ meta:
+    author = "@ROxPinTeddy"
+    description = "Detects creation of a local user via PowerShell Author: @ROxPinTeddy."
+    reference = ""
+    version = "0.01"
+    created = "2020/04/11"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086, persistence, t1136.001, t1136"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.Message, `.*New-LocalUser.*`))
+
+  condition:
+    $selection
+}

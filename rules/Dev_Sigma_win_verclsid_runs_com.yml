@@ -1,0 +1,17 @@
+rule  Dev_sigma_verclsidexe_runs_com_object {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects when verclsid.exe is used to run COM object via GUID Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+(re.regex($image_path.target.process.file.full_path, `.*\\verclsid\.exe`) and re.regex($image_path.target.process.command_line, `.*/C.*`) and re.regex($image_path.target.process.command_line, `.*/S.*`))
+
+  condition:
+    $image_path
+}

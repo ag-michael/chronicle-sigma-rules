@@ -1,0 +1,17 @@
+rule  Dev_sigma_user_added_to_local_administrators {
+ meta:
+    author = "Florian Roth"
+    description = "This rule  Dev_sigma_triggers on user accounts that are added to the local Administrators group, which could be legitimate activity or a sign of privilege escalation activity Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/14"
+    product = "windows"
+    service = "security"
+    mitre = "privilege_escalation, t1078, persistence, t1098"
+
+  events:
+(($selection.metadata.product_event_type = "4732" and ($selection.GroupName = "Administrators" or $selection.GroupSid = "S-1-5-32-544")) and not (re.regex($selection.src.user.user_display_name, `.*$`)))
+
+  condition:
+    $selection
+}

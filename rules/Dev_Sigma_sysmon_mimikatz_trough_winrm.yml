@@ -1,0 +1,17 @@
+rule  Dev_sigma_mimikatz_through_windows_remote_management {
+ meta:
+    author = "Patryk Prauze - ING Tech"
+    description = "Detects usage of mimikatz through WinRM protocol by monitoring access to lsass process by wsmprovhost.exe. Author: Patryk Prauze - ING Tech."
+    reference = ""
+    version = "0.01"
+    created = "2019/05/20"
+    category = "process_access"
+    product = "windows"
+    mitre = "credential_access, execution, t1003.001, t1003, t1059.001, t1086, lateral_movement, t1021.006, t1028, s0002"
+
+  events:
+($selection.target.process.file.full_path = "C:\\windows\\system32\\lsass.exe" and $selection.src.process.file.full_path = "C:\\Windows\\system32\\wsmprovhost.exe")
+
+  condition:
+    $selection
+}

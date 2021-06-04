@@ -1,0 +1,17 @@
+rule  Dev_sigma_abusing_findstr_for_defense_evasion {
+ meta:
+    author = "Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative"
+    description = "Attackers can use findstr to hide their artifacts or search specific strings and evade defense mechanism Author: Furkan CALISKAN, @caliskanfurkan_, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+(re.regex($selectionFindstr.target.process.command_line, `.*findstr.*`) and ((re.regex($selectionFindstr.target.process.command_line, `.*/V.*`) and re.regex($selectionFindstr.target.process.command_line, `.*/L.*`)) or (re.regex($selectionFindstr.target.process.command_line, `.*/S.*`) and re.regex($selectionFindstr.target.process.command_line, `.*/I.*`))))
+
+  condition:
+    $selectionFindstr
+}

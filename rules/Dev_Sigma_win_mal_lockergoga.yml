@@ -1,0 +1,17 @@
+rule  Dev_sigma_lockergoga_ransomware {
+ meta:
+    author = "Vasiliy Burov, oscd.community"
+    description = "Detects LockerGoga Ransomware command line. Author: Vasiliy Burov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "impact, t1486"
+
+  events:
+re.regex($selection.target.process.command_line, `.*-i SM-tgytutrc -s.*`)
+
+  condition:
+    $selection
+}

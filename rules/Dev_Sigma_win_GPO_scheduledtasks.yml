@@ -1,0 +1,17 @@
+rule  Dev_sigma_persistence_and_execution_at_scale_via_gpo_scheduled_task {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detect lateral movement using GPO scheduled task, usually used to deploy ransomware at scale Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, lateral_movement, t1053, t1053.005"
+
+  events:
+($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*\\SYSVOL`) and re.regex($selection.target.file.full_path, `.*ScheduledTasks\.xml`) and (re.regex($selection.Accesses, `.*WriteData.*`) or re.regex($selection.Accesses, `.*%%4417.*`)))
+
+  condition:
+    $selection
+}

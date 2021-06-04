@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_10_scheduled_task_sandboxescaper_0day {
+ meta:
+    author = "Olaf Hartong"
+    description = "Detects Task Scheduler .job import arbitrary DACL write\\par Author: Olaf Hartong."
+    reference = ""
+    version = "0.01"
+    created = "2019/05/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1053.005, t1053, car.2013-08-001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\schtasks\.exe`) and re.regex($selection.target.process.command_line, `.*/change.*`) and re.regex($selection.target.process.command_line, `.*/TN.*`) and re.regex($selection.target.process.command_line, `.*/RU.*`) and re.regex($selection.target.process.command_line, `.*/RP.*`))
+
+  condition:
+    $selection
+}

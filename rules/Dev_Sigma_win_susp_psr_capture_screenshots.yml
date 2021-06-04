@@ -1,0 +1,17 @@
+rule  Dev_sigma_psrexe_capture_screenshots {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "The psr.exe captures desktop screenshots and saves them on the local machine Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/12"
+    category = "process_creation"
+    product = "windows"
+    mitre = "collection, t1113"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\Psr\.exe`) and re.regex($selection.target.process.command_line, `.*/start.*`))
+
+  condition:
+    $selection
+}

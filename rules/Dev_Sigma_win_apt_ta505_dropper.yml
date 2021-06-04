@@ -1,0 +1,17 @@
+rule  Dev_sigma_ta505_dropper_load_pattern {
+ meta:
+    author = "Florian Roth"
+    description = "Detects mshta loaded by wmiprvse as parent as used by TA505 malicious documents Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/12/08"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, g0092"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\mshta\.exe`) and re.regex($selection.src.process.file.full_path, `.*\\wmiprvse\.exe`))
+
+  condition:
+    $selection
+}

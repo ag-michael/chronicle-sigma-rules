@@ -1,0 +1,17 @@
+rule  Dev_sigma_data_compressed__powershell {
+ meta:
+    author = "Timur Zinniatullin, oscd.community"
+    description = "An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network Author: Timur Zinniatullin, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    product = "windows"
+    service = "powershell"
+    mitre = "exfiltration, t1560, t1002"
+
+  events:
+($selection.metadata.product_event_type = "4104" and re.regex($selection.keywords, `.*-Recurse.*`) and re.regex($selection.keywords, `.*|.*`) and re.regex($selection.keywords, `.*Compress-Archive.*`))
+
+  condition:
+    $selection
+}

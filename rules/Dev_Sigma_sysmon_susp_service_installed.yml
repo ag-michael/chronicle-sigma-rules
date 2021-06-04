@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_service_installed {
+ meta:
+    author = "xknow (@xknow_infosec), xorxes (@xor_xes)"
+    description = "Detects installation of NalDrv or PROCEXP152 services via registry-keys to non-system32 folders. Both services are used in the tool Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU (https://github.com/hfiref0x/KDU) Author: xknow (@xknow_infosec), xorxes (@xor_xes)."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/08"
+    category = "registry_event"
+    product = "windows"
+    mitre = "t1089, t1562.001, defense_evasion"
+
+  events:
+((($selection_1.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Services\\NalDrv\\ImagePath" or $selection_1.target.registry.registry_key = "HKLM\\System\\CurrentControlSet\\Services\\PROCEXP152\\ImagePath") and not ((re.regex($selection_1.target.process.file.full_path, `.*\\procexp64\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procexp\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon64\.exe`) or re.regex($selection_1.target.process.file.full_path, `.*\\procmon\.exe`)))) and not (re.regex($selection_1.metadata.description, `.*\\WINDOWS\\system32\\Drivers\\PROCEXP152\.SYS.*`)))
+
+  condition:
+    $selection_1
+}

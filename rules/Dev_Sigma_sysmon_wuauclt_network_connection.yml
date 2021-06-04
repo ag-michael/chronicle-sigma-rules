@@ -1,0 +1,17 @@
+rule  Dev_sigma_wuauclt_network_connection {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects the use of the Windows Update Client binary (wuauclt.exe) to proxy execute code and making a network connections. One could easily make the DLL spawn a new process and inject to it to proxy the network connection and bypass this rule. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    category = "network_connection"
+    product = "windows"
+    mitre = "defense_evasion, t1218"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*wuauclt.*`)
+
+  condition:
+    $selection
+}

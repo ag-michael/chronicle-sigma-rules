@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_use_of_procdump_on_lsass {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious uses of the SysInternals Procdump utility by using a special command line parameter in combination with the lsass.exe process. This way we're also able to catch cases in which the attacker has renamed the procdump executable. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, credential_access, t1003.001, t1003, car.2013-05-009"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.* -ma .*`) and (re.regex($selection1.target.process.command_line, `.* lsass.*`) or re.regex($selection1.target.process.command_line, `.* ls.*`)))
+
+  condition:
+    $selection1
+}

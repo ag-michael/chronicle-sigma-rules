@@ -1,0 +1,17 @@
+rule  Dev_sigma_t1021_dcom_internetexplorerapplication_iertutil_dll_hijack {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)"
+    description = "Detects a threat actor creating a file named `iertutil.dll` in the `C:\\Program Files\\Internet Explorer\\` directory over the network for a DCOM InternetExplorer DLL Hijack scenario. Author: Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/12"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1021.002, t1021.003"
+
+  events:
+(($selection.metadata.product_event_type = "5145" and re.regex($selection.target.file.full_path, `.*\\Internet Explorer\\iertutil\.dll`)) and not (re.regex($selection.src.user.user_display_name, `.*$`)))
+
+  condition:
+    $selection
+}

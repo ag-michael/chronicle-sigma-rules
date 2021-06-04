@@ -1,0 +1,17 @@
+rule  Dev_sigma_gfxdownloadwrapperexe_downloads_file_from_suspicious_url {
+ meta:
+    author = "Victor Sergeev, oscd.community"
+    description = "Detects when GfxDownloadWrapper.exe downloads file from non standard URL Author: Victor Sergeev, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1105"
+
+  events:
+((re.regex($image_path.target.process.file.full_path, `.*\\GfxDownloadWrapper\.exe`) and not (re.regex($image_path.target.process.command_line, `.*gameplayapi\.intel\.com.*`))) and not (re.regex($image_path.src.process.file.full_path, `.*\\GfxDownloadWrapper\.exe`)))
+
+  condition:
+    $image_path
+}

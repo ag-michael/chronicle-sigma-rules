@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_deleted_mounted_share {
+ meta:
+    author = "oscd.community, @redcanary, Zach Stanford @svch0st"
+    description = "Detects when when a mounted share is removed. Adversaries may remove share connections that are no longer useful in order to clean up traces of their operation Author: oscd.community, @redcanary, Zach Stanford @svch0st."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/08"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, t1070.005"
+
+  events:
+($selection.metadata.product_event_type = "4104" and (re.regex($selection.target.process.command_line, `.*Remove-SmbShare.*`) or re.regex($selection.target.process.command_line, `.*Remove-FileShare.*`)))
+
+  condition:
+    $selection
+}

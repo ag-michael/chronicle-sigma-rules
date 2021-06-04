@@ -1,0 +1,17 @@
+rule  Dev_sigma_powershell_execution {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects execution of PowerShell Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    category = "image_load"
+    product = "windows"
+    mitre = "execution, t1086, t1059.001"
+
+  events:
+($selection.metadata.description = "System.Management.Automation" and re.regex($selection.target.process.file.full_path, `.*System\.Management\.Automation.*`))
+
+  condition:
+    $selection
+}

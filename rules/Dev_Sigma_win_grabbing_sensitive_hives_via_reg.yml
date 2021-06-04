@@ -1,0 +1,17 @@
+rule  Dev_sigma_grabbing_sensitive_hives_via_reg_utility {
+ meta:
+    author = "Teymur Kheirkhabarov, Endgame, JHasenbusch, Daniil Yugoslavskiy, oscd.community"
+    description = "Dump sam, system or security hives using REG.exe utility Author: Teymur Kheirkhabarov, Endgame, JHasenbusch, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003.002, t1003.004, t1003.005, t1003, car.2013-07-001"
+
+  events:
+(re.regex($selection_1.target.process.file.full_path, `.*\\reg\.exe`) and (re.regex($selection_1.target.process.command_line, `.*save.*`) or re.regex($selection_1.target.process.command_line, `.*export.*`)) and (re.regex($selection_1.target.process.command_line, `.*hklm.*`) or re.regex($selection_1.target.process.command_line, `.*hkey_local_machine.*`)) and (re.regex($selection_1.target.process.command_line, `.*\\system`) or re.regex($selection_1.target.process.command_line, `.*\\sam`) or re.regex($selection_1.target.process.command_line, `.*\\security`)))
+
+  condition:
+    $selection_1
+}

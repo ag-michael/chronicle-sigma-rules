@@ -1,0 +1,17 @@
+rule  Dev_sigma_removal_of_potential_com_hijacking_registry_keys {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection to trigger for processes removing .*\\shell\\open\\command registry keys. Registry keys that might have been used for COM hijacking activities. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    product = "windows"
+    category = "registry_event"
+    mitre = "defense_evasion, t1112"
+
+  events:
+($selection.metadata.event_type = "DeleteKey" and re.regex($selection.target.registry.registry_key, `.*\\shell\\open\\command`))
+
+  condition:
+    $selection
+}

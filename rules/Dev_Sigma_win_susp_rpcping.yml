@@ -1,0 +1,17 @@
+rule  Dev_sigma_capture_credentials_with_rpcpingexe {
+ meta:
+    author = "Julia Fomina, oscd.community"
+    description = "Detects using Rpcping.exe to send a RPC test connection to the target server (-s) and force the NTLM hash to be sent in the process. Author: Julia Fomina, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, t1003"
+
+  events:
+((re.regex($use_rpcping.target.process.file.full_path, `.*\\rpcping\.exe`) and (re.regex($use_rpcping.target.process.command_line, `.*-s.*`) or re.regex($use_rpcping.target.process.command_line, `.*/s.*`))) and ((re.regex($use_rpcping.target.process.command_line, `.*-u.*`) and re.regex($use_rpcping.target.process.command_line, `.*NTLM.*`)) or (re.regex($use_rpcping.target.process.command_line, `.*/u.*`) and re.regex($use_rpcping.target.process.command_line, `.*NTLM.*`)) or (re.regex($use_rpcping.target.process.command_line, `.*-t.*`) and re.regex($use_rpcping.target.process.command_line, `.*ncacn_np.*`)) or (re.regex($use_rpcping.target.process.command_line, `.*/t.*`) and re.regex($use_rpcping.target.process.command_line, `.*ncacn_np.*`))))
+
+  condition:
+    $use_rpcping
+}

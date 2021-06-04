@@ -1,0 +1,17 @@
+rule  Dev_sigma_mshta_spawning_windows_shell {
+ meta:
+    author = "Michael Haag"
+    description = "Detects a Windows command line executable started from MSHTA Author: Michael Haag."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1170, t1218.005, car.2013-02-003, car.2013-03-001, car.2014-04-003"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\mshta\.exe`) and ((re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\reg\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`)) or re.regex($selection.target.process.file.full_path, `.*\\BITSADMIN.*`)))
+
+  condition:
+    $selection
+}

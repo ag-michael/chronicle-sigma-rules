@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_rundll32_activity_invoking_sys_file {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious process related to rundll32 based on command line that includes a *.sys file as seen being used by UNC2452 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/05"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.011"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*rundll32\.exe.*`) and (re.regex($selection1.target.process.command_line, `.*\.sys,.*`) or re.regex($selection1.target.process.command_line, `.*\.sys .*`)))
+
+  condition:
+    $selection1
+}

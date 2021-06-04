@@ -1,0 +1,17 @@
+rule  Dev_sigma_zoho_dctask64_process_injection {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious process injection using ZOHO's dctask64.exe Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/28"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1055.001, t1055"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\dctask64\.exe`) and not (re.regex($selection.target.process.command_line, `.*DesktopCentral_Agent\\agent.*`)))
+
+  condition:
+    $selection
+}

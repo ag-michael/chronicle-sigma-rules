@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_ldapattributes_used {
+ meta:
+    author = "xknow @xknow_infosec"
+    description = "Detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies. Author: xknow @xknow_infosec."
+    reference = ""
+    version = "0.01"
+    created = "2019/03/24"
+    product = "windows"
+    service = "security"
+    mitre = "t1071, t1001.003, command_and_control"
+
+  events:
+($selection.metadata.product_event_type = "5136" and re.regex($selection.AttributeValue, `.*`) and ($selection.AttributeLDAPDisplayName = "primaryInternationalISDNNumber" or $selection.AttributeLDAPDisplayName = "otherFacsimileTelephoneNumber" or $selection.AttributeLDAPDisplayName = "primaryTelexNumber"))
+
+  condition:
+    $selection
+}

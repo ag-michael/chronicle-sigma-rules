@@ -1,0 +1,17 @@
+rule  Dev_sigma_malicious_nishang_powershell_commandlets {
+ meta:
+    author = "Alec Costello"
+    description = "Detects Commandlet names and arguments from the Nishang exploitation framework Author: Alec Costello."
+    reference = ""
+    version = "0.01"
+    created = "2019/05/16"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+("Add-ConstrainedDelegationBackdoor" or "Set-DCShadowPermissions" or "DNS_TXT_Pwnage" or "Execute-OnTime" or "HTTP-Backdoor" or "Set-RemotePSRemoting" or "Set-RemoteWMI" or "Invoke-AmsiBypass" or "Out-CHM" or "Out-HTA" or "Out-SCF" or "Out-SCT" or "Out-Shortcut" or "Out-WebQuery" or "Out-Word" or "Enable-Duplication" or "Remove-Update" or "Download-Execute-PS" or "Download_Execute" or "Execute-Command-MSSQL" or "Execute-DNSTXT-Code" or "Out-RundllCommand" or "Copy-VSS" or "FireBuster" or "FireListener" or "Get-Information" or "Get-PassHints" or "Get-WLAN-Keys" or "Get-Web-Credentials" or "Invoke-CredentialsPhish" or "Invoke-MimikatzWDigestDowngrade" or "Invoke-SSIDExfil" or "Invoke-SessionGopher" or "Keylogger" or "Invoke-Interceptor" or "Create-MultipleSessions" or "Invoke-NetworkRelay" or "Run-EXEonRemote" or "Invoke-Prasadhak" or "Invoke-BruteForce" or "Password-List" or "Invoke-JSRatRegsvr" or "Invoke-JSRatRundll" or "Invoke-PoshRatHttps" or "Invoke-PowerShellIcmp" or "Invoke-PowerShellUdp" or "Invoke-PSGcat" or "Invoke-PsGcatAgent" or "Remove-PoshRat" or "Add-Persistance" or "ExetoText" or "Invoke-Decode" or "Invoke-Encode" or "Parse_Keys" or "Remove-Persistence" or "StringtoBase64" or "TexttoExe" or "Powerpreter" or "Nishang" or "DataToEncode" or "LoggedKeys" or "OUT-DNSTXT" or "ExfilOption" or "DumpCerts" or "DumpCreds" or "Shellcode32" or "Shellcode64" or "NotAllNameSpaces" or "exfill" or "FakeDC")
+
+  condition:
+    $event
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_service_activity_via_svcctl_named_pipe {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects remote service activity via remote access to the svcctl named pipe Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, persistence, t1077, t1021.002"
+
+  events:
+($selection.metadata.product_event_type = "5145" and re.regex($selection.target.resource.name, `.*\\IPC$`) and $selection.target.file.full_path = "svcctl" and re.regex($selection.Accesses, `.*WriteData.*`))
+
+  condition:
+    $selection
+}

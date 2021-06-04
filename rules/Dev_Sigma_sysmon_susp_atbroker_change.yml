@@ -1,0 +1,17 @@
+rule  Dev_sigma_atbroker_registry_change {
+ meta:
+    author = "Mateusz Wydra, oscd.community"
+    description = "Detects creation/modification of Assisitive Technology applications and persistance with usage of ATs Author: Mateusz Wydra, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    category = "registry_event"
+    product = "windows"
+    mitre = "defense_evasion, t1218, persistence, t1547"
+
+  events:
+(re.regex($creation.target.registry.registry_key, `.*Software\\Microsoft\\Windows NT\\CurrentVersion\\Accessibility\\ATs.*`) or re.regex($creation.target.registry.registry_key, `.*Software\\Microsoft\\Windows NT\\CurrentVersion\\Accessibility\\Configuration.*`))
+
+  condition:
+    $creation
+}

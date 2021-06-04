@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_use_of_procdump {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious uses of the SysInternals Procdump utility by using a special command line parameter ' -ma '. This way we're also able to catch cases in which the attacker has renamed the procdump executable. Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, t1003.001"
+
+  events:
+re.regex($selection.target.process.command_line, `.* -ma .*`)
+
+  condition:
+    $selection
+}

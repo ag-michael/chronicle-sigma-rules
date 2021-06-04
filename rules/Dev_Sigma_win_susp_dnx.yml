@@ -1,0 +1,17 @@
+rule  Dev_sigma_application_whitelisting_bypass_via_dnxexe {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Execute C# code located in the consoleapp folder Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218, t1027.004, execution"
+
+  events:
+re.regex($selection.target.process.file.full_path, `.*\\dnx\.exe`)
+
+  condition:
+    $selection
+}

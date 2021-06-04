@@ -1,0 +1,16 @@
+rule  Dev_sigma_exchange_exploitation_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects activity observed by different researchers to be HAFNIUM group acitivity (or related) on Exchange servers Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/09"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*attrib.*`) and re.regex($selection1.target.process.command_line, `.* \+h .*`) and re.regex($selection1.target.process.command_line, `.* \+s .*`) and re.regex($selection1.target.process.command_line, `.* \+r .*`) and re.regex($selection1.target.process.command_line, `.*\.aspx.*`)) or (re.regex($selection1.target.process.command_line, `.*schtasks.*`) and re.regex($selection1.target.process.command_line, `.*VSPerfMon.*`)) or (re.regex($selection1.target.process.command_line, `.*vssadmin list shadows.*`) and re.regex($selection1.target.process.command_line, `.*Temp\\__output.*`)) or re.regex($selection1.target.process.command_line, `.*%TEMP%\\execute\.bat.*`) or re.regex($selection1.target.process.file.full_path, `.*Users\\Public\\opera\\Opera_browser\.exe`) or (re.regex($selection1.target.process.file.full_path, `.*Opera_browser\.exe`) and (re.regex($selection1.src.process.file.full_path, `.*\\services\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\svchost\.exe`))) or re.regex($selection1.target.process.file.full_path, `.*\\ProgramData\\VSPerfMon\\.*`) or (re.regex($selection1.target.process.command_line, `.* -t7z .*`) and re.regex($selection1.target.process.command_line, `.*C:\\Programdata\\pst.*`) and re.regex($selection1.target.process.command_line, `.*\\it\.zip.*`)) or (re.regex($selection1.target.process.file.full_path, `.*\\makecab\.exe`) and (re.regex($selection1.target.process.command_line, `.*Microsoft\\Exchange Server\\.*`) or re.regex($selection1.target.process.command_line, `.*inetpub\\wwwroot.*`))) or (re.regex($selection1.target.process.command_line, `.*\\Temp\\xx\.bat.*`) or re.regex($selection1.target.process.command_line, `.*Windows\\WwanSvcdcs.*`) or re.regex($selection1.target.process.command_line, `.*Windows\\Temp\\cw\.exe.*`)) or (re.regex($selection1.target.process.command_line, `.*\\comsvcs\.dll.*`) and re.regex($selection1.target.process.command_line, `.*Minidump.*`) and re.regex($selection1.target.process.command_line, `.*\\inetpub\\wwwroot.*`)) or (re.regex($selection1.target.process.command_line, `.*dsquery.*`) and re.regex($selection1.target.process.command_line, `.* -uco .*`) and re.regex($selection1.target.process.command_line, `.*\\inetpub\\wwwroot.*`)))
+
+  condition:
+    $selection1
+}

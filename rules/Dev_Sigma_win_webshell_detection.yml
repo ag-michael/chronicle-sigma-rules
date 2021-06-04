@@ -1,0 +1,17 @@
+rule  Dev_sigma_webshell_detection_with_command_line_keywords {
+ meta:
+    author = "Florian Roth, Jonhnathan Ribeiro, Anton Kutepov, oscd.community"
+    description = "Detects certain command line parameters often used during reconnaissance activity via web shells Author: Florian Roth, Jonhnathan Ribeiro, Anton Kutepov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/01/01"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1505.003, t1018, t1033, t1087, privilege_escalation, t1100"
+
+  events:
+(((re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\w3wp\.exe`) or re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\php-cgi\.exe`) or re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\nginx\.exe`) or re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\httpd\.exe`)) or (re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\apache.*`) or re.regex($parent_is_web_server_process.src.process.file.full_path, `.*\\tomcat.*`))) and ((((re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\net\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\net1\.exe`)) and (re.regex($parent_is_web_server_process.target.process.command_line, `.* user .*`) or re.regex($parent_is_web_server_process.target.process.command_line, `.* use .*`) or re.regex($parent_is_web_server_process.target.process.command_line, `.* group .*`))) or (re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\ping\.exe`) and re.regex($parent_is_web_server_process.target.process.command_line, `.* -n .*`)) or (re.regex($parent_is_web_server_process.target.process.command_line, `.*&cd&echo.*`) or re.regex($parent_is_web_server_process.target.process.command_line, `.*cd /d .*`))) or (re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\wmic\.exe`) and re.regex($parent_is_web_server_process.target.process.command_line, `.* /node:.*`)) or (re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\whoami\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\systeminfo\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\quser\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\ipconfig\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\pathping\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\tracert\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\netstat\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\schtasks\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\vssadmin\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\wevtutil\.exe`) or re.regex($parent_is_web_server_process.target.process.file.full_path, `.*\\tasklist\.exe`)) or (re.regex($parent_is_web_server_process.target.process.command_line, `.* Test-NetConnection .*`) or re.regex($parent_is_web_server_process.target.process.command_line, `.*dir \\.*`))))
+
+  condition:
+    $parent_is_web_server_process
+}

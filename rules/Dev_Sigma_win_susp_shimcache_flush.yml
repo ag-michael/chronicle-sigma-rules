@@ -1,0 +1,17 @@
+rule  Dev_sigma_shimcache_flush {
+ meta:
+    author = "Florian Roth"
+    description = "Detects actions that clear the local ShimCache and remove forensic evidence Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/01"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1112"
+
+  events:
+(re.regex($selection1a.target.process.command_line, `.*rundll32.*`) and ((re.regex($selection1a.target.process.command_line, `.*apphelp\.dll.*`) and (re.regex($selection1a.target.process.command_line, `.*ShimFlushCache.*`) or re.regex($selection1a.target.process.command_line, `.*#250.*`))) or (re.regex($selection1a.target.process.command_line, `.*kernel32\.dll.*`) and (re.regex($selection1a.target.process.command_line, `.*BaseFlushAppcompatCache.*`) or re.regex($selection1a.target.process.command_line, `.*#46.*`)))))
+
+  condition:
+    $selection1a
+}

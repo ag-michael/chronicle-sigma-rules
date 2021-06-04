@@ -1,0 +1,17 @@
+rule  Dev_sigma_malicious_named_pipe {
+ meta:
+    author = "Florian Roth, blueteam0ps"
+    description = "Detects the creation of a named pipe used by known APT malware Author: Florian Roth, blueteam0ps."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/06"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "defense_evasion, privilege_escalation, t1055"
+
+  events:
+($selection.file.name = "isapi_http" or $selection.file.name = "isapi_dg" or $selection.file.name = "isapi_dg2" or $selection.file.name = "sdlrpc" or $selection.file.name = "ahexec" or $selection.file.name = "winsession" or $selection.file.name = "lsassw" or $selection.file.name = "46a676ab7f179e511e30dd2dc41bd388" or $selection.file.name = "9f81f59bc58452127884ce513865ed20" or $selection.file.name = "e710f28d59aa529d6792ca6ff0ca1b34" or $selection.file.name = "rpchlp_3" or $selection.file.name = "NamePipe_MoreWindows" or $selection.file.name = "pcheap_reuse" or $selection.file.name = "gruntsvc" or $selection.file.name = "583da945-62af-10e8-4902-a8f205c72b2e" or $selection.file.name = "bizkaz" or $selection.file.name = "svcctl" or re.regex($selection.file.name, `Posh.*`) or $selection.file.name = "jaccdpqnvbrrxlaf" or $selection.file.name = "csexecsvc")
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_rdp_login_from_localhost {
+ meta:
+    author = "Thomas Patzke"
+    description = "RDP login with localhost source address may be a tunnelled login Author: Thomas Patzke."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/28"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1076, car.2013-07-002, t1021.001"
+
+  events:
+($selection.metadata.product_event_type = "4624" and $selection.extensions.auth.mechanism = "10" and ($selection.principal.ip = "::1" or $selection.principal.ip = "127.0.0.1"))
+
+  condition:
+    $selection
+}

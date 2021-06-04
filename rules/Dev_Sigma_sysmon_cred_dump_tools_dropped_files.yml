@@ -1,0 +1,17 @@
+rule  Dev_sigma_cred_dump_tools_dropped_files {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Files with well-known filenames (parts of credential dump software or files produced by them) creation Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/01"
+    category = "file_event"
+    product = "windows"
+    mitre = "credential_access, t1003, t1003.001, t1003.002, t1003.003, t1003.004, t1003.005"
+
+  events:
+((re.regex($selection.target.file.full_path, `.*\\pwdump.*`) or re.regex($selection.target.file.full_path, `.*\\kirbi.*`) or re.regex($selection.target.file.full_path, `.*\\pwhashes.*`) or re.regex($selection.target.file.full_path, `.*\\wce_ccache.*`) or re.regex($selection.target.file.full_path, `.*\\wce_krbtkts.*`) or re.regex($selection.target.file.full_path, `.*\\fgdump-log.*`)) and (re.regex($selection.target.file.full_path, `.*\\test\.pwd`) or re.regex($selection.target.file.full_path, `.*\\lsremora64\.dll`) or re.regex($selection.target.file.full_path, `.*\\lsremora\.dll`) or re.regex($selection.target.file.full_path, `.*\\fgexec\.exe`) or re.regex($selection.target.file.full_path, `.*\\wceaux\.dll`) or re.regex($selection.target.file.full_path, `.*\\SAM\.out`) or re.regex($selection.target.file.full_path, `.*\\SECURITY\.out`) or re.regex($selection.target.file.full_path, `.*\\SYSTEM\.out`) or re.regex($selection.target.file.full_path, `.*\\NTDS\.out`) or re.regex($selection.target.file.full_path, `.*\\DumpExt\.dll`) or re.regex($selection.target.file.full_path, `.*\\DumpSvc\.exe`) or re.regex($selection.target.file.full_path, `.*\\cachedump64\.exe`) or re.regex($selection.target.file.full_path, `.*\\cachedump\.exe`) or re.regex($selection.target.file.full_path, `.*\\pstgdump\.exe`) or re.regex($selection.target.file.full_path, `.*\\servpw\.exe`) or re.regex($selection.target.file.full_path, `.*\\servpw64\.exe`) or re.regex($selection.target.file.full_path, `.*\\pwdump\.exe`) or re.regex($selection.target.file.full_path, `.*\\procdump64\.exe`)))
+
+  condition:
+    $selection
+}

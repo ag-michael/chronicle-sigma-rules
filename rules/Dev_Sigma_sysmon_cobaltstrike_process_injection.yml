@@ -1,0 +1,17 @@
+rule  Dev_sigma_cobaltstrike_process_injection {
+ meta:
+    author = "Olaf Hartong, Florian Roth, Aleksey Potapov, oscd.community"
+    description = "Detects a possible remote threat creation with certain characteristics which are typical for Cobalt Strike beacons Author: Olaf Hartong, Florian Roth, Aleksey Potapov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/30"
+    product = "windows"
+    category = "create_remote_thread"
+    mitre = "defense_evasion, t1055, t1055.001"
+
+  events:
+(re.regex($selection.target.process.file.file_metadata.pe.import_hash, `.*0B80`) or re.regex($selection.target.process.file.file_metadata.pe.import_hash, `.*0C7C`) or re.regex($selection.target.process.file.file_metadata.pe.import_hash, `.*0C88`))
+
+  condition:
+    $selection
+}

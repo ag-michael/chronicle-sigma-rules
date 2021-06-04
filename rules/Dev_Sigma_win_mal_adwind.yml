@@ -1,0 +1,51 @@
+rule  Dev_sigma_adwind_rat__jrat {
+ meta:
+    author = "Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects javaw.exe in AppData folder as used by Adwind / JRAT Author: Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/10"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.005, t1059.007, t1064"
+
+  events:
+((re.regex($selection.target.process.command_line, `.*\\AppData\\Roaming\\Oracle.*`) and re.regex($selection.target.process.command_line, `.*\\java.*`) and re.regex($selection.target.process.command_line, `.*\.exe .*`)) or (re.regex($selection.target.process.command_line, `.*cscript\.exe.*`) and re.regex($selection.target.process.command_line, `.*Retrive.*`) and re.regex($selection.target.process.command_line, `.*\.vbs .*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_adwind_rat__jrat_part_1 {
+ meta:
+    author = "Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects javaw.exe in AppData folder as used by Adwind / JRAT Author: Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/10"
+    category = "file_event"
+    product = "windows"
+    mitre = "execution, t1059.005, t1059.007, t1064"
+
+  events:
+((re.regex($selection.target.file.full_path, `.*\\AppData\\Roaming\\Oracle\\bin\\java.*`) and re.regex($selection.target.file.full_path, `.*\.exe.*`)) or (re.regex($selection.target.file.full_path, `.*\\Retrive.*`) and re.regex($selection.target.file.full_path, `.*\.vbs.*`)))
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_adwind_rat__jrat_part_2 {
+ meta:
+    author = "Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community"
+    description = "Detects javaw.exe in AppData folder as used by Adwind / JRAT Author: Florian Roth, Tom Ueltschi, Jonhnathan Ribeiro, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/11/10"
+    category = "registry_event"
+    product = "windows"
+    mitre = "execution, t1059.005, t1059.007, t1064"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.*`) and re.regex($selection.metadata.description, `%AppData%\\Roaming\\Oracle\\bin\\\\.*`))
+
+  condition:
+    $selection
+}

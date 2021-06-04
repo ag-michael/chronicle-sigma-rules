@@ -1,0 +1,17 @@
+rule  Dev_sigma_ntfs_alternate_data_stream {
+ meta:
+    author = "Sami Ruohonen"
+    description = "Detects writing data into NTFS alternate data streams from powershell. Needs Script Block Logging. Author: Sami Ruohonen."
+    reference = ""
+    version = "0.01"
+    created = "2018/07/24"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, t1564.004, t1096, execution, t1059.001, t1086"
+
+  events:
+(("set-content" or "add-content") and "-stream")
+
+  condition:
+    $keyword1
+}

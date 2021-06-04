@@ -1,0 +1,15 @@
+rule  Dev_sigma_antivirus_relevant_file_paths_alerts {
+ meta:
+    author = "Florian Roth, Arnim Rupp"
+    description = "Detects an Antivirus alert in a highly relevant file path or with a relevant file name Author: Florian Roth, Arnim Rupp."
+    reference = ""
+    version = "0.01"
+    created = "2018/09/09"
+    product = "antivirus"
+
+  events:
+((re.regex($selection.target.file.full_path, `C:\\Windows\\.*`) or re.regex($selection.target.file.full_path, `C:\\Temp\\.*`) or re.regex($selection.target.file.full_path, `C:\\PerfLogs\\.*`) or re.regex($selection.target.file.full_path, `C:\\Users\\Public\\.*`) or re.regex($selection.target.file.full_path, `C:\\Users\\Default\\.*`)) or (re.regex($selection.target.file.full_path, `.*\\Client\\.*`) or re.regex($selection.target.file.full_path, `.*\\tsclient\\.*`) or re.regex($selection.target.file.full_path, `.*\\inetpub\\.*`) or re.regex($selection.target.file.full_path, `.*/www/.*`) or re.regex($selection.target.file.full_path, `.*apache.*`) or re.regex($selection.target.file.full_path, `.*tomcat.*`) or re.regex($selection.target.file.full_path, `.*nginx.*`) or re.regex($selection.target.file.full_path, `.*weblogic.*`)) or (re.regex($selection.Filename, `.*\.ps1`) or re.regex($selection.Filename, `.*\.psm1`) or re.regex($selection.Filename, `.*\.vbs`) or re.regex($selection.Filename, `.*\.bat`) or re.regex($selection.Filename, `.*\.cmd`) or re.regex($selection.Filename, `.*\.sh`) or re.regex($selection.Filename, `.*\.chm`) or re.regex($selection.Filename, `.*\.xml`) or re.regex($selection.Filename, `.*\.txt`) or re.regex($selection.Filename, `.*\.jsp`) or re.regex($selection.Filename, `.*\.jspx`) or re.regex($selection.Filename, `.*\.asp`) or re.regex($selection.Filename, `.*\.aspx`) or re.regex($selection.Filename, `.*\.ashx`) or re.regex($selection.Filename, `.*\.asax`) or re.regex($selection.Filename, `.*\.asmx`) or re.regex($selection.Filename, `.*\.php`) or re.regex($selection.Filename, `.*\.cfm`) or re.regex($selection.Filename, `.*\.py`) or re.regex($selection.Filename, `.*\.pyc`) or re.regex($selection.Filename, `.*\.pl`) or re.regex($selection.Filename, `.*\.rb`) or re.regex($selection.Filename, `.*\.cgi`) or re.regex($selection.Filename, `.*\.war`) or re.regex($selection.Filename, `.*\.ear`) or re.regex($selection.Filename, `.*\.hta`) or re.regex($selection.Filename, `.*\.lnk`) or re.regex($selection.Filename, `.*\.scf`) or re.regex($selection.Filename, `.*\.sct`) or re.regex($selection.Filename, `.*\.vbe`) or re.regex($selection.Filename, `.*\.wsf`) or re.regex($selection.Filename, `.*\.wsh`) or re.regex($selection.Filename, `.*\.gif`) or re.regex($selection.Filename, `.*\.png`) or re.regex($selection.Filename, `.*\.jpg`) or re.regex($selection.Filename, `.*\.jpeg`) or re.regex($selection.Filename, `.*\.svg`) or re.regex($selection.Filename, `.*\.dat`)))
+
+  condition:
+    $selection
+}

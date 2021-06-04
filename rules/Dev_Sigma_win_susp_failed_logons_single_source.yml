@@ -1,0 +1,18 @@
+rule  Dev_sigma_failed_logins_with_different_accounts_from_single_source_system {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious failed logins with different user accounts from a single source system Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/01/10"
+    product = "windows"
+    service = "security"
+    mitre = "persistence, privilege_escalation, t1078"
+
+  events:
+(($selection1.metadata.product_event_type = "529" or $selection1.metadata.product_event_type = "4625") and re.regex($selection1.UserName, `.*`) and re.regex($selection1.principal.hostname, `.*`))
+$selection1.principal.hostname = $target
+
+  condition:
+    $selection1 and #target > 3
+}

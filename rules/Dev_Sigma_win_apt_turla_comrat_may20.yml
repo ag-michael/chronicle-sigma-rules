@@ -1,0 +1,17 @@
+rule  Dev_sigma_turla_group_commands_may_2020 {
+ meta:
+    author = "Florian Roth"
+    description = "Detects commands used by Turla group as reported by ESET in May 2020 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/26"
+    category = "process_creation"
+    product = "windows"
+    mitre = "g0010, execution, t1086, t1059.001, t1053, t1053.005, t1027"
+
+  events:
+((re.regex($selection1.target.process.command_line, `.*tracert -h 10 yahoo\.com.*`) or re.regex($selection1.target.process.command_line, `.*\.WSqmCons\)\)|iex;.*`) or re.regex($selection1.target.process.command_line, `.*FromBase64String.*`)) or (re.regex($selection1.target.process.command_line, `.*net use https://docs\.live\.net.*`) and re.regex($selection1.target.process.command_line, `.*@aol\.co\.uk.*`)))
+
+  condition:
+    $selection1
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_clear_powershell_history {
+ meta:
+    author = "Ilyas Ochkov, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects keywords that could indicate clearing PowerShell history Author: Ilyas Ochkov, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    product = "windows"
+    service = "powershell"
+    mitre = "defense_evasion, t1070.003, t1146"
+
+  events:
+(($selection_1.metadata.product_event_type = "4104" and (((re.regex($selection_1.target.process.command_line, `.*del.*`) or re.regex($selection_1.target.process.command_line, `.*Remove-Item.*`) or re.regex($selection_1.target.process.command_line, `.*rm.*`)) and re.regex($selection_1.target.process.command_line, `.*\(Get-PSReadlineOption\)\.HistorySavePath.*`)) or (re.regex($selection_1.target.process.command_line, `.*Set-PSReadlineOption.*`) and re.regex($selection_1.target.process.command_line, `.*–HistorySaveStyle.*`) and re.regex($selection_1.target.process.command_line, `.*SaveNothing.*`)))) or ($selection_1.metadata.product_event_type = "4103" and (((re.regex($selection_1.Payload, `.*del.*`) or re.regex($selection_1.Payload, `.*Remove-Item.*`) or re.regex($selection_1.Payload, `.*rm.*`)) and re.regex($selection_1.Payload, `.*\(Get-PSReadlineOption\)\.HistorySavePath.*`)) or (re.regex($selection_1.Payload, `.*Set-PSReadlineOption.*`) and re.regex($selection_1.Payload, `.*–HistorySaveStyle.*`) and re.regex($selection_1.Payload, `.*SaveNothing.*`)))))
+
+  condition:
+    $selection_1
+}

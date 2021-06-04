@@ -1,0 +1,17 @@
+rule  Dev_sigma_lsass_memory_dump {
+ meta:
+    author = "Samir Bousseaden"
+    description = "Detects process LSASS memory dump using procdump or taskmgr based on the CallTrace pointing to dbghelp.dll or dbgcore.dll for win10 Author: Samir Bousseaden."
+    reference = ""
+    version = "0.01"
+    created = "2019/04/03"
+    category = "process_access"
+    product = "windows"
+    mitre = "credential_access, t1003.001, t1003, s0002"
+
+  events:
+($selection.target.process.file.full_path = "C:\\windows\\system32\\lsass.exe" and $selection.GrantedAccess = "0x1fffff" and (re.regex($selection.CallTrace, `.*dbghelp\.dll.*`) or re.regex($selection.CallTrace, `.*dbgcore\.dll.*`)))
+
+  condition:
+    $selection
+}

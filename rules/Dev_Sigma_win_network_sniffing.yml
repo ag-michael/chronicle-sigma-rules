@@ -1,0 +1,17 @@
+rule  Dev_sigma_network_sniffing {
+ meta:
+    author = "Timur Zinniatullin, oscd.community"
+    description = "Network sniffing refers to using the network interface on a system to monitor or capture information sent over a wired or wireless connection. An adversary may place a network interface into promiscuous mode to passively access data in transit over the network, or use span ports to capture a larger amount of data. Author: Timur Zinniatullin, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "credential_access, discovery, t1040"
+
+  events:
+((re.regex($selection.target.process.file.full_path, `.*\\tshark\.exe`) and re.regex($selection.target.process.command_line, `.*-i.*`)) or re.regex($selection.target.process.file.full_path, `.*\\windump\.exe`))
+
+  condition:
+    $selection
+}

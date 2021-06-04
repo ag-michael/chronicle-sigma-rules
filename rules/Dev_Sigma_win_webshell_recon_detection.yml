@@ -1,0 +1,17 @@
+rule  Dev_sigma_webshell_recon_detection_via_commandline__processes {
+ meta:
+    author = "Cian Heasley"
+    description = "Looking for processes spawned by web server components that indicate reconnaissance by popular public domain webshells for whether perl, python or wget are installed. Author: Cian Heasley."
+    reference = ""
+    version = "0.01"
+    created = "2020/07/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "persistence, t1505.003, privilege_escalation, t1100"
+
+  events:
+(((re.regex($selection.src.process.file.full_path, `.*\\apache.*`) or re.regex($selection.src.process.file.full_path, `.*\\tomcat.*`)) or (re.regex($selection.src.process.file.full_path, `.*\\w3wp\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\php-cgi\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\nginx\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\httpd\.exe`))) and (re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) and (re.regex($selection.target.process.command_line, `.*perl --help.*`) or re.regex($selection.target.process.command_line, `.*python --help.*`) or re.regex($selection.target.process.command_line, `.*wget --help.*`) or re.regex($selection.target.process.command_line, `.*perl -h.*`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_psexec_pipes_artifacts {
+ meta:
+    author = "Nikita Nazarov, oscd.community"
+    description = "Detecting use PsExec via Pipe Creation/Access to pipes Author: Nikita Nazarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/10"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "lateral_movement, t1021.002"
+
+  events:
+(re.regex($selection.file.name, `psexec.*`) or re.regex($selection.file.name, `paexec.*`) or re.regex($selection.file.name, `remcom.*`) or re.regex($selection.file.name, `csexec.*`))
+
+  condition:
+    $selection
+}

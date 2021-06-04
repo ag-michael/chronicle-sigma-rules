@@ -1,0 +1,18 @@
+rule  Dev_sigma_suspicious_multiple_file_rename_or_delete_occurred {
+ meta:
+    author = "Vasiliy Burov, oscd.community"
+    description = "Detects multiple file rename or delete events occurrence within a specified period of time by a same user (these events may signalize about ransomware activity). Author: Vasiliy Burov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/16"
+    product = "windows"
+    service = "security"
+    mitre = "impact, t1486"
+
+  events:
+($selection.metadata.product_event_type = "4663" and $selection.src.user.user_display_name = "File" and $selection.AccessList = "%%1537" and $selection.Keywords = "0x8020000000000000")
+$selection.SubjectLogonId = $target
+
+  condition:
+    $selection and #target > 10
+}

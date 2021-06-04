@@ -1,0 +1,17 @@
+rule  Dev_sigma_process_dump_via_rundll32_and_comsvcsdll {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a process memory dump performed via ordinal function 24 in comsvcs.dll Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/02/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1036, credential_access, t1003, car.2013-05-009, t1003.001"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*comsvcs\.dll,#24.*`) or re.regex($selection.target.process.command_line, `.*comsvcs\.dll,MiniDump.*`) or re.regex($selection.target.process.command_line, `.*comsvcs\.dll MiniDump.*`))
+
+  condition:
+    $selection
+}

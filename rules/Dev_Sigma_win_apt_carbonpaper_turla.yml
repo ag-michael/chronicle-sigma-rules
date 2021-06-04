@@ -1,0 +1,17 @@
+rule  Dev_sigma_turla_service_install {
+ meta:
+    author = "Florian Roth"
+    description = "This method detects a service install of malicious services mentioned in Carbon Paper - Turla report by ESET Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/31"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, g0010, t1050, t1543.003"
+
+  events:
+($selection.metadata.product_event_type = "7045" and ($selection.target.process.command_line = "srservice" or $selection.target.process.command_line = "ipvpn" or $selection.target.process.command_line = "hkmsvc"))
+
+  condition:
+    $selection
+}

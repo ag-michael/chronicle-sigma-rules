@@ -1,0 +1,17 @@
+rule  Dev_sigma_wsreset_uac_bypass {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a method that uses Wsreset.exe tool that can be used to reset the Windows Store to bypass UAC Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2020/01/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, defense_evasion, t1548.002, t1088"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\WSreset\.exe`)
+
+  condition:
+    $selection
+}

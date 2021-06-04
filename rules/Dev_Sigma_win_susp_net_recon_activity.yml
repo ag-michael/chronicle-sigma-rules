@@ -1,0 +1,17 @@
+rule  Dev_sigma_reconnaissance_activity {
+ meta:
+    author = "Florian Roth (rule), Jack Croock (method), Jonhnathan Ribeiro (improvements), oscd.community"
+    description = "Detects activity as \"net user administrator /domain\" and \"net group domain admins /domain\" Author: Florian Roth (rule), Jack Croock (method), Jonhnathan Ribeiro (improvements), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/07"
+    product = "windows"
+    service = "security"
+    mitre = "discovery, t1087, t1087.002, t1069, t1069.002, s0039"
+
+  events:
+($selection.metadata.product_event_type = "4661" and ($selection.src.user.user_display_name = "SAM_USER" or $selection.src.user.user_display_name = "SAM_GROUP") and (re.regex($selection.target.file.full_path, `S-1-5-21-.*`) or re.regex($selection.target.registry.registry_value_data, `S-1-5-21-.*`)) and $selection.target.process.access_mask = "0x2d" and ((re.regex($selection.target.file.full_path, `.*-500`) or re.regex($selection.target.file.full_path, `.*-512`)) or (re.regex($selection.target.registry.registry_value_data, `.*-500`) or re.regex($selection.target.registry.registry_value_data, `.*-512`))))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_execute_files_with_msdeployexe {
+ meta:
+    author = "Beyu Denis, oscd.community"
+    description = "Detects file execution using the msdeploy.exe lolbin Author: Beyu Denis, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/18"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1218"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*verb:sync.*`) and re.regex($selection.target.process.command_line, `.*-source:RunCommand.*`) and re.regex($selection.target.process.command_line, `.*-dest:runCommand.*`) and re.regex($selection.target.process.file.full_path, `.*\\msdeploy\.exe`))
+
+  condition:
+    $selection
+}

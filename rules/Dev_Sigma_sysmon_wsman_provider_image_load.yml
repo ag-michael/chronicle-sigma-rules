@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_wsman_provider_image_loads {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects signs of potential use of the WSMAN provider from uncommon processes locally and remote execution. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/24"
+    category = "image_load"
+    product = "windows"
+    mitre = "execution, t1059.001, lateral_movement, t1021.003"
+
+  events:
+((((re.regex($request_client.target.process.file.full_path, `.*\\WsmSvc\.dll`) or re.regex($request_client.target.process.file.full_path, `.*\\WsmAuto\.dll`) or re.regex($request_client.target.process.file.full_path, `.*\\Microsoft\.WSMan\.Management\.ni\.dll`)) or ($request_client.target.file.full_path = "WsmSvc.dll" or $request_client.target.file.full_path = "WSMANAUTOMATION.DLL" or $request_client.target.file.full_path = "Microsoft.WSMan.Management.dll")) and not (re.regex($request_client.target.process.file.full_path, `.*\\powershell\.exe`))) or (re.regex($request_client.target.process.file.full_path, `.*\\svchost\.exe`) and $request_client.target.file.full_path = "WsmWmiPl.dll"))
+
+  condition:
+    $request_client
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_flowcloud_malware {
+ meta:
+    author = "NVISO"
+    description = "Detects FlowCloud malware from threat group TA410. Author: NVISO."
+    reference = ""
+    version = "0.01"
+    created = "2020/06/09"
+    product = "windows"
+    category = "registry_event"
+    mitre = "persistence, t1112"
+
+  events:
+(($selection.metadata.product_event_type = "12" or $selection.metadata.product_event_type = "13") and (($selection.target.registry.registry_key = "HKLM\\HARDWARE\\{804423C2-F490-4ac3-BFA5-13DEDE63A71A}" or $selection.target.registry.registry_key = "HKLM\\HARDWARE\\{A5124AF5-DF23-49bf-B0ED-A18ED3DEA027}" or $selection.target.registry.registry_key = "HKLM\\HARDWARE\\{2DB80286-1784-48b5-A751-B6ED1F490303}") or re.regex($selection.target.registry.registry_key, `HKLM\\SYSTEM\\Setup\\PrintResponsor\\.*`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_userinit_child_process {
+ meta:
+    author = "Florian Roth (rule), Samir Bousseaden (idea)"
+    description = "Detects a suspicious child process of userinit Author: Florian Roth (rule), Samir Bousseaden (idea)."
+    reference = ""
+    version = "0.01"
+    created = "2019/06/17"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+((re.regex($selection.src.process.file.full_path, `.*\\userinit\.exe`) and not (re.regex($selection.target.process.command_line, `.*\\\\netlogon\\\\.*`))) and not (re.regex($selection.target.process.file.full_path, `.*\\explorer\.exe`)))
+
+  condition:
+    $selection
+}

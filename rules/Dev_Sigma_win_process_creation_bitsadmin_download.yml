@@ -1,0 +1,17 @@
+rule  Dev_sigma_bitsadmin_download {
+ meta:
+    author = "Michael Haag"
+    description = "Detects usage of bitsadmin downloading a file Author: Michael Haag."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/09"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, persistence, t1197, s0190, t1036.003"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\bitsadmin\.exe`) and re.regex($selection1.target.process.command_line, `.* /transfer .*`)) or re.regex($selection1.target.process.command_line, `.*copy bitsadmin\.exe.*`))
+
+  condition:
+    $selection1
+}

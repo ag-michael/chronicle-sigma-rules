@@ -1,0 +1,17 @@
+rule  Dev_sigma_silentprocessexit_monitor_registrytion {
+ meta:
+    author = "Florian Roth"
+    description = "Detects changes to the Registry in which a monitor program gets registered to monitor the exit of another process Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/26"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1546.012"
+
+  events:
+(re.regex($selection.target.registry.registry_key, `.*Microsoft\\Windows NT\\CurrentVersion\\SilentProcessExit.*`) and re.regex($selection.metadata.description, `.*MonitorProcess.*`))
+
+  condition:
+    $selection
+}

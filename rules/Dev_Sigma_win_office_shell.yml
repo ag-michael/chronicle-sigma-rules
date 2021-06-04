@@ -1,0 +1,17 @@
+rule  Dev_sigma_microsoft_office_product_spawning_windows_shell {
+ meta:
+    author = "Michael Haag, Florian Roth, Markus Neis, Elastic, FPT.EagleEye Team"
+    description = "Detects a Windows command and scripting interpreter executable started from Microsoft Word, Excel, Powerpoint, Publisher and Visio Author: Michael Haag, Florian Roth, Markus Neis, Elastic, FPT.EagleEye Team."
+    reference = ""
+    version = "0.01"
+    created = "2018/04/06"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1204, t1204.002"
+
+  events:
+((re.regex($selection.src.process.file.full_path, `.*\\WINWORD\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\EXCEL\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\POWERPNT\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\MSPUB\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\VISIO\.exe`) or re.regex($selection.src.process.file.full_path, `.*\\OUTLOOK\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\MSACCESS\.EXE`) or re.regex($selection.src.process.file.full_path, `.*\\EQNEDT32\.EXE`)) and (re.regex($selection.target.process.file.full_path, `.*\\cmd\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\cscript\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\sh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\bash\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\scrcons\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\schtasks\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\regsvr32\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\hh\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\wmic\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mshta\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\rundll32\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\msiexec\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\forfiles\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\scriptrunner\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mftrace\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\AppVLP\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\svchost\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\msbuild\.exe`)))
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_new_dll_added_to_appcertdlls_registry_key {
+ meta:
+    author = "Ilyas Ochkov, oscd.community"
+    description = "Dynamic-link libraries (DLLs) that are specified in the AppCertDLLs value in the Registry key can be abused to obtain persistence and privilege escalation by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. Author: Ilyas Ochkov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/25"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1182, t1546.009"
+
+  events:
+($selection.target.registry.registry_key = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\AppCertDlls" or $selection.NewName = "HKLM\\SYSTEM\\CurentControlSet\\Control\\Session Manager\\AppCertDlls")
+
+  condition:
+    $selection
+}

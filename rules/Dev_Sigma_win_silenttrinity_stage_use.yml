@@ -1,0 +1,34 @@
+rule  Dev_sigma_silenttrinity_stager_execution {
+ meta:
+    author = "Aleksey Potapov, oscd.community"
+    description = "Detects SILENTTRINITY stager use Author: Aleksey Potapov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control"
+
+  events:
+re.regex($selection.metadata.description, `.*st2stager.*`)
+
+  condition:
+    $selection
+}
+rule  Dev_sigma_silenttrinity_stager_execution_part_1 {
+ meta:
+    author = "Aleksey Potapov, oscd.community"
+    description = "Detects SILENTTRINITY stager use Author: Aleksey Potapov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/10/22"
+    category = "image_load"
+    product = "windows"
+    mitre = "command_and_control"
+
+  events:
+re.regex($selection.metadata.description, `.*st2stager.*`)
+
+  condition:
+    $selection
+}

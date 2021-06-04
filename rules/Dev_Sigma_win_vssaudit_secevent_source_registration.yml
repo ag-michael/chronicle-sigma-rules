@@ -1,0 +1,17 @@
+rule  Dev_sigma_vssaudit_security_event_source_registration {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)"
+    description = "Detects the registration of the security event source VSSAudit. It would usually trigger when volume shadow copy operations happen. Author: Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/20"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, t1003.002"
+
+  events:
+($selection_one.AuditSourceName = "VSSAudit" and ($selection_one.metadata.product_event_type = "4904" or $selection_one.metadata.product_event_type = "4905"))
+
+  condition:
+    $selection_one
+}

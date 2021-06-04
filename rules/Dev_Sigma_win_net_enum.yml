@@ -1,0 +1,17 @@
+rule  Dev_sigma_windows_network_enumeration {
+ meta:
+    author = "Endgame, JHasenbusch (ported for oscd.community)"
+    description = "Identifies attempts to enumerate hosts in a network using the built-in Windows net.exe tool. Author: Endgame, JHasenbusch (ported for oscd.community)."
+    reference = ""
+    version = "0.01"
+    created = "2018/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1018"
+
+  events:
+(((re.regex($selection.target.process.file.full_path, `.*\\net\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\net1\.exe`)) and re.regex($selection.target.process.command_line, `.*view.*`)) and not (re.regex($selection.target.process.command_line, `.*\\\\\\.*`)))
+
+  condition:
+    $selection
+}

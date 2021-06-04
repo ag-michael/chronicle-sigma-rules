@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_tscon_start {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a tscon.exe start as LOCAL SYSTEM Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/17"
+    category = "process_creation"
+    product = "windows"
+    mitre = "command_and_control, t1219"
+
+  events:
+($selection.src.user.user_display_name = "NT AUTHORITY\\SYSTEM" and re.regex($selection.target.process.file.full_path, `.*\\tscon\.exe`))
+
+  condition:
+    $selection
+}

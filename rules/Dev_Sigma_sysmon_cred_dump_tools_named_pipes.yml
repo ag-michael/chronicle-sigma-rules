@@ -1,0 +1,17 @@
+rule  Dev_sigma_cred_dumptools_named_pipes {
+ meta:
+    author = "Teymur Kheirkhabarov, oscd.community"
+    description = "Detects well-known credential dumping tools execution via specific named pipes Author: Teymur Kheirkhabarov, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/11/01"
+    product = "windows"
+    category = "pipe_created"
+    mitre = "credential_access, t1003, t1003.001, t1003.002, t1003.004, t1003.005"
+
+  events:
+(re.regex($selection.file.name, `.*\\lsadump.*`) or re.regex($selection.file.name, `.*\\cachedump.*`) or re.regex($selection.file.name, `.*\\wceservicepipe.*`))
+
+  condition:
+    $selection
+}

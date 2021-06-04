@@ -1,0 +1,16 @@
+rule  Dev_sigma_screenconnect_remote_access {
+ meta:
+    author = "Florian Roth"
+    description = "Detects ScreenConnect program starts that establish a remote access to that system (not meeting, not remote support) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/11"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*e=Access&.*`) and re.regex($selection.target.process.command_line, `.*y=Guest&.*`) and re.regex($selection.target.process.command_line, `.*&p=.*`) and re.regex($selection.target.process.command_line, `.*&c=.*`) and re.regex($selection.target.process.command_line, `.*&k=.*`))
+
+  condition:
+    $selection
+}

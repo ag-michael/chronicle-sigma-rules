@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_wmi_activescripteventconsumers {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detect potential adversaries leveraging WMI ActiveScriptEventConsumers remotely to move laterally in a network Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/09/02"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, privilege_escalation, persistence, t1546.003"
+
+  events:
+(($selection.metadata.product_event_type = "4624" and $selection.extensions.auth.mechanism = "3" and re.regex($selection.target.process.file.full_path, `.*scrcons\.exe`)) and not ($selection.TargetLogonId = "0x3e7"))
+
+  condition:
+    $selection
+}

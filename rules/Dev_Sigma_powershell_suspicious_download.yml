@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_download {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious PowerShell download command Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($downloadfile.Message, `.*System\.Net\.WebClient.*`) and (re.regex($downloadfile.Message, `.*\.DownloadFile\(.*`) or re.regex($downloadfile.Message, `.*\.DownloadString\(.*`)))
+
+  condition:
+    $downloadfile
+}

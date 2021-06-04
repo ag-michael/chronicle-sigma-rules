@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_bitsadmin_job_via_powershell {
+ meta:
+    author = "Endgame, JHasenbusch (ported to sigma for oscd.community)"
+    description = "Detect download by BITS jobs via PowerShell Author: Endgame, JHasenbusch (ported to sigma for oscd.community)."
+    reference = ""
+    version = "0.01"
+    created = "2018/10/30"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, persistence, t1197"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and re.regex($selection.target.process.command_line, `.*Start-BitsTransfer.*`))
+
+  condition:
+    $selection
+}

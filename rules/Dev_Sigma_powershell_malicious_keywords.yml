@@ -1,0 +1,17 @@
+rule  Dev_sigma_malicious_powershell_keywords {
+ meta:
+    author = "Sean Metcalf (source), Florian Roth (rule)"
+    description = "Detects keywords from well-known PowerShell exploitation frameworks Author: Sean Metcalf (source), Florian Roth (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/05"
+    product = "windows"
+    service = "powershell"
+    mitre = "execution, t1059.001, t1086"
+
+  events:
+(re.regex($event.Message, `.*AdjustTokenPrivileges.*`) or re.regex($event.Message, `.*IMAGE_NT_OPTIONAL_HDR64_MAGIC.*`) or re.regex($event.Message, `.*Microsoft\.Win32\.UnsafeNativeMethods.*`) or re.regex($event.Message, `.*ReadProcessMemory\.Invoke.*`) or re.regex($event.Message, `.*SE_PRIVILEGE_ENABLED.*`) or re.regex($event.Message, `.*LSA_UNICODE_STRING.*`) or re.regex($event.Message, `.*MiniDumpWriteDump.*`) or re.regex($event.Message, `.*PAGE_EXECUTE_READ.*`) or re.regex($event.Message, `.*SECURITY_DELEGATION.*`) or re.regex($event.Message, `.*TOKEN_ADJUST_PRIVILEGES.*`) or re.regex($event.Message, `.*TOKEN_ALL_ACCESS.*`) or re.regex($event.Message, `.*TOKEN_ASSIGN_PRIMARY.*`) or re.regex($event.Message, `.*TOKEN_DUPLICATE.*`) or re.regex($event.Message, `.*TOKEN_ELEVATION.*`) or re.regex($event.Message, `.*TOKEN_IMPERSONATE.*`) or re.regex($event.Message, `.*TOKEN_INFORMATION_CLASS.*`) or re.regex($event.Message, `.*TOKEN_PRIVILEGES.*`) or re.regex($event.Message, `.*TOKEN_QUERY.*`) or re.regex($event.Message, `.*Metasploit.*`) or re.regex($event.Message, `.*Mimikatz.*`))
+
+  condition:
+    $event
+}

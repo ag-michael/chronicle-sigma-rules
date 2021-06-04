@@ -1,0 +1,18 @@
+rule  Dev_sigma_rare_service_installs {
+ meta:
+    author = "Florian Roth"
+    description = "Detects rare service installs that only appear a few times per time frame and could reveal password dumpers, backdoor installs or other types of malicious services Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2017/03/08"
+    product = "windows"
+    service = "system"
+    mitre = "persistence, privilege_escalation, t1050, car.2013-09-005, t1543.003"
+
+  events:
+$selection.metadata.product_event_type = "7045"
+$selection.target.process.command_line = $target
+
+  condition:
+    $selection and #target < 5
+}

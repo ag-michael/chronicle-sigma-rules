@@ -1,0 +1,17 @@
+rule  Dev_sigma_unc2452_process_creation_patterns {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a specific process creation patterns as seen used by UNC2452 and provided by Microsoft as Microsoft Defender ATP queries Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/01/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, sunburst, unc2452"
+
+  events:
+((((re.regex($selection1.target.process.command_line, `.*7z\.exe a -v500m -mx9 -r0 -p.*`) or (re.regex($selection1.src.process.command_line, `.*wscript\.exe.*`) and re.regex($selection1.src.process.command_line, `.*\.vbs.*`) and re.regex($selection1.target.process.command_line, `.*rundll32\.exe.*`) and re.regex($selection1.target.process.command_line, `.*C:\\Windows.*`) and re.regex($selection1.target.process.command_line, `.*\.dll,Tk_.*`))) or (re.regex($selection1.src.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection1.src.process.command_line, `.*C:\\Windows.*`) and re.regex($selection1.target.process.command_line, `.*cmd\.exe /C .*`))) or (re.regex($selection1.target.process.command_line, `.*rundll32 c:\\windows\\\\.*`) and re.regex($selection1.target.process.command_line, `.*\.dll .*`))) or ((re.regex($selection1.src.process.file.full_path, `.*\\rundll32\.exe`) and re.regex($selection1.target.process.file.full_path, `.*\\dllhost\.exe`)) and not (($selection1.target.process.command_line = " " or $selection1.target.process.command_line = ""))))
+
+  condition:
+    $selection1
+}

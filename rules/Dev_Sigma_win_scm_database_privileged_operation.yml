@@ -1,0 +1,16 @@
+rule  Dev_sigma_scm_database_privileged_operation {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects non-system users performing privileged operation os the SCM database Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/08/15"
+    product = "windows"
+    service = "security"
+
+  events:
+(($selection.metadata.product_event_type = "4674" and $selection.src.user.user_display_name = "SC_MANAGER OBJECT" and ($selection.target.file.full_path = "servicesactive" or $selection.target.registry.registry_value_data = "servicesactive") and $selection.PrivilegeList = "SeTakeOwnershipPrivilege") and not ($selection.SubjectLogonId = "0x3e4"))
+
+  condition:
+    $selection
+}

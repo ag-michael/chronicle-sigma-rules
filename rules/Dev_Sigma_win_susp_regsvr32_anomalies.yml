@@ -1,0 +1,17 @@
+rule  Dev_sigma_regsvr32_anomaly {
+ meta:
+    author = "Florian Roth, oscd.community"
+    description = "Detects various anomalies in relation to regsvr32.exe Author: Florian Roth, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2019/01/16"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.010, execution, t1117, car.2019-04-002, car.2019-04-003"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\regsvr32\.exe`) and re.regex($selection1.target.process.command_line, `.*\\Temp\\.*`)) or (re.regex($selection1.target.process.file.full_path, `.*\\regsvr32\.exe`) and re.regex($selection1.src.process.file.full_path, `.*\\powershell\.exe`)) or (re.regex($selection1.target.process.file.full_path, `.*\\regsvr32\.exe`) and re.regex($selection1.src.process.file.full_path, `.*\\cmd\.exe`)) or (re.regex($selection1.target.process.file.full_path, `.*\\regsvr32\.exe`) and re.regex($selection1.target.process.command_line, `.*/i:.*`) and (re.regex($selection1.target.process.command_line, `.*http.*`) or re.regex($selection1.target.process.command_line, `.*ftp.*`)) and re.regex($selection1.target.process.command_line, `.*scrobj\.dll`)) or (re.regex($selection1.target.process.file.full_path, `.*\\wscript\.exe`) and re.regex($selection1.src.process.file.full_path, `.*\\regsvr32\.exe`)) or (re.regex($selection1.target.process.file.full_path, `.*\\EXCEL\.EXE`) and re.regex($selection1.target.process.command_line, `.*\.\.\\\.\.\\\.\.\\Windows\\System32\\regsvr32\.exe .*`)))
+
+  condition:
+    $selection1
+}

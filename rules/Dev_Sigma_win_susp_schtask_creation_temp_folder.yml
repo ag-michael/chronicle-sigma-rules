@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_scheduled_task_creation_involving_temp_folder {
+ meta:
+    author = "Florian Roth"
+    description = "Detects the creation of scheduled tasks that involves a temporary folder and runs only once Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, persistence, t1053.005"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\schtasks\.exe`) and re.regex($selection.target.process.command_line, `.* /create .*`) and re.regex($selection.target.process.command_line, `.* /sc once .*`) and re.regex($selection.target.process.command_line, `.*\\Temp\\.*`))
+
+  condition:
+    $selection
+}

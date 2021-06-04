@@ -1,0 +1,17 @@
+rule  Dev_sigma_pcrenet_package_temp_files {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "Detects processes creating temp files related to PCRE.NET package Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/29"
+    category = "file_event"
+    product = "windows"
+    mitre = "execution, t1059"
+
+  events:
+re.regex($selection.target.file.full_path, `.*\\AppData\\Local\\Temp\\ba9ea7344a4a5f591d6e5dc32a13494b\\.*`)
+
+  condition:
+    $selection
+}

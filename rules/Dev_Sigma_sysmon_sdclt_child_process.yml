@@ -1,0 +1,17 @@
+rule  Dev_sigma_sdclt_child_processes {
+ meta:
+    author = "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)"
+    description = "A General detection for sdclt spawning new processes. This could be an indicator of sdclt being used for bypass UAC techniques. Author: Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/02"
+    category = "process_creation"
+    product = "windows"
+    mitre = "privilege_escalation, t1548.002"
+
+  events:
+re.regex($selection.src.process.file.full_path, `.*\\sdclt\.exe`)
+
+  condition:
+    $selection
+}

@@ -1,0 +1,17 @@
+rule  Dev_sigma_successful_overpass_the_hash_attempt {
+ meta:
+    author = "Roberto Rodriguez (source), Dominik Schaudel (rule)"
+    description = "Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module. Author: Roberto Rodriguez (source), Dominik Schaudel (rule)."
+    reference = ""
+    version = "0.01"
+    created = "2018/02/12"
+    product = "windows"
+    service = "security"
+    mitre = "lateral_movement, t1075, s0002, t1550.002"
+
+  events:
+($selection.metadata.product_event_type = "4624" and $selection.extensions.auth.mechanism = "9" and $selection.LogonProcessName = "seclogo" and $selection.src.application = "Negotiate")
+
+  condition:
+    $selection
+}

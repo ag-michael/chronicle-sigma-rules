@@ -1,0 +1,17 @@
+rule  Dev_sigma_sql_client_tools_powershell_session_detection {
+ meta:
+    author = "Agro (@agro_sev) oscd.communitly"
+    description = "This rule  Dev_sigma_detects execution of a PowerShell code through the sqltoolsps.exe utility, which is included in the standard set of utilities supplied with the Microsoft SQL Server Management studio. Script blocks are not logged in this case, so this utility helps to bypass protection mechanisms based on the analysis of these logs. Author: Agro (@agro_sev) oscd.communitly."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/13"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1059.001, defense_evasion, t1127"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\sqltoolsps\.exe`) or re.regex($selection1.src.process.file.full_path, `.*\\sqltoolsps\.exe`)) or ($selection1.target.file.full_path = "sqltoolsps.exe" and not (re.regex($selection1.src.process.file.full_path, `.*\\smss\.exe`))))
+
+  condition:
+    $selection1
+}

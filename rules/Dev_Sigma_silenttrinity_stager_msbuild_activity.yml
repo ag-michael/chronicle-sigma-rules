@@ -1,0 +1,17 @@
+rule  Dev_sigma_silenttrinity_stager_msbuild_activity {
+ meta:
+    author = "Kiran kumar s, oscd.community"
+    description = "Detects a possible remote connections to Silenttrinity c2 Author: Kiran kumar s, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/11"
+    category = "network_connection"
+    product = "windows"
+    mitre = "execution, t1127.001"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\msbuild\.exe`) and ($selection.target.port = "80" or $selection.target.port = "443") and $selection.Initiated = "true")
+
+  condition:
+    $selection
+}

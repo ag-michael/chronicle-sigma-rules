@@ -1,0 +1,17 @@
+rule  Dev_sigma_disable_windows_eventlog {
+ meta:
+    author = "Florian Roth"
+    description = "Detects command that is used to disable Windows eventlog Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1562.001"
+
+  events:
+re.regex($selection.target.process.command_line, `.*logman stop EventLog-System.*`)
+
+  condition:
+    $selection
+}

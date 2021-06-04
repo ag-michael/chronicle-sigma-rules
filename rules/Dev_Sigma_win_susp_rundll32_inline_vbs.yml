@@ -1,0 +1,16 @@
+rule  Dev_sigma_suspicious_rundll32_invoking_inline_vbscript {
+ meta:
+    author = "Florian Roth"
+    description = "Detects suspicious process related to rundll32 based on command line that invokes inline VBScript as seen being used by UNC2452 Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/03/05"
+    category = "process_creation"
+    product = "windows"
+
+  events:
+(re.regex($selection.target.process.command_line, `.*rundll32\.exe.*`) and re.regex($selection.target.process.command_line, `.*Execute.*`) and re.regex($selection.target.process.command_line, `.*RegRead.*`) and re.regex($selection.target.process.command_line, `.*window\.close.*`))
+
+  condition:
+    $selection
+}

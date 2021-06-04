@@ -1,0 +1,17 @@
+rule  Dev_sigma_mshta_spwaned_by_svchost {
+ meta:
+    author = "Markus Neis"
+    description = "Detects MSHTA.EXE spwaned by SVCHOST as seen in LethalHTA and described in report Author: Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/06/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1218.005, execution, t1170"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\svchost\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\mshta\.exe`))
+
+  condition:
+    $selection
+}

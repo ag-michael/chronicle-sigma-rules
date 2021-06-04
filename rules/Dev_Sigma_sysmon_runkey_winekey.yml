@@ -1,0 +1,17 @@
+rule  Dev_sigma_winekey_registry_modification {
+ meta:
+    author = "omkar72"
+    description = "Detects potential malicious modification of run keys by winekey or team9 backdoor Author: omkar72."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/30"
+    category = "registry_event"
+    product = "windows"
+    mitre = "persistence, t1547"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Backup Mgr`)
+
+  condition:
+    $selection
+}

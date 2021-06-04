@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_outbound_rdp_connections {
+ meta:
+    author = "Markus Neis - Swisscom"
+    description = "Detects Non-Standard Tools Connecting to TCP port 3389 indicating possible lateral movement Author: Markus Neis - Swisscom."
+    reference = ""
+    version = "0.01"
+    created = "2019/05/15"
+    category = "network_connection"
+    product = "windows"
+    mitre = "lateral_movement, t1021.001, t1076, car.2013-07-002"
+
+  events:
+(($selection.target.port = "3389" and $selection.Initiated = "true") and not ((re.regex($selection.target.process.file.full_path, `.*\\mstsc\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RTSApp\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RTS2App\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RDCMan\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\ws_TunnelService\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RSSensor\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RemoteDesktopManagerFree\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RemoteDesktopManager\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\RemoteDesktopManager64\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mRemoteNG\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\mRemote\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\Terminals\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\spiceworks-finder\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\FSDiscovery\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\FSAssessment\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\MobaRTE\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\chrome\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\thor\.exe`) or re.regex($selection.target.process.file.full_path, `.*\\thor64\.exe`))))
+
+  condition:
+    $selection
+}

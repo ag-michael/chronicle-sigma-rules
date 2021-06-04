@@ -1,0 +1,34 @@
+rule  Dev_sigma_netntlm_downgrade_attack {
+ meta:
+    author = "Florian Roth"
+    description = "Detects NetNTLM downgrade attack Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/20"
+    product = "windows"
+    category = "registry_event"
+    mitre = "defense_evasion, t1089, t1562.001, t1112"
+
+  events:
+(re.regex($selection1.target.registry.registry_key, `.*SYSTEM\\.*`) and re.regex($selection1.target.registry.registry_key, `.*ControlSet.*`) and re.regex($selection1.target.registry.registry_key, `.*\\Control\\Lsa.*`) and (re.regex($selection1.target.registry.registry_key, `.*\\lmcompatibilitylevel`) or re.regex($selection1.target.registry.registry_key, `.*\\NtlmMinClientSec`) or re.regex($selection1.target.registry.registry_key, `.*\\RestrictSendingNTLMTraffic`)))
+
+  condition:
+    $selection1
+}
+rule  Dev_sigma_netntlm_downgrade_attack_part_1 {
+ meta:
+    author = "Florian Roth"
+    description = "Detects NetNTLM downgrade attack Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/20"
+    product = "windows"
+    service = "security"
+    mitre = "defense_evasion, t1089, t1562.001, t1112"
+
+  events:
+($selection.metadata.product_event_type = "4657" and (re.regex($selection.target.file.full_path, `REGISTRY\\MACHINE\\SYSTEM\\.*ControlSet.*\\Control\\Lsa.*`) or re.regex($selection.target.registry.registry_value_data, `REGISTRY\\MACHINE\\SYSTEM\\.*ControlSet.*\\Control\\Lsa.*`)) and ($selection.target.registry.registry_value_name = "LmCompatibilityLevel" or $selection.target.registry.registry_value_name = "NtlmMinClientSec" or $selection.target.registry.registry_value_name = "RestrictSendingNTLMTraffic"))
+
+  condition:
+    $selection
+}

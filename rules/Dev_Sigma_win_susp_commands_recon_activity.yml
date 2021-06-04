@@ -1,0 +1,18 @@
+rule  Dev_sigma_reconnaissance_activity_with_net_command {
+ meta:
+    author = "Florian Roth, Markus Neis"
+    description = "Detects a set of commands often used in recon stages by different attack groups Author: Florian Roth, Markus Neis."
+    reference = ""
+    version = "0.01"
+    created = "2018/08/22"
+    category = "process_creation"
+    product = "windows"
+    mitre = "discovery, t1087, t1082, car.2016-03-001"
+
+  events:
+(($selection.target.process.command_line = "tasklist" or $selection.target.process.command_line = "net time" or $selection.target.process.command_line = "systeminfo" or $selection.target.process.command_line = "whoami" or $selection.target.process.command_line = "nbtstat" or $selection.target.process.command_line = "net start" or $selection.target.process.command_line = "qprocess" or $selection.target.process.command_line = "nslookup" or $selection.target.process.command_line = "hostname.exe" or $selection.target.process.command_line = "netstat -an") or (re.regex($selection.target.process.command_line, `.*\\net1 start`) or re.regex($selection.target.process.command_line, `.*\\net1 user /domain`) or re.regex($selection.target.process.command_line, `.*\\net1 group /domain`) or re.regex($selection.target.process.command_line, `.*\\net1 group \"domain admins\" /domain`) or re.regex($selection.target.process.command_line, `.*\\net1 group \"Exchange Trusted Subsystem\" /domain`) or re.regex($selection.target.process.command_line, `.*\\net1 accounts /domain`) or re.regex($selection.target.process.command_line, `.*\\net1 user net localgroup administrators`)))
+$selection.target.process.command_line = $target
+
+  condition:
+    $selection and #target > 4
+}

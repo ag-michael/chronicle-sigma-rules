@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_desktopini_action {
+ meta:
+    author = "Maxime Thiebaut (@0xThiebaut)"
+    description = "Detects unusual processes accessing desktop.ini, which can be leveraged to alter how Explorer displays a folder's content (i.e. renaming files) without changing them on disk. Author: Maxime Thiebaut (@0xThiebaut)."
+    reference = ""
+    version = "0.01"
+    created = "2020/03/19"
+    product = "windows"
+    category = "file_event"
+    mitre = "persistence, t1023, t1547.009"
+
+  events:
+(re.regex($filter.target.file.full_path, `.*\\desktop\.ini`) and not (($filter.target.process.file.full_path = "C:\\Windows\\explorer.exe" or $filter.target.process.file.full_path = "C:\\Windows\\System32\\msiexec.exe" or $filter.target.process.file.full_path = "C:\\Windows\\System32\\mmc.exe")))
+
+  condition:
+    $filter
+}

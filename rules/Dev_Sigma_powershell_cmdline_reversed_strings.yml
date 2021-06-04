@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_powershell_cmdline {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Vasiliy Burov (rule), oscd.community"
+    description = "Detects the PowerShell command lines with reversed strings Author: Teymur Kheirkhabarov (idea), Vasiliy Burov (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/11"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1027, execution, t1059.001"
+
+  events:
+(re.regex($selection.target.process.file.full_path, `.*\\powershell\.exe`) and (re.regex($selection.target.process.command_line, `.*hctac.*`) or re.regex($selection.target.process.command_line, `.*kearb.*`) or re.regex($selection.target.process.command_line, `.*dnammoc.*`) or re.regex($selection.target.process.command_line, `.*ekovn.*`) or re.regex($selection.target.process.command_line, `.*eliFd.*`) or re.regex($selection.target.process.command_line, `.*rahc.*`) or re.regex($selection.target.process.command_line, `.*etirw.*`) or re.regex($selection.target.process.command_line, `.*golon.*`) or re.regex($selection.target.process.command_line, `.*tninon.*`) or re.regex($selection.target.process.command_line, `.*eddih.*`) or re.regex($selection.target.process.command_line, `.*tpircS.*`) or re.regex($selection.target.process.command_line, `.*ssecorp.*`) or re.regex($selection.target.process.command_line, `.*llehsrewop.*`) or re.regex($selection.target.process.command_line, `.*esnopser.*`) or re.regex($selection.target.process.command_line, `.*daolnwod.*`) or re.regex($selection.target.process.command_line, `.*tneilCbeW.*`) or re.regex($selection.target.process.command_line, `.*tneilc.*`) or re.regex($selection.target.process.command_line, `.*ptth.*`) or re.regex($selection.target.process.command_line, `.*elifotevas.*`) or re.regex($selection.target.process.command_line, `.*46esab.*`) or re.regex($selection.target.process.command_line, `.*htaPpmeTteG.*`) or re.regex($selection.target.process.command_line, `.*tcejbO.*`) or re.regex($selection.target.process.command_line, `.*maerts.*`) or re.regex($selection.target.process.command_line, `.*hcaerof.*`) or re.regex($selection.target.process.command_line, `.*ekovni.*`) or re.regex($selection.target.process.command_line, `.*retupmoc.*`)))
+
+  condition:
+    $selection
+}

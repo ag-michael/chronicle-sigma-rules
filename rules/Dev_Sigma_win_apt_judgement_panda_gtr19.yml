@@ -1,0 +1,17 @@
+rule  Dev_sigma_judgement_panda_exfil_activity {
+ meta:
+    author = "Florian Roth"
+    description = "Detects Judgement Panda activity as described in Global Threat Report 2019 by Crowdstrike Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/02/21"
+    category = "process_creation"
+    product = "windows"
+    mitre = "lateral_movement, g0010, credential_access, t1003, t1003.001, exfiltration, t1002, t1560.001"
+
+  events:
+(re.regex($selection1.target.process.command_line, `.*eprod\.ldf`) or (re.regex($selection1.target.process.command_line, `.*\\ldifde\.exe -f -n .*`) or re.regex($selection1.target.process.command_line, `.*\\7za\.exe a 1\.7z .*`) or re.regex($selection1.target.process.command_line, `.*\\aaaa\\procdump64\.exe.*`) or re.regex($selection1.target.process.command_line, `.*\\aaaa\\netsess\.exe.*`) or re.regex($selection1.target.process.command_line, `.*\\aaaa\\7za\.exe.*`) or re.regex($selection1.target.process.command_line, `.*copy \.\\1\.7z \\.*`) or re.regex($selection1.target.process.command_line, `.*copy \\\\client\\c$\\aaaa\\.*`)) or $selection1.target.process.file.full_path = "C:\\Users\\Public\\7za.exe")
+
+  condition:
+    $selection1
+}

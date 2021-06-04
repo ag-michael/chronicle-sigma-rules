@@ -1,0 +1,17 @@
+rule  Dev_sigma_silentprocessexit_monitor_registrytion_for_lsass {
+ meta:
+    author = "Florian Roth"
+    description = "Detects changes to the Registry in which a monitor program gets registered to dump process memory of the lsass.exe process memory Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2021/02/26"
+    category = "registry_event"
+    product = "windows"
+    mitre = "credential_access, t1003.007"
+
+  events:
+re.regex($selection.target.registry.registry_key, `.*Microsoft\\Windows NT\\CurrentVersion\\SilentProcessExit\\lsass\.exe.*`)
+
+  condition:
+    $selection
+}

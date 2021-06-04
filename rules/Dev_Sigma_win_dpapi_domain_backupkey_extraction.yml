@@ -1,0 +1,17 @@
+rule  Dev_sigma_dpapi_domain_backup_key_extraction {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects tools extracting LSA secret DPAPI domain backup key from Domain Controllers Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/06/20"
+    product = "windows"
+    service = "security"
+    mitre = "credential_access, t1003, t1003.004"
+
+  events:
+($selection.metadata.product_event_type = "4662" and $selection.src.user.user_display_name = "SecretObject" and $selection.target.process.access_mask = "0x2" and ($selection.target.registry.registry_value_data = "BCKUPKEY" or $selection.target.file.full_path = "BCKUPKEY"))
+
+  condition:
+    $selection
+}

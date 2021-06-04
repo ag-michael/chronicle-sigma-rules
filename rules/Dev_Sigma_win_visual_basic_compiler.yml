@@ -1,0 +1,17 @@
+rule  Dev_sigma_visual_basic_command_line_compiler_usage {
+ meta:
+    author = "Ensar Şamil, @sblmsrsn, @oscd_initiative"
+    description = "Detects successful code compilation via Visual Basic Command Line Compiler that utilizes Windows Resource to Object Converter. Author: Ensar Şamil, @sblmsrsn, @oscd_initiative."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/07"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1027.004"
+
+  events:
+(re.regex($selection.src.process.file.full_path, `.*\\vbc\.exe`) and re.regex($selection.target.process.file.full_path, `.*\\cvtres\.exe`))
+
+  condition:
+    $selection
+}

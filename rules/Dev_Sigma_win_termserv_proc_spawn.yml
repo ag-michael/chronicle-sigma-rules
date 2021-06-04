@@ -1,0 +1,17 @@
+rule  Dev_sigma_terminal_service_process_spawn {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a process spawned by the terminal service server process (this could be an indicator for an exploitation of CVE-2019-0708) Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2019/05/22"
+    product = "windows"
+    category = "process_creation"
+    mitre = "initial_access, t1190, lateral_movement, t1210, car.2013-07-002"
+
+  events:
+((re.regex($selection.src.process.command_line, `.*\\svchost\.exe.*`) and re.regex($selection.src.process.command_line, `.*termsvcs.*`)) and not (re.regex($selection.target.process.file.full_path, `.*\\rdpclip\.exe`)))
+
+  condition:
+    $selection
+}

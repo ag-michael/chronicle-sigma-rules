@@ -1,0 +1,17 @@
+rule  Dev_sigma_psexec_service_start {
+ meta:
+    author = "Florian Roth"
+    description = "Detects a PsExec service start Author: Florian Roth."
+    reference = ""
+    version = "0.01"
+    created = "2018/03/13"
+    category = "process_creation"
+    product = "windows"
+    mitre = "execution, t1035, s0029, t1569.002"
+
+  events:
+$selection.target.process.command_line = "C:\\Windows\\PSEXESVC.exe"
+
+  condition:
+    $selection
+}

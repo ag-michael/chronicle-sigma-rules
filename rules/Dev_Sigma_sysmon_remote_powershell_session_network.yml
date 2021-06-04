@@ -1,0 +1,17 @@
+rule  Dev_sigma_remote_powershell_session {
+ meta:
+    author = "Roberto Rodriguez @Cyb3rWard0g"
+    description = "Detects remote PowerShell connections by monitoring network outbount connections to ports 5985 or 5986 from not network service account Author: Roberto Rodriguez @Cyb3rWard0g."
+    reference = ""
+    version = "0.01"
+    created = "2019/09/12"
+    category = "network_connection"
+    product = "windows"
+    mitre = "execution, t1059.001, t1086, lateral_movement, t1021.006, t1028"
+
+  events:
+(($selection.target.port = "5985" or $selection.target.port = "5986") and not ($selection.src.user.user_display_name = "NT AUTHORITY\\NETWORK SERVICE"))
+
+  condition:
+    $selection
+}

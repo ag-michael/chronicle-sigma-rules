@@ -1,0 +1,17 @@
+rule  Dev_sigma_files_dropped_to_program_files_by_nonpriviledged_process {
+ meta:
+    author = "Teymur Kheirkhabarov (idea), Ryan Plas (rule), oscd.community"
+    description = "Search for dropping of files to Windows/Program Files fodlers by non-priviledged processes Author: Teymur Kheirkhabarov (idea), Ryan Plas (rule), oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/10/17"
+    category = "file_event"
+    product = "windows"
+    mitre = "persistence, defense_evasion, t1574, t1574.010"
+
+  events:
+($integrity.IntegrityLevel = "Medium" and ((re.regex($integrity.target.file.full_path, `.*\\Program Files\\.*`) or re.regex($integrity.target.file.full_path, `.*\\Program Files \(x86\)\\.*`)) or (re.regex($integrity.target.file.full_path, `Windows\\.*`) and not (re.regex($integrity.target.file.full_path, `.*temp.*`)))))
+
+  condition:
+    $integrity
+}

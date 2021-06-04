@@ -1,0 +1,17 @@
+rule  Dev_sigma_suspicious_file_characteristics_due_to_missing_fields {
+ meta:
+    author = "Markus Neis, Sander Wiebing"
+    description = "Detects Executables in the Downloads folder without FileVersion,Description,Product,Company likely created with py2exe Author: Markus Neis, Sander Wiebing."
+    reference = ""
+    version = "0.01"
+    created = "2018/11/22"
+    product = "windows"
+    category = "process_creation"
+    mitre = "execution, t1059.006, defense_evasion, t1064"
+
+  events:
+((($selection1.metadata.description = "?" and $selection1.metadata.product_name = "?") or $selection1.metadata.description = "?") and re.regex($selection1.target.process.file.full_path, `.*\\Downloads\\\\.*`))
+
+  condition:
+    $selection1
+}

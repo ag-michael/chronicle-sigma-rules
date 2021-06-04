@@ -1,0 +1,17 @@
+rule  Dev_sigma_netsh_program_allowed_with_suspcious_location {
+ meta:
+    author = "Sander Wiebing, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community"
+    description = "Detects Netsh commands that allows a suspcious application location on Windows Firewall Author: Sander Wiebing, Jonhnathan Ribeiro, Daniil Yugoslavskiy, oscd.community."
+    reference = ""
+    version = "0.01"
+    created = "2020/05/25"
+    category = "process_creation"
+    product = "windows"
+    mitre = "defense_evasion, t1089, t1562.004"
+
+  events:
+((re.regex($selection1.target.process.file.full_path, `.*\\netsh\.exe`) and re.regex($selection1.target.process.command_line, `.*firewall.*`) and re.regex($selection1.target.process.command_line, `.*add.*`) and (re.regex($selection1.target.process.command_line, `.*allowedprogram.*`) or (re.regex($selection1.target.process.command_line, `.*advfirewall.*`) and re.regex($selection1.target.process.command_line, `.*rule.*`) and re.regex($selection1.target.process.command_line, `.*action=allow.*`) and re.regex($selection1.target.process.command_line, `.*program=.*`)))) and ((re.regex($selection1.target.process.command_line, `.*%TEMP%.*`) or re.regex($selection1.target.process.command_line, `.*:\\RECYCLER\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\$Recycle\.bin\\.*`) or re.regex($selection1.target.process.command_line, `.*:\\SystemVolumeInformation\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\Windows\\Temp\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\Temp\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\Users\\Public\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\Users\\Default\\.*`) or re.regex($selection1.target.process.command_line, `.*C:\\Users\\Desktop\\.*`) or re.regex($selection1.target.process.command_line, `.*\\Downloads\\.*`) or re.regex($selection1.target.process.command_line, `.*\\Temporary Internet Files\\Content\.Outlook\\.*`) or re.regex($selection1.target.process.command_line, `.*\\Local Settings\\Temporary Internet Files\\.*`)) or (re.regex($selection1.target.process.command_line, `C:\\Windows\\Tasks\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\debug\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\fonts\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\help\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\drivers\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\addins\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\cursors\\.*`) or re.regex($selection1.target.process.command_line, `C:\\Windows\\system32\\tasks\\.*`) or re.regex($selection1.target.process.command_line, `%Public%\\.*`))))
+
+  condition:
+    $selection1
+}
